@@ -9,6 +9,6 @@ export class AuthServiceResolver {
 
   @Query(returns => UserType)
   user(@Args('id') id: string) {
-    return { id: 'helloworld v:' };
+    return this.authServiceService.getUserById(id);
   }
 }
