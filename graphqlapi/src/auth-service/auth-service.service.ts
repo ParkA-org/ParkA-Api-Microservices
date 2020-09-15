@@ -6,11 +6,12 @@ import { UserType } from './auth-service.type';
 export class AuthServiceService {
   @Client({
     transport: Transport.REDIS,
-    options: { url: `redis://localhost:6379` },
+    options: { url: `redis://redis-parka-microservices:6379` },
   })
   client: ClientProxy;
 
-  public async getUserById(id: string): Promise<UserType> {
-    return { id: 'helloworld v:' };
+  public async getUserById(id: string): Promise<{}> {
+    const response = await this.client.send<{}>({ type: 'get-user' }, {});
+    return response.toPromise();
   }
 }

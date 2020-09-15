@@ -11,6 +11,8 @@ services:
       - redis
     ports:
       - "3000:3000"
+    # volumes:
+    #   - ./api-gateway :/usr/src/app
   auth-service:
     container_name: "auth-service"
     restart: "always"
@@ -21,8 +23,10 @@ services:
       - redis
     ports:
       - "3001:3000"
-  redis:
-    container_name: "redis"
+    # volumes:
+    #   - ./auth-service :/usr/src/app
+  redis-parka-microservices:
+    container_name: "redis-parka-microservices"
     restart: "always"
     image: redis
     ports:
