@@ -1,6 +1,7 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
 import { AuthService } from './auth.service';
+import { CreateUserDto } from './userData/create-user.dto';
 import { User } from './userData/user.entity';
 
 @Controller('auth')
@@ -13,13 +14,7 @@ export class AuthController {
   }
 
   @MessagePattern({ type: 'create-user' })
-  public async createUser(): Promise<User> {
-    return {
-      id: '12345',
-      name: 'test name',
-      lastName: 'test lastName',
-      email: 'uncorreoporahi@gmail.com',
-      profilePicture: '',
-    };
+  public async createUser(createUserDto: CreateUserDto): Promise<User> {
+    return await this.authService.createUser(createUserDto);
   }
 }
