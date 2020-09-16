@@ -27,14 +27,6 @@ export class AuthService {
       profilePicture,
     });
 
-    // return await {
-    //   id: '12345',
-    //   name: 'test name 1',
-    //   lastName: 'test lastName',
-    //   email: 'uncorreoporahi@gmail.com',
-    //   profilePicture: '',
-    // };
-
     return await this.authRepository.save(user);
   }
 }

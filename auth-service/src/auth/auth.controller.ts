@@ -10,8 +10,15 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @MessagePattern({ type: 'get-user' })
-  public async getCatalogItems(): Promise<{}> {
-    return { id: 'helloworld v:' };
+  public async getUser(): Promise<User> {
+    return await {
+      _id: 'tu jevita',
+      id: '12345',
+      name: 'test name 1',
+      lastName: 'test lastName',
+      email: 'uncorreoporahi@gmail.com',
+      profilePicture: '',
+    };
   }
 
   @MessagePattern({ type: 'create-user' })
