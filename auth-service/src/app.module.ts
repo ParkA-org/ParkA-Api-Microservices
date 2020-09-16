@@ -10,7 +10,7 @@ import { User } from './auth/userData/user.entity';
     TypeOrmModule.forRoot({
       type: 'mongodb',
       url:
-        'mongodb+srv://parkaApiUser:vUrmea2Sp4SSCBWj@parkawebapimicroservice.br7y0.mongodb.net/<dbname>?retryWrites=true&w=majority',
+        'mongodb+srv://parkaApiUser:vUrmea2Sp4SSCBWj@parkawebapimicroservice.br7y0.mongodb.net/ParkaMicroservices?retryWrites=true&w=majority',
       useUnifiedTopology: true,
       useNewUrlParser: true,
       synchronize: true,

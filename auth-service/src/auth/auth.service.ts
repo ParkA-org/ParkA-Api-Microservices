@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './userData/create-user.dto';
 import { User } from './userData/user.entity';
+import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class AuthService {
@@ -13,9 +14,13 @@ export class AuthService {
   ) {}
 
   public async createUser(createUserDto: CreateUserDto): Promise<User> {
+    this.logger.debug(
+      `Received create user payload ${JSON.stringify(createUserDto)}`,
+    );
     const { name, email, lastName, profilePicture } = createUserDto;
 
     const user = this.authRepository.create({
+      id: uuid(),
       name,
       lastName,
       email,
