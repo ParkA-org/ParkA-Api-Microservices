@@ -13,9 +13,9 @@ export class AuthServiceService {
   })
   client: ClientProxy;
 
-  public async getUserById(id: string): Promise<{}> {
+  public async getUserById(id: string): Promise<UserType> {
     this.logger.log(`Getting user`);
-    const response = await this.client.send<{}>({ type: 'get-user' }, {});
+    const response = await this.client.send<UserType>({ type: 'get-user' }, {});
     return response.toPromise();
   }
 
