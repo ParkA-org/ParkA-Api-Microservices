@@ -17,12 +17,6 @@ export class AuthServiceResolver {
   async createUser(
     @Args('createUserInput') createUserInput: CreateUserInput,
   ): Promise<UserType> {
-    return await {
-      id: '12345',
-      name: 'test name',
-      lastName: 'test lastName',
-      email: 'uncorreoporahi@gmail.com',
-      profilePicture: '',
-    };
+    return await this.authServiceService.createUser(createUserInput);
   }
 }
