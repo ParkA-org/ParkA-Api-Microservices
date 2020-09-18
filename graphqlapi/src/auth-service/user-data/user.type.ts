@@ -22,4 +22,7 @@ export class UserType {
 
   @Field()
   updateAt: Date;
+
+  @Field()
+  confirmed: boolean;
 }

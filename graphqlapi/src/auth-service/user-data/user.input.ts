@@ -43,4 +43,7 @@ export class UpdateUserInput {
 
   @Field()
   profilePicture: string;
+
+  @Field()
+  password: string;
 }

@@ -57,7 +57,8 @@ export class AuthService {
         lastName,
         email,
         profilePicture,
-        createAt: date.getTime(),
+        createAt: date.toTimeString(),
+        updateAt: date.toTimeString(),
       });
 
       return await user;
