@@ -42,7 +42,7 @@ $ git clone git@github.com:ParkA-org/ParkA-Api-Microservices.git
 ```bash
  docker-compose up
 ```
-<img src="https://parka-api-bucket-aws.s3.amazonaws.com/1_Zvmb_M_Emt_GR_15_Xj_eb3os_XA_ec855722db.png width ="20" alt="GraphQL Logo"/></a> 
+<img src="https://parka-api-bucket-aws.s3.amazonaws.com/1_Zvmb_M_Emt_GR_15_Xj_eb3os_XA_ec855722db.png" width="20" alt="GraphQL Logo"/></a> 
 
 ## Comunication Endpoints
 
