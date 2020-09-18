@@ -1,5 +1,6 @@
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
+  <img src="https://parka-api-bucket-aws.s3.amazonaws.com/Parka_Icon_7_1_9bc0502ce0.svg" width ="320" alt="ParkA Logo"/></a>
 </p>
 
 [travis-image]: https://api.travis-ci.org/nestjs/nest.svg?branch=master
