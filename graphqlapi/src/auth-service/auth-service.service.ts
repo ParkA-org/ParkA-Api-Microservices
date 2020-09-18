@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Client, ClientProxy, Transport } from '@nestjs/microservices';
-import { CreateUserInput } from './user-data/user.input';
+import { CreateUserInput, UpdateUserInput } from './user-data/user.input';
 import { UserType } from './user-data/user.type';
 
 @Injectable()
@@ -24,6 +24,16 @@ export class AuthServiceService {
     const response = this.client.send<UserType>(
       { type: 'create-user' },
       createUserInput,
+    );
+    console.log(response);
+    return response.toPromise();
+  }
+
+  public async updateUser(updateUserInput: UpdateUserInput): Promise<UserType> {
+    this.logger.log(`Got updateUserInput data`);
+    const response = this.client.send<UserType>(
+      { type: 'update-user' },
+      UpdateUserInput,
     );
     return response.toPromise();
   }

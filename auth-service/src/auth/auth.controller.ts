@@ -10,15 +10,16 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @MessagePattern({ type: 'get-user' })
-  public async getUser(): Promise<User> {
-    return await {
-      _id: 'tu jevita',
-      id: '12345',
-      name: 'test name 1',
-      lastName: 'test lastName',
-      email: 'uncorreoporahi@gmail.com',
-      profilePicture: '',
-    };
+  public async getUser(id: string): Promise<User> {
+    this.logger.debug(
+      `Received id user message with data ${JSON.stringify(id)}`,
+    );
+    return await this.authService.getUser(id);
+  }
+
+  @MessagePattern({ type: 'get-users' })
+  public async getUsers(): Promise<User[]> {
+    return await this.authService.getAllUser();
   }
 
   @MessagePattern({ type: 'create-user' })

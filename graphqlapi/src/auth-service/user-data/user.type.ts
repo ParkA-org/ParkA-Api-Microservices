@@ -16,4 +16,10 @@ export class UserType {
 
   @Field()
   profilePicture: string;
+
+  @Field()
+  createAt: Date;
+
+  @Field()
+  updateAt: Date;
 }

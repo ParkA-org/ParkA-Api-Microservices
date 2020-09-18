@@ -21,6 +21,12 @@ export class User {
   @Column()
   profilePicture: string;
 
+  @Column()
+  updateAt: Date;
+
+  @Column()
+  createAt: Date;
+
   //TODO: add credential id
 
   //TODO: information id
