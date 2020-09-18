@@ -27,25 +27,20 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+ParkA is software where people can rent their parking spaces, through catalogs published in the services so that people can claim them and use said parking spaces.
+
+This API is developed with [Nest](https://github.com/nestjs/nest) , with an architecture based on microservices. Using [Redis](https://github.com/redis/redis) as a communication tool.
 
 ## Installation
 
 ```bash
-$ npm install
+$ git clone git@github.com:ParkA-org/ParkA-Api-Microservices.git
 ```
 
-## Running the app
+## Running the API
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+ docker-compose up
 ```
 
 ## Test
