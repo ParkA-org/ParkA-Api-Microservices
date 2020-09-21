@@ -5,7 +5,7 @@ import { IsUUID, Length, MaxLength, MinLength } from 'class-validator';
 export class CreateVehicleInput {
   @Field(type => ID, { nullable: true, defaultValue: null })
   //   @IsUUID('all')
-  modelId: string;
+  model: string;
 
   @Field()
   //   @Length(11)
@@ -18,7 +18,7 @@ export class CreateVehicleInput {
   detail: string;
 
   @Field()
-  colorExteriorId: string;
+  colorExterior: string;
 
   @Field()
   mainPicture: string;
@@ -35,5 +35,5 @@ export class CreateVehicleInput {
   alias: string;
 
   @Field(type => ID)
-  vehicleTypeId: string;
+  vehicleType: string;
 }

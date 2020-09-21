@@ -17,20 +17,6 @@ export class VehicleController {
   public async createVehicle(
     createVehicleDto: CreateVehicleDto,
   ): Promise<Vehicle> {
-    console.log(createVehicleDto);
-
-    return await {
-      id: '1234567',
-      alias: '',
-      colorExteriorId: '',
-      detail: '',
-      licensePlate: '',
-      mainPicture: '',
-      modelId: '',
-      pictures: [],
-      vehicleTypeId: '',
-      verified: false,
-      year: 1234,
-    };
+    return await this.vehicleService.createVehicle(createVehicleDto);
   }
 }

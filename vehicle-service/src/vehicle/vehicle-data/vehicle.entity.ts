@@ -1,12 +1,15 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Column, Entity, ObjectIdColumn, PrimaryColumn } from 'typeorm';
 
 @Entity()
 export class Vehicle {
+  @ObjectIdColumn()
+  _id: string;
+
   @PrimaryColumn()
   id: string;
 
   @Column()
-  modelId: string;
+  model: string;
 
   @Column()
   licensePlate: string;
@@ -18,7 +21,7 @@ export class Vehicle {
   detail: string;
 
   @Column()
-  colorExteriorId: string;
+  colorExterior: string;
 
   @Column()
   mainPicture: string;
@@ -33,5 +36,5 @@ export class Vehicle {
   alias: string;
 
   @Column()
-  vehicleTypeId: string;
+  vehicleType: string;
 }

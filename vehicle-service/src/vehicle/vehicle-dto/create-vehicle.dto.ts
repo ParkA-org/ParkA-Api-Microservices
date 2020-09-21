@@ -1,8 +1,8 @@
-import { IsBoolean, IsUUID, Length, MinLength } from 'class-validator';
+import { IsBoolean, IsUUID, Length } from 'class-validator';
 
 export class CreateVehicleDto {
   @IsUUID('all')
-  modelId: string;
+  model: string;
 
   licensePlate: string;
 
