@@ -17,7 +17,7 @@ export class VehicleType {
   @Field()
   detail: string;
 
-  @Field()
+  @Field(type => ID)
   colorExteriorId: string;
 
   @Field()
@@ -32,6 +32,6 @@ export class VehicleType {
   @Field()
   alias: string;
 
-  @Field()
+  @Field(type => ID)
   vehicleTypeId: string;
 }
