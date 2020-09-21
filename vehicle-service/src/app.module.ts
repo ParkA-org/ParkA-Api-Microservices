@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { Vehicle } from './vehicle/vehicle-data/vehicle.entity';
 import { VehicleModule } from './vehicle/vehicle.module';
 
 @Module({
@@ -12,7 +13,7 @@ import { VehicleModule } from './vehicle/vehicle.module';
       useUnifiedTopology: true,
       useNewUrlParser: true,
       synchronize: true,
-      entities: [],
+      entities: [Vehicle],
     }),
   ],
   controllers: [],
