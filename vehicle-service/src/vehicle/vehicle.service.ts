@@ -18,6 +18,10 @@ export class VehicleService {
     return await this.vehicleRepository.findOne(getVehicleByIdDto);
   }
 
+  public async getAllVehicles(): Promise<Vehicle[]> {
+    return this.vehicleRepository.find();
+  }
+
   public async createVehicle(
     createVehicleDto: CreateVehicleDto,
   ): Promise<Vehicle> {

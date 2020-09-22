@@ -10,11 +10,16 @@ export class VehicleController {
   constructor(private vehicleService: VehicleService) {}
 
   //TODO: Change message pattern
-  @MessagePattern({ type: 'get-vehicle' })
+  @MessagePattern({ type: 'get-vehicle-by-id' })
   public async getVehicleById(
     getVehicleByIdDto: GetVehicleByIdDto,
   ): Promise<Vehicle> {
     return await this.vehicleService.getVehicleById(getVehicleByIdDto);
+  }
+
+  @MessagePattern({ type: 'get-all-vehicles' })
+  public async getAllVehicles(): Promise<Vehicle[]> {
+    return await this.vehicleService.getAllVehicles();
   }
 
   @MessagePattern({ type: 'create-vehicle' })

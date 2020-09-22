@@ -18,8 +18,17 @@ export class VehicleServiceService {
     getVehicleByIdInput: GetVehicleByIdInput,
   ): Promise<VehicleType> {
     const response = await this.client.send<VehicleType>(
-      { type: 'get-vehicle' },
+      { type: 'get-vehicle-by-id' },
       getVehicleByIdInput,
+    );
+
+    return response.toPromise();
+  }
+
+  public async getAllVehicles(): Promise<VehicleType[]> {
+    const response = await this.client.send<VehicleType[]>(
+      { type: 'get-all-vehicles' },
+      {},
     );
 
     return response.toPromise();

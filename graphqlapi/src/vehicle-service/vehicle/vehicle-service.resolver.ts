@@ -24,6 +24,11 @@ export class VehicleServiceResolver {
     return this.vehicleService.getVehicle(getVehicleByIdInput);
   }
 
+  @Query(returns => [VehicleType])
+  public async getAllvehicles(): Promise<VehicleType[]> {
+    return this.vehicleService.getAllVehicles();
+  }
+
   @Mutation(of => VehicleType)
   public async createVehicle(
     @Args('createVehicleInput') createVehicleInput: CreateVehicleInput,
@@ -31,6 +36,6 @@ export class VehicleServiceResolver {
     this.logger.debug(
       `Received create vehicle with data ${JSON.stringify(createVehicleInput)}`,
     );
-    return await this.vehicleService.createVehicle(createVehicleInput);
+    return this.vehicleService.createVehicle(createVehicleInput);
   }
 }
