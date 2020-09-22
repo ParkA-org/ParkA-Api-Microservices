@@ -7,7 +7,7 @@ import { VehicleTypeModule } from './vehicle-type/vehicle-type.module';
 import { ColorModule } from './color/color.module';
 import { MakeModule } from './make/make.module';
 import { VehicleType } from './vehicle-type/vehicle-type-data/vehicle-type.entity';
-import { Model } from './model/model-data/vehicle.entity';
+import { Model } from './model/model-data/model.entity';
 
 @Module({
   imports: [
