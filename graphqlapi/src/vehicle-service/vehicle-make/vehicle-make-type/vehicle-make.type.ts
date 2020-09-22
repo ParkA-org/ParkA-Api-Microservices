@@ -11,4 +11,7 @@ export class VehicleMakeType implements IVehicleMakeType {
 
   @Field()
   name: string;
+
+  @Field(type => [ID])
+  models: string[];
 }

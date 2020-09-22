@@ -1,4 +1,4 @@
-import { Field, InputType } from '@nestjs/graphql';
+import { Field, ID, InputType } from '@nestjs/graphql';
 import { ICreateVehicleMakeInput } from '../vehicle-make-interfaces/create-make-input.interface';
 
 @InputType('createVehicleMakeInput')
@@ -9,6 +9,6 @@ export class CreateVehicleMakeInput implements ICreateVehicleMakeInput {
   @Field()
   icon: string;
 
-  @Field()
+  @Field(type => [ID])
   models: string[];
 }
