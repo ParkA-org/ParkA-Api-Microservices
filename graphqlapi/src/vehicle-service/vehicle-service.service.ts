@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Client, ClientProxy, Transport } from '@nestjs/microservices';
-import { CreateVehicleInput } from './vehicle-data/vehicle.input';
+import { CreateVehicleInput } from './vehicle-inputs/create-vehicle.input';
 import { VehicleType } from './vehicle-data/vehicle.type';
+import { GetVehicleByIdInput } from './vehicle-inputs/find-vehicle-by-id.input';
 
 @Injectable()
 export class VehicleServiceService {
@@ -13,10 +14,12 @@ export class VehicleServiceService {
   })
   client: ClientProxy;
 
-  public async getVehicle(): Promise<VehicleType> {
+  public async getVehicle(
+    getVehicleByIdInput: GetVehicleByIdInput,
+  ): Promise<VehicleType> {
     const response = await this.client.send<VehicleType>(
       { type: 'get-vehicle' },
-      {},
+      getVehicleByIdInput,
     );
 
     return response.toPromise();

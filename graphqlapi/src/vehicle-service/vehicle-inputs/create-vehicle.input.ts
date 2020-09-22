@@ -1,8 +1,9 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
 import { IsUUID, Length, MaxLength, MinLength } from 'class-validator';
+import { ICreateVehicleInput } from '../interfaces/create-vehicle.interface';
 
 @InputType('createVehicleInput')
-export class CreateVehicleInput {
+export class CreateVehicleInput implements ICreateVehicleInput {
   @Field(type => ID, { nullable: true, defaultValue: null })
   //   @IsUUID('all')
   model: string;
