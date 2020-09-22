@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Client, ClientProxy, Transport } from '@nestjs/microservices';
-import { CreateVehicleInput } from './vehicle-inputs/create-vehicle.input';
 import { VehicleType } from './vehicle-data/vehicle.type';
+import { CreateVehicleInput } from './vehicle-inputs/create-vehicle.input';
 import { GetVehicleByIdInput } from './vehicle-inputs/get-vehicle-by-id.input';
 
 @Injectable()
