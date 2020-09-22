@@ -3,7 +3,7 @@ import { IsUUID } from 'class-validator';
 import { IGetVehicleByIdInput } from 'src/vehicle-service/vehicle/interfaces/get-vehicle-by-id.interface';
 
 @InputType('getVehicleModelByIdInput')
-export class GetVehicleModelById implements IGetVehicleByIdInput {
+export class GetVehicleModelByIdInput implements IGetVehicleByIdInput {
   @Field()
   @IsUUID('4')
   id: string;
