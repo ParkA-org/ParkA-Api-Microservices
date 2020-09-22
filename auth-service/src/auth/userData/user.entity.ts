@@ -1,11 +1,4 @@
-import {
-  Column,
-  Entity,
-  IsNull,
-  ObjectIdColumn,
-  PrimaryColumn,
-  Unique,
-} from 'typeorm';
+import { Column, Entity, ObjectIdColumn, PrimaryColumn, Unique } from 'typeorm';
 
 @Entity()
 @Unique(['email'])

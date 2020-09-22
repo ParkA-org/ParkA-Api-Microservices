@@ -1,12 +1,14 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { Credential } from './userData/credential.entity';
 import { CreateUserDto } from './userData/create-user.dto';
 import { User } from './userData/user.entity';
 import { v4 as uuid } from 'uuid';
 import { RpcException } from '@nestjs/microservices';
 import { UpdateUserDto } from './userData/update-user.dto';
 import { AuthCredentialsDto } from './userData/auth-credential.dto';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class AuthService {
@@ -14,6 +16,7 @@ export class AuthService {
 
   constructor(
     @InjectRepository(User) private authRepository: Repository<User>,
+    private credentialRepository: Repository<Credential>,
   ) {}
 
   // Is Inprogress
@@ -47,9 +50,12 @@ export class AuthService {
     this.logger.debug(
       `Received create user payload ${JSON.stringify(createUserDto)}`,
     );
-    const { name, email, lastName, profilePicture } = createUserDto;
+    var { name, email, lastName, profilePicture, password } = createUserDto;
 
     var date = new Date();
+
+    const salt = await bcrypt.genSalt();
+    password = await this.hashPassword(password, salt);
 
     try {
       const user = this.authRepository.save({
@@ -61,6 +67,7 @@ export class AuthService {
         createAt: date.toTimeString(),
         updateAt: date.toTimeString(),
         confirmed: false,
+        credentialId: '',
       });
 
       return await user;
@@ -69,6 +76,10 @@ export class AuthService {
         ? new RpcException('Duplicate field')
         : new RpcException('An undefined error occured');
     }
+  }
+
+  private async hashPassword(password: string, salt: string): Promise<string> {
+    return bcrypt.hash(password, salt);
   }
 
   public async getAllUser(): Promise<User[]> {

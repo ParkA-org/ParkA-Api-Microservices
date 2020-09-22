@@ -2,7 +2,7 @@ import { Column, Entity, ObjectIdColumn, PrimaryColumn, Unique } from 'typeorm';
 
 @Entity()
 @Unique(['email'])
-export class User {
+export class Credential {
   @ObjectIdColumn()
   _id: string;
 
