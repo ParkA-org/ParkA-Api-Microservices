@@ -31,13 +31,13 @@ export class AuthController {
     return await this.authService.createUser(createUserDto);
   }
 
-  @MessagePattern({ type: 'sign-up' })
+  @MessagePattern({ type: 'sign-in' })
   public async signUp(authCredentialsDto: AuthCredentialsDto): Promise<void> {
     this.logger.debug(
       `Received login user message with data ${JSON.stringify(
         authCredentialsDto,
       )}`,
     );
-    return await this.authService.signUp(authCredentialsDto);
+    return await this.authService.signIn(authCredentialsDto);
   }
 }

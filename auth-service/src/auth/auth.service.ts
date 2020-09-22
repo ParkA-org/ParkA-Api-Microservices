@@ -65,6 +65,8 @@ export class AuthService {
         email,
         password,
         salt,
+        createAt: date.toTimeString(),
+        updateAt: date.toTimeString(),
       });
 
       this.logger.debug(
@@ -111,7 +113,7 @@ export class AuthService {
   }
 
   // Is Inprogress
-  public async signUp(authCrendetialsDto: AuthCredentialsDto) {
+  public async signIn(authCrendetialsDto: AuthCredentialsDto) {
     const { email, password } = authCrendetialsDto;
 
     const user = new User();

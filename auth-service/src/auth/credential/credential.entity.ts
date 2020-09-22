@@ -18,7 +18,11 @@ export class Credential {
   @Column()
   email: string;
 
-  //TODO: add credential id
+  @Column()
+  createdAt: string;
+
+  @Column()
+  updatedAt: string;
 
   //TODO: information id
 }
