@@ -40,6 +40,9 @@ export class User {
   @Column()
   credentialId: string;
 
+  @Column()
+  password: string;
+
   //TODO: add credential id
 
   //TODO: information id

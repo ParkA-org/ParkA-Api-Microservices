@@ -6,6 +6,7 @@ import { User } from './userData/user.entity';
 import { v4 as uuid } from 'uuid';
 import { RpcException } from '@nestjs/microservices';
 import { UpdateUserDto } from './userData/update-user.dto';
+import { AuthCredentialsDto } from './userData/auth-credential.dto';
 
 @Injectable()
 export class AuthService {
@@ -82,5 +83,15 @@ export class AuthService {
   public async getUser(id: string): Promise<User> {
     const user = this.authRepository.findOne({ id });
     return await user;
+  }
+
+  // Is Inprogress
+  public async signUp(authCrendetialsDto: AuthCredentialsDto) {
+    const { email, password } = authCrendetialsDto;
+
+    const user = new User();
+
+    user.email = email;
+    user.password = password;
   }
 }
