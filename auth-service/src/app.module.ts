@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { User } from './auth/userData/user.entity';
+import { Credential } from './auth/credential/credential.entity';
 
 //vUrmea2Sp4SSCBWj
 @Module({
@@ -14,7 +15,7 @@ import { User } from './auth/userData/user.entity';
       useUnifiedTopology: true,
       useNewUrlParser: true,
       synchronize: true,
-      entities: [User],
+      entities: [User, Credential],
     }),
   ],
   controllers: [],

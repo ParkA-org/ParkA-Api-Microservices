@@ -31,7 +31,7 @@ export class User {
   accountData?: string;
 
   @Column()
-  credentialId: string;
+  credential: string;
 
   @Column()
   password: string;

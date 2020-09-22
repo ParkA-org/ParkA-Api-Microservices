@@ -29,6 +29,6 @@ export class UserType {
   @Field()
   confirmed: boolean;
 
-  // @Field()
-  // crendetial: Credential;
+  @Field()
+  crendetial: string;
 }

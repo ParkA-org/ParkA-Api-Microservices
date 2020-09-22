@@ -21,13 +21,14 @@ export class CreateUserInput {
   @Field({ nullable: true })
   profilePicture?: string;
 
-  @Matches(/((?=.*\d) | (?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
-    message: 'Password too weak',
-  })
   @MinLength(8)
   @Field()
   password: string;
 }
+
+// @Matches(/((?=.*\d) | (?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
+//   message: 'Password too weak',
+// })
 
 @InputType()
 export class UpdateUserInput {

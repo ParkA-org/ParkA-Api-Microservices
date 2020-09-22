@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Credential } from './userData/credential.entity';
+import { Credential } from './credential/credential.entity';
 import { CreateUserDto } from './userData/create-user.dto';
 import { User } from './userData/user.entity';
 import { v4 as uuid } from 'uuid';
@@ -16,6 +16,7 @@ export class AuthService {
 
   constructor(
     @InjectRepository(User) private authRepository: Repository<User>,
+    @InjectRepository(Credential)
     private credentialRepository: Repository<Credential>,
   ) {}
 
@@ -54,14 +55,23 @@ export class AuthService {
 
     var date = new Date();
 
-    const salt = await bcrypt.genSalt();
-    password = await this.hashPassword(password, salt);
-    const id2 = uuid();
-
-    var result = this.credentialRepository.save({ id2, email, password, salt });
-    console.log(result);
-
     try {
+      const salt = await bcrypt.genSalt();
+      password = await this.hashPassword(password, salt);
+      const id = uuid();
+
+      var result = this.credentialRepository.save({
+        id,
+        email,
+        password,
+        salt,
+      });
+
+      this.logger.debug(
+        `Received create user payload ${JSON.stringify(result)}`,
+      );
+      const id2 = id;
+
       const user = this.authRepository.save({
         id: uuid(),
         name,
@@ -71,7 +81,7 @@ export class AuthService {
         createAt: date.toTimeString(),
         updateAt: date.toTimeString(),
         confirmed: false,
-        credentialId: id2,
+        credential: id2,
       });
 
       return await user;
