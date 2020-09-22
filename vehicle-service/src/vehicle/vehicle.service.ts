@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { Vehicle } from './vehicle-data/vehicle.entity';
 import { CreateVehicleDto } from './vehicle-dto/create-vehicle.dto';
 import { v4 as uuid } from 'uuid';
+import { GetVehicleByIdDto } from './vehicle-dto/get-vehicle-by-id.dto';
 
 @Injectable()
 export class VehicleService {
@@ -11,8 +12,10 @@ export class VehicleService {
     @InjectRepository(Vehicle) private vehicleRepository: Repository<Vehicle>,
   ) {}
 
-  public async getVehicleById(): Promise<Vehicle> {
-    return await this.vehicleRepository.findOne({});
+  public async getVehicleById(
+    getVehicleByIdDto: GetVehicleByIdDto,
+  ): Promise<Vehicle> {
+    return await this.vehicleRepository.findOne(getVehicleByIdDto);
   }
 
   public async createVehicle(
