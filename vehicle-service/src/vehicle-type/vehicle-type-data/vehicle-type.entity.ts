@@ -1,5 +1,5 @@
 import { Column, Entity, ObjectIdColumn, PrimaryColumn } from 'typeorm';
-import { IVehicleType } from '../vehicle-type-interfaces/vehicle-entity.interface';
+import { IVehicleType } from '../vehicle-type-interfaces/vehicle-type-entity.interface';
 
 @Entity()
 export class VehicleType implements IVehicleType {
