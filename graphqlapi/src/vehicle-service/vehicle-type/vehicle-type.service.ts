@@ -25,8 +25,8 @@ export class VehicleTypeService {
     return response.toPromise();
   }
 
-  public async getAllVehicleTypes(): Promise<VehicleTypeType> {
-    const response = await this.client.send<VehicleTypeType>(
+  public async getAllVehicleTypes(): Promise<VehicleTypeType[]> {
+    const response = await this.client.send<VehicleTypeType[]>(
       { type: 'get-vehicle-all-types' },
       {},
     );
