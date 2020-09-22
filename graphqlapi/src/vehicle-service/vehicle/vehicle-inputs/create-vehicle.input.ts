@@ -32,7 +32,7 @@ export class CreateVehicleInput implements ICreateVehicleInput {
   @MaxLength(4)
   year: string;
 
-  @Field()
+  @Field({ defaultValue: '' })
   alias: string;
 
   @Field(type => ID)
