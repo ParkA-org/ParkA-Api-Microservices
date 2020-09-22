@@ -9,7 +9,7 @@ import { MakeService } from './make.service';
 export class MakeController {
   constructor(private makeService: MakeService) {}
 
-  @MessagePattern({ type: 'get-make-by' })
+  @MessagePattern({ type: 'get-make-by-id' })
   public async getMakeById(getMakeByIdDto: GetMakeByIdDto): Promise<Make> {
     return await this.makeService.getMakeById(getMakeByIdDto);
   }
