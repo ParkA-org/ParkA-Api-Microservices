@@ -1,5 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { IsEmail, MaxLength, MinLength } from 'class-validator';
+import { IsEmail, Matches, MaxLength, MinLength } from 'class-validator';
 import { isNullableType } from 'graphql';
 
 @InputType()
@@ -21,6 +21,9 @@ export class CreateUserInput {
   @Field({ nullable: true })
   profilePicture?: string;
 
+  @Matches(/((?=.*\d) | (?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
+    message: 'Password too weak',
+  })
   @MinLength(8)
   @Field()
   password: string;
