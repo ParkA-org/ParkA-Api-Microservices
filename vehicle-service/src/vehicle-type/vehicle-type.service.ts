@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { VehicleType } from './vehicle-type-data/vehicle-type.entity';
 import { CreateVehicleTypeDto } from './vehicle-type-dto/create-vehicle-type.dto';
 import { v4 as uuid } from 'uuid';
+import { GetVehicleTypeByIdDto } from './vehicle-type-dto/get-vehicle-type-by-id.dto';
 
 @Injectable()
 export class VehicleTypeService {
@@ -12,9 +13,10 @@ export class VehicleTypeService {
     private vehicleTypeRepository: Repository<VehicleType>,
   ) {}
 
-  //TODO: Define dto input type
-  public async getVehicleTypeById(): Promise<VehicleType> {
-    return this.vehicleTypeRepository.findOne();
+  public async getVehicleTypeById(
+    getVehicleTypeByIdDto: GetVehicleTypeByIdDto,
+  ): Promise<VehicleType> {
+    return this.vehicleTypeRepository.findOne(getVehicleTypeByIdDto);
   }
 
   public async getAllVehicleTypes(): Promise<VehicleType[]> {
@@ -33,4 +35,6 @@ export class VehicleTypeService {
 
     return this.vehicleTypeRepository.save(vehicleType);
   }
+
+  //TODO: create logic to update vehicle type
 }

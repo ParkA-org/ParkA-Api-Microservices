@@ -9,6 +9,7 @@ import { VehicleService } from './vehicle.service';
 export class VehicleController {
   constructor(private vehicleService: VehicleService) {}
 
+  //TODO: Change message pattern
   @MessagePattern({ type: 'get-vehicle' })
   public async getVehicleById(
     getVehicleByIdDto: GetVehicleByIdDto,
@@ -22,4 +23,6 @@ export class VehicleController {
   ): Promise<Vehicle> {
     return await this.vehicleService.createVehicle(createVehicleDto);
   }
+
+  // TODO: Create logic to get all vehicles
 }
