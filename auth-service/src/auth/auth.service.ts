@@ -59,6 +59,7 @@ export class AuthService {
         profilePicture,
         createAt: date.toTimeString(),
         updateAt: date.toTimeString(),
+        confirmed: false,
       });
 
       return await user;
@@ -69,7 +70,6 @@ export class AuthService {
     }
   }
 
-  // In Progress
   public async getAllUser(): Promise<User[]> {
     try {
       const user = this.authRepository.find();
@@ -80,7 +80,7 @@ export class AuthService {
   }
 
   public async getUser(id: string): Promise<User> {
-    const user = this.authRepository.findOne(id);
+    const user = this.authRepository.findOne({ id });
     return await user;
   }
 }

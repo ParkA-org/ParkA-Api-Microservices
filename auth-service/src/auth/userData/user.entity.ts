@@ -1,4 +1,11 @@
-import { Column, Entity, ObjectIdColumn, PrimaryColumn, Unique } from 'typeorm';
+import {
+  Column,
+  Entity,
+  IsNull,
+  ObjectIdColumn,
+  PrimaryColumn,
+  Unique,
+} from 'typeorm';
 
 @Entity()
 @Unique(['email'])
@@ -19,13 +26,19 @@ export class User {
   email: string;
 
   @Column()
-  profilePicture: string;
+  profilePicture?: string;
 
   @Column()
   updateAt: Date;
 
   @Column()
   createAt: Date;
+
+  @Column()
+  accountData?: string;
+
+  @Column()
+  credentialId: string;
 
   //TODO: add credential id
 

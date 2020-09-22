@@ -13,6 +13,11 @@ export class AuthServiceResolver {
     return this.authServiceService.getUserById(id);
   }
 
+  @Query(returns => [UserType])
+  users() {
+    return this.authServiceService.getAllUsers();
+  }
+
   @Mutation(returns => UserType)
   async createUser(
     @Args('createUserInput') createUserInput: CreateUserInput,

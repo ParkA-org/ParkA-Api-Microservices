@@ -5,6 +5,9 @@ export class UserType {
   @Field(type => ID)
   id: string;
 
+  @Field(type => ID)
+  _id: string;
+
   @Field()
   name: string;
 
@@ -14,15 +17,18 @@ export class UserType {
   @Field()
   email: string;
 
-  @Field()
-  profilePicture: string;
+  @Field({ nullable: true })
+  profilePicture?: string;
 
   @Field()
-  createAt: Date;
+  createAt: string;
 
   @Field()
-  updateAt: Date;
+  updateAt: string;
 
   @Field()
   confirmed: boolean;
+
+  // @Field()
+  // crendetial: Credential;
 }

@@ -13,4 +13,6 @@ export class UpdateUserDto {
   email: string;
 
   profilePicture: string;
+
+  password: string;
 }

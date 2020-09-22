@@ -18,8 +18,12 @@ export class CreateUserInput {
   @IsEmail()
   email: string;
 
+  @Field({ nullable: true })
+  profilePicture?: string;
+
+  @MinLength(8)
   @Field()
-  profilePicture: string;
+  password: string;
 }
 
 @InputType()
@@ -27,23 +31,23 @@ export class UpdateUserInput {
   @Field()
   id: string;
 
-  @Field()
+  @Field({ nullable: true })
   @MinLength(2)
   @MaxLength(50)
-  name: string;
+  name?: string;
 
-  @Field()
+  @Field({ nullable: true })
   @MinLength(2)
   @MaxLength(50)
-  lastName: string;
+  lastName?: string;
 
-  @Field()
+  @Field({ nullable: true })
   @IsEmail()
-  email: string;
+  email?: string;
 
-  @Field()
-  profilePicture: string;
+  @Field({ nullable: true })
+  profilePicture?: string;
 
-  @Field()
-  password: string;
+  @Field({ nullable: true })
+  password?: string;
 }

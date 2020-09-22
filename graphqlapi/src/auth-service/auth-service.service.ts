@@ -15,7 +15,7 @@ export class AuthServiceService {
 
   public async getUserById(id: string): Promise<UserType> {
     this.logger.log(`Getting user`);
-    const response = await this.client.send<UserType>({ type: 'get-user' }, {});
+    const response = await this.client.send<UserType>({ type: 'get-user' }, id);
     return response.toPromise();
   }
 
@@ -26,6 +26,15 @@ export class AuthServiceService {
       createUserInput,
     );
     console.log(response);
+    return response.toPromise();
+  }
+
+  public async getAllUsers(): Promise<UserType[]> {
+    this.logger.log('Getting users');
+    const response = await this.client.send<UserType[]>(
+      { type: 'get-users' },
+      {},
+    );
     return response.toPromise();
   }
 

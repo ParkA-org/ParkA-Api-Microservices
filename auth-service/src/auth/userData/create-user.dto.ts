@@ -1,4 +1,5 @@
 import { IsEmail, MaxLength, MinLength } from 'class-validator';
+import { IsNull } from 'typeorm';
 
 export class CreateUserDto {
   @MinLength(2)
@@ -12,5 +13,8 @@ export class CreateUserDto {
   @IsEmail()
   email: string;
 
-  profilePicture: string;
+  profilePicture?: string;
+
+  @MinLength(8)
+  password: string;
 }
