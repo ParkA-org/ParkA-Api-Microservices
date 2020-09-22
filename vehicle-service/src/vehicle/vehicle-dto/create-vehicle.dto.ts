@@ -1,6 +1,7 @@
 import { IsBoolean, IsUUID, Length } from 'class-validator';
+import { ICreateCarDto } from '../vehicle-interfaces/create-car-dto.interface';
 
-export class CreateVehicleDto {
+export class CreateVehicleDto implements ICreateCarDto {
   @IsUUID('all')
   model: string;
 
@@ -18,8 +19,7 @@ export class CreateVehicleDto {
 
   pictures: string[];
 
-  @Length(4)
-  year: number;
+  year: string;
 
   alias: string;
 
