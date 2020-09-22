@@ -20,10 +20,11 @@ export class AuthService {
     private credentialRepository: Repository<Credential>,
   ) {}
 
+  // Bobop con el string del url
   // Is Inprogress
   public async updateUser(updateUserDto: UpdateUserDto): Promise<User> {
     this.logger.debug(
-      `Received create user payload ${JSON.stringify(updateUserDto)}`,
+      `Received update user payload ${JSON.stringify(updateUserDto)}`,
     );
     const { name, email, lastName, profilePicture } = updateUserDto;
 
@@ -35,7 +36,7 @@ export class AuthService {
         lastName,
         email,
         profilePicture,
-        updateAt: date.getTime(),
+        updateAt: date.toISOString(),
       });
 
       return await user;
