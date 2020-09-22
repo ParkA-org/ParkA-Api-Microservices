@@ -12,7 +12,7 @@ export class ColorService {
     @InjectRepository(Color) private colorRepository: Repository<Color>,
   ) {}
 
-  public async getColorById(getColorByIdDto: GetColorByIdDto) {
+  public async getColorById(getColorByIdDto: GetColorByIdDto): Promise<Color> {
     return await this.colorRepository.findOne(getColorByIdDto);
   }
 
@@ -20,7 +20,7 @@ export class ColorService {
     return await this.colorRepository.find();
   }
 
-  public async createColor(createColorDto: CreateColorDto) {
+  public async createColor(createColorDto: CreateColorDto): Promise<Color> {
     const { name } = createColorDto;
 
     const color = this.colorRepository.create({
