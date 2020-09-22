@@ -8,6 +8,7 @@ import { ColorModule } from './color/color.module';
 import { MakeModule } from './make/make.module';
 import { VehicleType } from './vehicle-type/vehicle-type-data/vehicle-type.entity';
 import { Model } from './model/model-data/model.entity';
+import { Make } from './make/make-data/make.entity';
 
 @Module({
   imports: [
@@ -19,7 +20,7 @@ import { Model } from './model/model-data/model.entity';
       useUnifiedTopology: true,
       useNewUrlParser: true,
       synchronize: true,
-      entities: [Vehicle, VehicleType, Model],
+      entities: [Vehicle, VehicleType, Model, Make],
     }),
     ModelModule,
     VehicleTypeModule,
