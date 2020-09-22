@@ -65,8 +65,8 @@ export class AuthService {
         email,
         password,
         salt,
-        createAt: date.toTimeString(),
-        updateAt: date.toTimeString(),
+        createAt: date.toISOString(),
+        updateAt: date.toISOString(),
       });
 
       this.logger.debug(
@@ -80,8 +80,8 @@ export class AuthService {
         lastName,
         email,
         profilePicture,
-        createAt: date.toTimeString(),
-        updateAt: date.toTimeString(),
+        createAt: date.toISOString(),
+        updateAt: date.toISOString(),
         confirmed: false,
         credential: id2,
       });
