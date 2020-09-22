@@ -1,6 +1,7 @@
 import { Controller, Logger } from '@nestjs/common';
 import { JsonSocket, MessagePattern } from '@nestjs/microservices';
 import { AuthService } from './auth.service';
+import { AuthCredentialsDto } from './userData/auth-credential.dto';
 import { CreateUserDto } from './userData/create-user.dto';
 import { User } from './userData/user.entity';
 
@@ -28,5 +29,15 @@ export class AuthController {
       `Received create user message with data ${JSON.stringify(createUserDto)}`,
     );
     return await this.authService.createUser(createUserDto);
+  }
+
+  @MessagePattern({ type: 'sign-up' })
+  public async signUp(authCredentialsDto: AuthCredentialsDto): Promise<void> {
+    this.logger.debug(
+      `Received login user message with data ${JSON.stringify(
+        authCredentialsDto,
+      )}`,
+    );
+    return await this.authService.signUp(authCredentialsDto);
   }
 }
