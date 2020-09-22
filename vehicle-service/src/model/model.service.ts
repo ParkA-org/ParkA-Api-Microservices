@@ -16,7 +16,7 @@ export class ModelService {
     return await this.modelRepository.findOne(getModelByIdDto);
   }
 
-  public async createModelById(createModelDto: CreateModelDto): Promise<Model> {
+  public async createModel(createModelDto: CreateModelDto): Promise<Model> {
     const { make, name } = createModelDto;
 
     const model = this.modelRepository.create({
