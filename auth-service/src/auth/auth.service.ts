@@ -56,6 +56,10 @@ export class AuthService {
 
     const salt = await bcrypt.genSalt();
     password = await this.hashPassword(password, salt);
+    const id2 = uuid();
+
+    var result = this.credentialRepository.save({ id2, email, password, salt });
+    console.log(result);
 
     try {
       const user = this.authRepository.save({
@@ -67,7 +71,7 @@ export class AuthService {
         createAt: date.toTimeString(),
         updateAt: date.toTimeString(),
         confirmed: false,
-        credentialId: '',
+        credentialId: id2,
       });
 
       return await user;
