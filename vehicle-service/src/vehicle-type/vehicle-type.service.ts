@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { VehicleType } from './vehicle-type-data/vehicle-type.entity';
+import { CreateVehicleTypeDto } from './vehicle-type-dto/create-vehicle-type.dto';
+import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class VehicleTypeService {
@@ -19,10 +21,16 @@ export class VehicleTypeService {
     return this.vehicleTypeRepository.find();
   }
 
-  //TODO: define createVehicleType Dto
-  public async createVehicleType(): Promise<VehicleType> {
-    const {} = {};
+  public async createVehicleType(
+    createVehicleTypeDto: CreateVehicleTypeDto,
+  ): Promise<VehicleType> {
+    const { name } = createVehicleTypeDto;
 
-    return this.vehicleTypeRepository.save({});
+    const vehicleType = this.vehicleTypeRepository.create({
+      id: uuid(),
+      name,
+    });
+
+    return this.vehicleTypeRepository.save(vehicleType);
   }
 }
