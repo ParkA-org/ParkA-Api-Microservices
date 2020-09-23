@@ -1,9 +1,9 @@
 import { Column, Entity, ObjectIdColumn, PrimaryColumn } from 'typeorm';
-import { BaseEntity } from '../vehicle-interfaces/base-entity.interface';
+import { IBaseEntity } from '../vehicle-interfaces/base-entity.interface';
 import { IModel } from '../vehicle-interfaces/model-entity.interface';
 
 @Entity()
-export class Model implements IModel, BaseEntity {
+export class Model implements IModel, IBaseEntity {
   @ObjectIdColumn()
   _id: string;
 
