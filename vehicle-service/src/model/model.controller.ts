@@ -23,7 +23,7 @@ export class ModelController {
   }
 
   @MessagePattern({ type: 'create-model' })
-  public async createModel(createModelDto: CreateModelDto) {
+  public async createModel(createModelDto: CreateModelDto): Promise<Model> {
     return this.modelService.createModel(createModelDto);
   }
 }
