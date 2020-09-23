@@ -58,6 +58,7 @@ export class VehicleService {
     return await this.vehicleRepository.save(vehicle);
   }
 
+  // TODO: Implement update logic
   public async updateVehicle(
     updateVehicleDto: UpdateVehicleDto,
   ): Promise<Vehicle> {

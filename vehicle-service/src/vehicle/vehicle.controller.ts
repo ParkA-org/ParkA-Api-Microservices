@@ -4,6 +4,7 @@ import { Vehicle } from './vehicle-entities/vehicle.entity';
 import { CreateVehicleDto } from './vehicle-dto/create-vehicle.dto';
 import { GetVehicleByIdDto } from './vehicle-dto/get-vehicle-by-id.dto';
 import { VehicleService } from './vehicle.service';
+import { UpdateVehicleDto } from './vehicle-dto/update-vehicle.dto';
 
 @Controller('vehicle')
 export class VehicleController {
@@ -26,5 +27,12 @@ export class VehicleController {
     createVehicleDto: CreateVehicleDto,
   ): Promise<Vehicle> {
     return await this.vehicleService.createVehicle(createVehicleDto);
+  }
+
+  @MessagePattern({ type: 'update-vehicle' })
+  public async updateVehicle(
+    updateVehicleDto: UpdateVehicleDto,
+  ): Promise<Vehicle> {
+    return await this.vehicleService.updateVehicle(updateVehicleDto);
   }
 }
