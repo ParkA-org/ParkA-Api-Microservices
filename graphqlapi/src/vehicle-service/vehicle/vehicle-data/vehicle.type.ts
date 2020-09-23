@@ -1,11 +1,14 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { VehicleColorType } from 'src/vehicle-service/vehicle-color/vehicle-color-type/vehicle-color.type';
+import { VehicleModelType } from 'src/vehicle-service/vehicle-model/vehicle-model-data/vehicle-model.type';
+import { VehicleTypeType } from 'src/vehicle-service/vehicle-type/vehicle-type-data/vehicle-type.type';
 
 @ObjectType('Vehicle')
 export class VehicleType {
   @Field(type => ID)
   id: string;
 
-  @Field()
+  @Field(type => VehicleModelType)
   model: string;
 
   @Field()
@@ -17,7 +20,7 @@ export class VehicleType {
   @Field()
   detail: string;
 
-  @Field(type => ID)
+  @Field(type => VehicleColorType)
   colorExterior: string;
 
   @Field()
@@ -32,6 +35,6 @@ export class VehicleType {
   @Field()
   alias: string;
 
-  @Field(type => ID)
+  @Field(type => VehicleTypeType)
   vehicleType: string;
 }

@@ -4,5 +4,6 @@ import { VehicleModelService } from './vehicle-model.service';
 
 @Module({
   providers: [VehicleModelResolver, VehicleModelService],
+  exports: [VehicleModelService],
 })
 export class VehicleModelModule {}

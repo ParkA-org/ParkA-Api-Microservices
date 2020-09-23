@@ -1,15 +1,32 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import { CreateVehicleInput } from './vehicle-inputs/create-vehicle.input';
 import { VehicleType } from './vehicle-data/vehicle.type';
 import { VehicleServiceService } from './vehicle-service.service';
 import { GetVehicleByIdInput } from './vehicle-inputs/get-vehicle-by-id.input';
 import { Logger } from '@nestjs/common';
+import { VehicleModelService } from '../vehicle-model/vehicle-model.service';
+import { VehicleColorService } from '../vehicle-color/vehicle-color.service';
+import { VehicleTypeService } from '../vehicle-type/vehicle-type.service';
+import { VehicleModelType } from '../vehicle-model/vehicle-model-data/vehicle-model.type';
+import { GetVehicleModelByIdInput } from '../vehicle-model/vehicle-model-inputs/get-vehicle-model-by-id.input';
 
-@Resolver()
+@Resolver(of => VehicleType)
 export class VehicleServiceResolver {
   private logger = new Logger();
 
-  constructor(private vehicleService: VehicleServiceService) {}
+  constructor(
+    private vehicleService: VehicleServiceService,
+    private vehicleModelService: VehicleModelService,
+    private vehicleColorService: VehicleColorService,
+    private vehicleTypeService: VehicleTypeService,
+  ) {}
 
   @Query(returns => VehicleType)
   public async getVehicleById(
@@ -37,5 +54,18 @@ export class VehicleServiceResolver {
       `Received create vehicle with data ${JSON.stringify(createVehicleInput)}`,
     );
     return this.vehicleService.createVehicle(createVehicleInput);
+  }
+
+  @ResolveField(returns => VehicleModelType)
+  public async model(
+    @Parent() model: VehicleModelType,
+  ): Promise<VehicleModelType> {
+    const getVehicleModelByIdInput: GetVehicleModelByIdInput = {
+      id: model.id,
+    };
+
+    return this.vehicleModelService.getVehicleModelById(
+      getVehicleModelByIdInput,
+    );
   }
 }

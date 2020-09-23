@@ -11,7 +11,7 @@ export class CreateVehicleMakeInput implements ICreateVehicleMakeInput {
   @Field()
   icon: string;
 
-  @Field(type => [ID])
+  @Field(type => [ID], { defaultValue: [], nullable: true })
   @IsUUID('4', { each: true })
   models: string[];
 }
