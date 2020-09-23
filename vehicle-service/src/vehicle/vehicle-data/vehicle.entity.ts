@@ -1,8 +1,9 @@
+import { IBaseEntity } from 'src/make/make-interfaces/base-entity.interface';
 import { Column, Entity, ObjectIdColumn, PrimaryColumn } from 'typeorm';
 import { IVehicle } from '../vehicle-interfaces/vehicle-entity.interface';
 
 @Entity()
-export class Vehicle implements IVehicle {
+export class Vehicle implements IVehicle, IBaseEntity {
   @ObjectIdColumn()
   _id: string;
 
@@ -38,4 +39,10 @@ export class Vehicle implements IVehicle {
 
   @Column()
   vehicleType: string;
+
+  @Column()
+  createdAt: string;
+
+  @Column()
+  updatedAt: string;
 }
