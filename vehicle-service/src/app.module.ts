@@ -8,7 +8,7 @@ import { ColorModule } from './color/color.module';
 import { MakeModule } from './make/make.module';
 import { VehicleType } from './vehicle-type/vehicle-type-data/vehicle-type.entity';
 import { Model } from './model/model-data/model.entity';
-import { Make } from './make/make-data/make.entity';
+import { Make } from './make/make-d/make.entity';
 import { Color } from './color/color-entities/color.entity';
 
 @Module({
