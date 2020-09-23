@@ -20,7 +20,13 @@ export class ModelService {
   public async getManyModelsById(
     getManyModelsByIdDto: GetManyModelsByIdDto,
   ): Promise<Model[]> {
-    return await this.modelRepository.find();
+    return await this.modelRepository.find({
+      where: {
+        id: {
+          $in: getManyModelsByIdDto.ids,
+        },
+      },
+    });
   }
 
   public async createModel(createModelDto: CreateModelDto): Promise<Model> {

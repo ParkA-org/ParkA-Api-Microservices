@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Client, ClientProxy, Transport } from '@nestjs/microservices';
 import { VehicleModelType } from './vehicle-model-data/vehicle-model.type';
 import { CreateVehicleModelInput } from './vehicle-model-inputs/create-vehicle-model.input';
+import { GetManyVehiclesByIdInput } from './vehicle-model-inputs/get-many-vehicles-by-id.input';
 import { GetVehicleModelByIdInput } from './vehicle-model-inputs/get-vehicle-model-by-id.input';
 
 @Injectable()
@@ -22,6 +23,19 @@ export class VehicleModelService {
         type: 'get-model-by-id',
       },
       getVehicleModelByIdInput,
+    );
+
+    return response.toPromise();
+  }
+
+  public async getManyVehicleModelsById(
+    getManyVehiclesByIdInput: GetManyVehiclesByIdInput,
+  ): Promise<VehicleModelType[]> {
+    const response = await this.client.send<VehicleModelType[]>(
+      {
+        type: 'get-many-models-by-id',
+      },
+      getManyVehiclesByIdInput,
     );
 
     return response.toPromise();

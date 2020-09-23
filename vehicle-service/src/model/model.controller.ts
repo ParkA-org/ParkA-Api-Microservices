@@ -15,7 +15,7 @@ export class ModelController {
     return await this.modelService.getModelById(getModelByIdDto);
   }
 
-  @MessagePattern({ type: 'get-model-by-id' })
+  @MessagePattern({ type: 'get-many-models-by-id' })
   public async getManyModelsById(
     getManyModelsByIdDto: GetManyModelsByIdDto,
   ): Promise<Model[]> {

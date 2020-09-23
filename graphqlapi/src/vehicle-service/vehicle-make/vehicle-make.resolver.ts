@@ -6,6 +6,7 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
+import { GetManyVehiclesByIdInput } from '../vehicle-model/vehicle-model-inputs/get-many-vehicles-by-id.input';
 import { VehicleModelService } from '../vehicle-model/vehicle-model.service';
 import { CreateVehicleMakeInput } from './vehicle-make-inputs/create-vehicle-make.input';
 import { GetVehicleMakeByIdInput } from './vehicle-make-inputs/get-vehicle-make-by-id.inputs';
@@ -37,7 +38,12 @@ export class VehicleMakeResolver {
 
   @ResolveField()
   public async models(@Parent() make: VehicleMakeType) {
-    //TODO: Implement logic to get many models by id
-    //return this.vehicleModelService.
+    const getManyVehiclesByIdInput: GetManyVehiclesByIdInput = {
+      ids: make.models,
+    };
+
+    return this.vehicleModelService.getManyVehicleModelsById(
+      getManyVehiclesByIdInput,
+    );
   }
 }
