@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Model } from './model-data/model.entity';
+import { Model } from './model-entities/model.entity';
 import { CreateModelDto } from './model-dto/create-model.dto';
 import { GetModelByIdDto } from './model-dto/get-model-by-id.dto';
 import { v4 as uuid } from 'uuid';

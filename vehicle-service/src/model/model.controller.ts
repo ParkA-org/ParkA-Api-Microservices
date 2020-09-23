@@ -1,6 +1,6 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
-import { Model } from './model-data/model.entity';
+import { Model } from './model-entities/model.entity';
 import { CreateModelDto } from './model-dto/create-model.dto';
 import { GetManyModelsByIdDto } from './model-dto/get-many-models-by-id.dto';
 import { GetModelByIdDto } from './model-dto/get-model-by-id.dto';
