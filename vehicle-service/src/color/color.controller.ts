@@ -1,6 +1,6 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
-import { Color } from './color-data/color.entity';
+import { Color } from './color-entities/color.entity';
 import { CreateColorDto } from './color-dto/create-color.dto';
 import { GetColorByIdDto } from './color-dto/get-color-by-id.dto';
 import { ColorService } from './color.service';
