@@ -26,6 +26,17 @@ export class VehicleMakeService {
     return response.toPromise();
   }
 
+  public async getAllMakes(): Promise<VehicleMakeType> {
+    const response = await this.client.send<VehicleMakeType>(
+      {
+        type: 'get-all-makes',
+      },
+      {},
+    );
+
+    return response.toPromise();
+  }
+
   public async createVehicleMake(
     createVehicleMakeInput: CreateVehicleMakeInput,
   ): Promise<VehicleMakeType> {
