@@ -5,6 +5,7 @@ import { Vehicle } from './vehicle-entities/vehicle.entity';
 import { CreateVehicleDto } from './vehicle-dto/create-vehicle.dto';
 import { v4 as uuid } from 'uuid';
 import { GetVehicleByIdDto } from './vehicle-dto/get-vehicle-by-id.dto';
+import { UpdateVehicleDto } from './vehicle-dto/update-vehicle.dto';
 
 @Injectable()
 export class VehicleService {
@@ -53,6 +54,30 @@ export class VehicleService {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     });
+
+    return await this.vehicleRepository.save(vehicle);
+  }
+
+  public async updateVehicle(
+    updateVehicleDto: UpdateVehicleDto,
+  ): Promise<Vehicle> {
+    const {
+      id,
+      alias,
+      colorExterior,
+      detail,
+      licensePlate,
+      mainPicture,
+      model,
+      pictures,
+      vehicleType,
+      verified,
+      year,
+    } = updateVehicleDto;
+
+    const vehicle = await this.getVehicleById({ id });
+
+    vehicle.updatedAt = new Date().toISOString();
 
     return await this.vehicleRepository.save(vehicle);
   }
