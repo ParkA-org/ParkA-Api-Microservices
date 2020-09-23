@@ -5,6 +5,7 @@ import { Make } from './make-data/make.entity';
 import { CreateMakeDto } from './make-dto/create-make.dto';
 import { GetMakeByIdDto } from './make-dto/get-make-by-id.dto';
 import { v4 as uuid } from 'uuid';
+import { UpdateCarModelListDto } from './make-dto/update-car-model-list.dto';
 
 @Injectable()
 export class MakeService {
@@ -29,5 +30,16 @@ export class MakeService {
     });
 
     return await this.makeRepository.save(make);
+  }
+
+  public async updateModelList(updateModelListDto: UpdateCarModelListDto) {
+    const { makeId, modelId } = updateModelListDto;
+
+    const make = await this.getMakeById({ id: makeId });
+
+    make.models.push(modelId);
+    make.updatedAt = new Date().toISOString();
+
+    return this.makeRepository.save(make);
   }
 }
