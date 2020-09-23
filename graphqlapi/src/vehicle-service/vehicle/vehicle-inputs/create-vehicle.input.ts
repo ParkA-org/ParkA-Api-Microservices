@@ -4,12 +4,13 @@ import { ICreateVehicleInput } from '../interfaces/create-vehicle.interface';
 
 @InputType('createVehicleInput')
 export class CreateVehicleInput implements ICreateVehicleInput {
-  @Field(type => ID, { nullable: true, defaultValue: null })
-  //   @IsUUID('all')
+  @Field(type => ID)
+  @IsUUID('4')
   model: string;
 
   @Field()
-  //   @Length(11)
+  @MaxLength(7)
+  @MinLength(7)
   licensePlate: string;
 
   @Field(type => Boolean, { defaultValue: false })
@@ -19,6 +20,7 @@ export class CreateVehicleInput implements ICreateVehicleInput {
   detail: string;
 
   @Field()
+  @IsUUID('4')
   colorExterior: string;
 
   @Field()
@@ -36,5 +38,6 @@ export class CreateVehicleInput implements ICreateVehicleInput {
   alias: string;
 
   @Field(type => ID)
+  @IsUUID('4')
   vehicleType: string;
 }

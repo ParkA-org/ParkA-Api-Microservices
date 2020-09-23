@@ -18,6 +18,8 @@ import { VehicleModelType } from '../vehicle-model/vehicle-model-data/vehicle-mo
 import { GetVehicleModelByIdInput } from '../vehicle-model/vehicle-model-inputs/get-vehicle-model-by-id.input';
 import { VehicleColorType } from '../vehicle-color/vehicle-color-type/vehicle-color.type';
 import { GetVehicleColorByIdInput } from '../vehicle-color/vehicle-color-inputs/get-vehicle-color-by-id.input';
+import { VehicleTypeType } from '../vehicle-type/vehicle-type-data/vehicle-type.type';
+import { GetVehicleTypeByIdInput } from '../vehicle-type/vehicle-type-inputs/get-vehicle-type-by-id.input';
 
 @Resolver(of => VehicleType)
 export class VehicleServiceResolver {
@@ -58,12 +60,13 @@ export class VehicleServiceResolver {
     return this.vehicleService.createVehicle(createVehicleInput);
   }
 
+  //Field Resolvers
   @ResolveField(returns => VehicleModelType)
   public async model(
-    @Parent() model: VehicleModelType,
+    @Parent() vehicle: VehicleType,
   ): Promise<VehicleModelType> {
     const getVehicleModelByIdInput: GetVehicleModelByIdInput = {
-      id: model.id,
+      id: vehicle.model,
     };
 
     return this.vehicleModelService.getVehicleModelById(
@@ -72,15 +75,28 @@ export class VehicleServiceResolver {
   }
 
   @ResolveField(returns => VehicleColorType)
-  public async(
-    @Parent() colorExterior: VehicleColorType,
+  public async colorExterior(
+    @Parent() vehicle: VehicleType,
   ): Promise<VehicleColorType> {
     const getVehicleColorByIdInput: GetVehicleColorByIdInput = {
-      id: colorExterior.id,
+      id: vehicle.colorExterior,
     };
 
-    return this.vehicleColorService.getVehicleColorById(
+    const response = await this.vehicleColorService.getVehicleColorById(
       getVehicleColorByIdInput,
     );
+
+    return response;
+  }
+
+  @ResolveField(returns => VehicleTypeType)
+  public async vehicleExterior(
+    @Parent() vehicle: VehicleType,
+  ): Promise<VehicleTypeType> {
+    const getVehicleTypeByIdInput: GetVehicleTypeByIdInput = {
+      id: vehicle.vehicleType,
+    };
+
+    return this.vehicleTypeService.getVehicleTypeById(getVehicleTypeByIdInput);
   }
 }
