@@ -13,8 +13,12 @@ export class MakeService {
     @InjectRepository(Make) private makeRepository: Repository<Make>,
   ) {}
 
-  public async getMakeById(getMakeByIdDto: GetMakeByIdDto) {
+  public async getMakeById(getMakeByIdDto: GetMakeByIdDto): Promise<Make> {
     return this.makeRepository.findOne(getMakeByIdDto);
+  }
+
+  public async getAllMakes(): Promise<Make[]> {
+    return this.makeRepository.find();
   }
 
   public async createMake(createMakeDto: CreateMakeDto): Promise<Make> {
@@ -32,7 +36,9 @@ export class MakeService {
     return await this.makeRepository.save(make);
   }
 
-  public async updateModelList(updateModelListDto: UpdateCarModelListDto) {
+  public async updateModelList(
+    updateModelListDto: UpdateCarModelListDto,
+  ): Promise<Make> {
     const { makeId, modelId } = updateModelListDto;
 
     const make = await this.getMakeById({ id: makeId });
