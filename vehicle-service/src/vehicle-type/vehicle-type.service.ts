@@ -31,6 +31,8 @@ export class VehicleTypeService {
     const vehicleType = this.vehicleTypeRepository.create({
       id: uuid(),
       name,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     });
 
     return this.vehicleTypeRepository.save(vehicleType);
