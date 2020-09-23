@@ -15,6 +15,11 @@ export class MakeController {
     return await this.makeService.getMakeById(getMakeByIdDto);
   }
 
+  @MessagePattern({ type: 'get-all-makes' })
+  public async getAllMakes(): Promise<Make[]> {
+    return await this.makeService.getAllMakes();
+  }
+
   @MessagePattern({ type: 'create-make' })
   public async createMake(createMakeDto: CreateMakeDto): Promise<Make> {
     return await this.makeService.createMake(createMakeDto);
