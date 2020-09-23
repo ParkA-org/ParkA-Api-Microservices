@@ -1,12 +1,23 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
+import { VehicleModelService } from '../vehicle-model/vehicle-model.service';
 import { CreateVehicleMakeInput } from './vehicle-make-inputs/create-vehicle-make.input';
 import { GetVehicleMakeByIdInput } from './vehicle-make-inputs/get-vehicle-make-by-id.inputs';
 import { VehicleMakeType } from './vehicle-make-type/vehicle-make.type';
 import { VehicleMakeService } from './vehicle-make.service';
 
-@Resolver()
+@Resolver(of => VehicleMakeType)
 export class VehicleMakeResolver {
-  constructor(private vehicleMakeService: VehicleMakeService) {}
+  constructor(
+    private vehicleMakeService: VehicleMakeService,
+    private vehicleModelService: VehicleModelService,
+  ) {}
 
   @Query(returns => VehicleMakeType)
   public async getVehicleMakeById(
@@ -22,5 +33,11 @@ export class VehicleMakeResolver {
     createVehicleMakeInput: CreateVehicleMakeInput,
   ): Promise<VehicleMakeType> {
     return this.vehicleMakeService.createVehicleMake(createVehicleMakeInput);
+  }
+
+  @ResolveField()
+  public async models(@Parent() make: VehicleMakeType) {
+    //TODO: Implement logic to get many models by id
+    //return this.vehicleModelService.
   }
 }

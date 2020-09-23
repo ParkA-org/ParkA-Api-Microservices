@@ -2,6 +2,7 @@ import { Controller } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
 import { Model } from './model-data/model.entity';
 import { CreateModelDto } from './model-dto/create-model.dto';
+import { GetManyModelsByIdDto } from './model-dto/get-many-models-by-id.dto';
 import { GetModelByIdDto } from './model-dto/get-model-by-id.dto';
 import { ModelService } from './model.service';
 
@@ -12,6 +13,13 @@ export class ModelController {
   @MessagePattern({ type: 'get-model-by-id' })
   public async getModelById(getModelByIdDto: GetModelByIdDto): Promise<Model> {
     return await this.modelService.getModelById(getModelByIdDto);
+  }
+
+  @MessagePattern({ type: 'get-model-by-id' })
+  public async getManyModelsById(
+    getManyModelsByIdDto: GetManyModelsByIdDto,
+  ): Promise<Model[]> {
+    return await this.modelService.getManyModelsById(getManyModelsByIdDto);
   }
 
   @MessagePattern({ type: 'create-model' })

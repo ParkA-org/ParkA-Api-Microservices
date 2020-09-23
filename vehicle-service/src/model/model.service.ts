@@ -5,6 +5,7 @@ import { Model } from './model-data/model.entity';
 import { CreateModelDto } from './model-dto/create-model.dto';
 import { GetModelByIdDto } from './model-dto/get-model-by-id.dto';
 import { v4 as uuid } from 'uuid';
+import { GetManyModelsByIdDto } from './model-dto/get-many-models-by-id.dto';
 
 @Injectable()
 export class ModelService {
@@ -14,6 +15,12 @@ export class ModelService {
 
   public async getModelById(getModelByIdDto: GetModelByIdDto): Promise<Model> {
     return await this.modelRepository.findOne(getModelByIdDto);
+  }
+
+  public async getManyModelsById(
+    getManyModelsByIdDto: GetManyModelsByIdDto,
+  ): Promise<Model[]> {
+    return await this.modelRepository.find();
   }
 
   public async createModel(createModelDto: CreateModelDto): Promise<Model> {
