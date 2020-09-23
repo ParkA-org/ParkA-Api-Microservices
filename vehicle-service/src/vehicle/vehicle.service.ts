@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Vehicle } from './vehicle-data/vehicle.entity';
+import { Vehicle } from './vehicle-entities/vehicle.entity';
 import { CreateVehicleDto } from './vehicle-dto/create-vehicle.dto';
 import { v4 as uuid } from 'uuid';
 import { GetVehicleByIdDto } from './vehicle-dto/get-vehicle-by-id.dto';

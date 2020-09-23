@@ -1,6 +1,6 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
-import { Vehicle } from './vehicle-data/vehicle.entity';
+import { Vehicle } from './vehicle-entities/vehicle.entity';
 import { CreateVehicleDto } from './vehicle-dto/create-vehicle.dto';
 import { GetVehicleByIdDto } from './vehicle-dto/get-vehicle-by-id.dto';
 import { VehicleService } from './vehicle.service';
