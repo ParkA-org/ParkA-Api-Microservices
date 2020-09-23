@@ -28,6 +28,11 @@ export class VehicleMakeResolver {
     return this.vehicleMakeService.getVehicleMakeById(getVehicleMakeByIdInput);
   }
 
+  @Query(returns => VehicleMakeType)
+  public async getAllVehicleMakes(): Promise<VehicleMakeType> {
+    return this.vehicleMakeService.getAllMakes();
+  }
+
   @Mutation(of => VehicleMakeType)
   public async createVehicleMake(
     @Args('createVehicleMakeInput')
