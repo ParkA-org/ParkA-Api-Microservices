@@ -9,25 +9,23 @@ export class ColorResolver {
   constructor(private vehicleColorService: ColorService) {}
 
   @Query(type => ColorType)
-  public async getVehicleColorById(
-    @Args('getVehicleColorByIdInput')
-    getVehicleColorByIdInput: GetColorByIdInput,
+  public async getColorById(
+    @Args('getColorByIdInput')
+    getColorByIdInput: GetColorByIdInput,
   ): Promise<ColorType> {
-    return this.vehicleColorService.getVehicleColorById(
-      getVehicleColorByIdInput,
-    );
+    return this.vehicleColorService.getColorById(getColorByIdInput);
   }
 
   @Query(type => [ColorType])
-  public async getAllVehicleColors(): Promise<ColorType[]> {
-    return this.vehicleColorService.getAllVehicleColors();
+  public async getAllColors(): Promise<ColorType[]> {
+    return this.vehicleColorService.getAllColors();
   }
 
   @Mutation(of => ColorType)
-  public async createVehicleColor(
-    @Args('createVehicleColorInput')
-    createVehicleColorInput: CreateColorInput,
+  public async createColor(
+    @Args('createColorInput')
+    createColorInput: CreateColorInput,
   ): Promise<ColorType> {
-    return this.vehicleColorService.createVehicleColor(createVehicleColorInput);
+    return this.vehicleColorService.createColor(createColorInput);
   }
 }

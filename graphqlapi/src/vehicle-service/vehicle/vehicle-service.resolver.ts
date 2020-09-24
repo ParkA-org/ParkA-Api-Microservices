@@ -93,7 +93,7 @@ export class VehicleServiceResolver {
       id: vehicle.colorExterior,
     };
 
-    const response = await this.vehicleColorService.getVehicleColorById(
+    const response = await this.vehicleColorService.getColorById(
       getVehicleColorByIdInput,
     );
 

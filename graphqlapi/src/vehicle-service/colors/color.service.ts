@@ -14,20 +14,20 @@ export class ColorService {
   })
   private client: ClientProxy;
 
-  public async getVehicleColorById(
-    getVehicleColorByIdInput: GetColorByIdInput,
+  public async getColorById(
+    getColorByIdInput: GetColorByIdInput,
   ): Promise<ColorType> {
     const response = this.client.send<ColorType>(
       {
         type: 'get-color-by-id',
       },
-      getVehicleColorByIdInput,
+      getColorByIdInput,
     );
 
     return await response.toPromise();
   }
 
-  public async getAllVehicleColors(): Promise<ColorType[]> {
+  public async getAllColors(): Promise<ColorType[]> {
     const response = this.client.send<ColorType[]>(
       {
         type: 'get-all-colors',
@@ -38,14 +38,14 @@ export class ColorService {
     return await response.toPromise();
   }
 
-  public async createVehicleColor(
-    createVehicleColorInput: CreateColorInput,
+  public async createColor(
+    createColorInput: CreateColorInput,
   ): Promise<ColorType> {
     const response = this.client.send<ColorType>(
       {
         type: 'create-color',
       },
-      createVehicleColorInput,
+      createColorInput,
     );
 
     return await response.toPromise();
