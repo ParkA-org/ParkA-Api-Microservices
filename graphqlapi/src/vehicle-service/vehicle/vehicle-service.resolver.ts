@@ -16,8 +16,8 @@ import { ColorService } from '../colors/color.service';
 import { VehicleTypeService } from '../vehicle-type/vehicle-type.service';
 import { VehicleModelType } from '../vehicle-model/vehicle-model-data/vehicle-model.type';
 import { GetVehicleModelByIdInput } from '../vehicle-model/vehicle-model-inputs/get-vehicle-model-by-id.input';
-import { VehicleColorType } from '../colors/types/vehicle-color.type';
-import { GetVehicleColorByIdInput } from '../colors/inputs/get-vehicle-color-by-id.input';
+import { ColorType } from '../colors/types/color.type';
+import { GetColorByIdInput } from '../colors/inputs/get-color-by-id.input';
 import { VehicleTypeType } from '../vehicle-type/vehicle-type-data/vehicle-type.type';
 import { GetVehicleTypeByIdInput } from '../vehicle-type/vehicle-type-inputs/get-vehicle-type-by-id.input';
 import { UpdateVehicleInput } from './vehicle-inputs/update-vehicle.input';
@@ -85,11 +85,11 @@ export class VehicleServiceResolver {
     );
   }
 
-  @ResolveField(returns => VehicleColorType)
+  @ResolveField(returns => ColorType)
   public async colorExterior(
     @Parent() vehicle: VehicleType,
-  ): Promise<VehicleColorType> {
-    const getVehicleColorByIdInput: GetVehicleColorByIdInput = {
+  ): Promise<ColorType> {
+    const getVehicleColorByIdInput: GetColorByIdInput = {
       id: vehicle.colorExterior,
     };
 

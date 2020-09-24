@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { VehicleColorModule } from '../colors/color.module';
+import { ColorModule } from '../colors/color.module';
 import { VehicleMakeModule } from '../vehicle-make/vehicle-make.module';
 import { VehicleModelModule } from '../vehicle-model/vehicle-model.module';
 import { VehicleTypeModule } from '../vehicle-type/vehicle-type.module';
@@ -11,7 +11,7 @@ import { VehicleServiceService } from './vehicle-service.service';
     VehicleTypeModule,
     VehicleModelModule,
     VehicleMakeModule,
-    VehicleColorModule,
+    ColorModule,
   ],
   providers: [VehicleServiceResolver, VehicleServiceService],
 })

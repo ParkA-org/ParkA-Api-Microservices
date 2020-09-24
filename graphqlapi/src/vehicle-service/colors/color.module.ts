@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { VehicleColorResolver } from './color.resolver';
+import { ColorResolver } from './color.resolver';
 import { ColorService } from './color.service';
 
 @Module({
-  providers: [VehicleColorResolver, ColorService],
+  providers: [ColorResolver, ColorService],
   exports: [ColorService],
 })
-export class VehicleColorModule {}
+export class ColorModule {}

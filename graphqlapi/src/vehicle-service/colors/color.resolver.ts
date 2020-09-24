@@ -1,33 +1,33 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { CreateVehicleColorInput } from './inputs/create-vehicle-color.input';
-import { GetVehicleColorByIdInput } from './inputs/get-vehicle-color-by-id.input';
-import { VehicleColorType } from './types/vehicle-color.type';
+import { CreateColorInput } from './inputs/create-color.input';
+import { GetColorByIdInput } from './inputs/get-color-by-id.input';
+import { ColorType } from './types/color.type';
 import { ColorService } from './color.service';
 
 @Resolver()
-export class VehicleColorResolver {
+export class ColorResolver {
   constructor(private vehicleColorService: ColorService) {}
 
-  @Query(type => VehicleColorType)
+  @Query(type => ColorType)
   public async getVehicleColorById(
     @Args('getVehicleColorByIdInput')
-    getVehicleColorByIdInput: GetVehicleColorByIdInput,
-  ): Promise<VehicleColorType> {
+    getVehicleColorByIdInput: GetColorByIdInput,
+  ): Promise<ColorType> {
     return this.vehicleColorService.getVehicleColorById(
       getVehicleColorByIdInput,
     );
   }
 
-  @Query(type => [VehicleColorType])
-  public async getAllVehicleColors(): Promise<VehicleColorType[]> {
+  @Query(type => [ColorType])
+  public async getAllVehicleColors(): Promise<ColorType[]> {
     return this.vehicleColorService.getAllVehicleColors();
   }
 
-  @Mutation(of => VehicleColorType)
+  @Mutation(of => ColorType)
   public async createVehicleColor(
     @Args('createVehicleColorInput')
-    createVehicleColorInput: CreateVehicleColorInput,
-  ): Promise<VehicleColorType> {
+    createVehicleColorInput: CreateColorInput,
+  ): Promise<ColorType> {
     return this.vehicleColorService.createVehicleColor(createVehicleColorInput);
   }
 }

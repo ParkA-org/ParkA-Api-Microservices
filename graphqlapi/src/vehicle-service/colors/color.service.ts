@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Client, ClientProxy, Transport } from '@nestjs/microservices';
-import { CreateVehicleColorInput } from './inputs/create-vehicle-color.input';
-import { GetVehicleColorByIdInput } from './inputs/get-vehicle-color-by-id.input';
-import { VehicleColorType } from './types/vehicle-color.type';
+import { CreateColorInput } from './inputs/create-color.input';
+import { GetColorByIdInput } from './inputs/get-color-by-id.input';
+import { ColorType } from './types/color.type';
 
 @Injectable()
 export class ColorService {
@@ -15,9 +15,9 @@ export class ColorService {
   private client: ClientProxy;
 
   public async getVehicleColorById(
-    getVehicleColorByIdInput: GetVehicleColorByIdInput,
-  ): Promise<VehicleColorType> {
-    const response = this.client.send<VehicleColorType>(
+    getVehicleColorByIdInput: GetColorByIdInput,
+  ): Promise<ColorType> {
+    const response = this.client.send<ColorType>(
       {
         type: 'get-color-by-id',
       },
@@ -27,8 +27,8 @@ export class ColorService {
     return await response.toPromise();
   }
 
-  public async getAllVehicleColors(): Promise<VehicleColorType[]> {
-    const response = this.client.send<VehicleColorType[]>(
+  public async getAllVehicleColors(): Promise<ColorType[]> {
+    const response = this.client.send<ColorType[]>(
       {
         type: 'get-all-colors',
       },
@@ -39,9 +39,9 @@ export class ColorService {
   }
 
   public async createVehicleColor(
-    createVehicleColorInput: CreateVehicleColorInput,
-  ): Promise<VehicleColorType> {
-    const response = this.client.send<VehicleColorType>(
+    createVehicleColorInput: CreateColorInput,
+  ): Promise<ColorType> {
+    const response = this.client.send<ColorType>(
       {
         type: 'create-color',
       },
