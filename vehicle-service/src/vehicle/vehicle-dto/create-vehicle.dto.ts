@@ -28,5 +28,5 @@ export class CreateVehicleDto implements ICreateVehicleDto {
   alias: string;
 
   @IsUUID('all')
-  vehicleType: string;
+  bodyStyle: string;
 }

@@ -29,6 +29,6 @@ export class MakeController {
   public async updateMakeModelList(
     updateModelListDto: UpdateCarModelListDto,
   ): Promise<Make> {
-    return await this.updateMakeModelList(updateModelListDto);
+    return await this.makeService.updateModelList(updateModelListDto);
   }
 }

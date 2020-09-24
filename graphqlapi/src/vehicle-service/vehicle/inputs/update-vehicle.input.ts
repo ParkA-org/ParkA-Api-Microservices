@@ -33,7 +33,7 @@ export class UpdateVehicleInput implements IUpdateVehicleInput {
 
   @Field({ nullable: true })
   @IsUUID('4')
-  vehicleType: string;
+  bodyStyle: string;
 
   @Field()
   verified: boolean;

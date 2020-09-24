@@ -8,5 +8,5 @@ export interface ICreateVehicleDto {
   pictures: string[];
   year: string;
   alias: string;
-  vehicleType: string;
+  bodyStyle: string;
 }

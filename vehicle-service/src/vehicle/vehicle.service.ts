@@ -34,7 +34,7 @@ export class VehicleService {
       mainPicture,
       model,
       pictures,
-      vehicleType,
+      bodyStyle,
       verified,
       year,
     } = createVehicleDto;
@@ -48,7 +48,7 @@ export class VehicleService {
       mainPicture,
       model,
       pictures,
-      vehicleType,
+      bodyStyle,
       verified,
       year,
       createdAt: new Date().toISOString(),
@@ -71,7 +71,7 @@ export class VehicleService {
       mainPicture,
       model,
       pictures,
-      vehicleType,
+      bodyStyle,
       verified,
       year,
     } = updateVehicleDto;

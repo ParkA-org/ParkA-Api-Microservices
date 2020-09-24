@@ -23,7 +23,7 @@ export class UpdateVehicleDto implements IUpdateVehicleDto {
   pictures: string[];
 
   @IsUUID('4')
-  vehicleType: string;
+  bodyStyle: string;
 
   verified: boolean;
 

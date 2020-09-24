@@ -4,6 +4,8 @@ import { ModelType } from './types/model.type';
 import { CreateModelInput } from './inputs/create-model.input';
 import { GetManyModelsByIdInput } from './inputs/get-many-models-by-id.input';
 import { GetModelByIdInput } from './inputs/get-model-by-id.input';
+import { MakeService } from '../make/make.service';
+import { UpdateMakeModelListInput } from './inputs/update-make-model-list.input';
 
 @Injectable()
 export class ModelService {
@@ -14,6 +16,8 @@ export class ModelService {
     },
   })
   private client: ClientProxy;
+
+  constructor(private makeService: MakeService) {}
 
   public async getModelById(getModelByIdInput: GetModelByIdInput) {
     const response = await this.client.send<ModelType>(
@@ -49,6 +53,17 @@ export class ModelService {
       createModelInput,
     );
 
-    return response.toPromise();
+    //TODO: find a better solution
+    const res = await response.toPromise();
+    const { id, make } = res;
+
+    const updateModelListInput: UpdateMakeModelListInput = {
+      makeId: make,
+      modelId: id,
+    };
+
+    this.makeService.updateMakeModelList(updateModelListInput);
+
+    return res;
   }
 }

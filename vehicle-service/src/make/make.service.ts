@@ -43,7 +43,7 @@ export class MakeService {
 
     const make = await this.getMakeById({ id: makeId });
 
-    make.models.push(modelId);
+    make.models = [...make.models, modelId];
     make.updatedAt = new Date().toISOString();
 
     return this.makeRepository.save(make);

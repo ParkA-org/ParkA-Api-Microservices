@@ -9,5 +9,5 @@ export interface IUpdateVehicleInput {
   pictures: string[];
   year: string;
   alias: string;
-  vehicleType: string;
+  bodyStyle: string;
 }
