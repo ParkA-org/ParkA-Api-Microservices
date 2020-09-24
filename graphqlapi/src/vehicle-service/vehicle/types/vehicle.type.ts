@@ -1,7 +1,7 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { ColorType } from 'src/vehicle-service/color/types/color.type';
 import { ModelType } from 'src/vehicle-service/model/types/model.type';
-import { VehicleTypeType } from 'src/vehicle-service/vehicle-type/vehicle-type-data/vehicle-type.type';
+import { BodyStyleType } from 'src/vehicle-service/body-style/types/body-style.type';
 
 @ObjectType('Vehicle')
 export class VehicleType {
@@ -35,6 +35,6 @@ export class VehicleType {
   @Field()
   alias: string;
 
-  @Field(type => VehicleTypeType)
+  @Field(type => BodyStyleType)
   vehicleType: string;
 }

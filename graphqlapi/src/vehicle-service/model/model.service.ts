@@ -13,7 +13,7 @@ export class ModelService {
       url: `redis://redis-parka-microservices:6379`,
     },
   })
-  client: ClientProxy;
+  private client: ClientProxy;
 
   public async getModelById(getModelByIdInput: GetModelByIdInput) {
     const response = await this.client.send<ModelType>(

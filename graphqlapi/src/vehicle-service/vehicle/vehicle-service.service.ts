@@ -13,7 +13,7 @@ export class VehicleServiceService {
       url: `redis://redis-parka-microservices:6379`,
     },
   })
-  client: ClientProxy;
+  private client: ClientProxy;
 
   public async getVehicle(
     getVehicleByIdInput: GetVehicleByIdInput,

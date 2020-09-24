@@ -13,13 +13,13 @@ import { GetVehicleByIdInput } from './inputs/get-vehicle-by-id.input';
 import { Logger } from '@nestjs/common';
 import { ModelService } from '../model/model.service';
 import { ColorService } from '../color/color.service';
-import { VehicleTypeService } from '../vehicle-type/vehicle-type.service';
+import { BodyStyleService } from '../body-style/body-style.service';
 import { ModelType } from '../model/types/model.type';
 import { GetModelByIdInput } from '../model/inputs/get-model-by-id.input';
 import { ColorType } from '../color/types/color.type';
 import { GetColorByIdInput } from '../color/inputs/get-color-by-id.input';
-import { VehicleTypeType } from '../vehicle-type/vehicle-type-data/vehicle-type.type';
-import { GetVehicleTypeByIdInput } from '../vehicle-type/vehicle-type-inputs/get-vehicle-type-by-id.input';
+import { BodyStyleType } from '../body-style/types/body-style.type';
+import { GetBodyStyleByIdInput } from '../body-style/inputs/get-body-style-by-id.input';
 import { UpdateVehicleInput } from './inputs/update-vehicle.input';
 
 @Resolver(of => VehicleType)
@@ -30,7 +30,7 @@ export class VehicleServiceResolver {
     private vehicleService: VehicleServiceService,
     private vehicleModelService: ModelService,
     private vehicleColorService: ColorService,
-    private vehicleTypeService: VehicleTypeService,
+    private vehicleTypeService: BodyStyleService,
   ) {}
 
   @Query(returns => VehicleType)
@@ -96,14 +96,14 @@ export class VehicleServiceResolver {
     return response;
   }
 
-  @ResolveField(returns => VehicleTypeType)
+  @ResolveField(returns => BodyStyleType)
   public async vehicleExterior(
     @Parent() vehicle: VehicleType,
-  ): Promise<VehicleTypeType> {
-    const getVehicleTypeByIdInput: GetVehicleTypeByIdInput = {
+  ): Promise<BodyStyleType> {
+    const getVehicleTypeByIdInput: GetBodyStyleByIdInput = {
       id: vehicle.vehicleType,
     };
 
-    return this.vehicleTypeService.getVehicleTypeById(getVehicleTypeByIdInput);
+    return this.vehicleTypeService.getBodyStyleById(getVehicleTypeByIdInput);
   }
 }
