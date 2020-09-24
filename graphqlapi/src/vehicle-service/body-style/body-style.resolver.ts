@@ -4,7 +4,7 @@ import { CreateBodyStyleInput } from './inputs/body-style-type.input';
 import { GetBodyStyleByIdInput } from './inputs/get-body-style-by-id.input';
 import { BodyStyleService } from './body-style.service';
 
-@Resolver()
+@Resolver(of => BodyStyleType)
 export class BodyStyleResolver {
   constructor(private bodyStyleService: BodyStyleService) {}
 

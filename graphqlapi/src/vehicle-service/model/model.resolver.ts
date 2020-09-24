@@ -4,7 +4,7 @@ import { CreateModelInput } from './inputs/create-model.input';
 import { GetModelByIdInput } from './inputs/get-model-by-id.input';
 import { ModelService } from './model.service';
 
-@Resolver()
+@Resolver(of => ModelType)
 export class ModelResolver {
   constructor(private modelService: ModelService) {}
 

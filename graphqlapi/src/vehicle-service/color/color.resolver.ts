@@ -4,7 +4,7 @@ import { GetColorByIdInput } from './inputs/get-color-by-id.input';
 import { ColorType } from './types/color.type';
 import { ColorService } from './color.service';
 
-@Resolver()
+@Resolver(of => ColorType)
 export class ColorResolver {
   constructor(private colorService: ColorService) {}
 

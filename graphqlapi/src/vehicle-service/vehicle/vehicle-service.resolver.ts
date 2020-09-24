@@ -47,7 +47,7 @@ export class VehicleServiceResolver {
   }
 
   @Query(returns => [VehicleType])
-  public async getAllvehicles(): Promise<VehicleType[]> {
+  public async getAllVehicles(): Promise<VehicleType[]> {
     return this.vehicleService.getAllVehicles();
   }
 
