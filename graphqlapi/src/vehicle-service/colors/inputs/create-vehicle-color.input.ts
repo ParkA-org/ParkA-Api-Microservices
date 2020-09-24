@@ -1,5 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { ICreateVehicleColorInput } from '../vehicle-color-interfaces/create-vehicle-color-input.interface';
+import { ICreateVehicleColorInput } from '../interfaces/create-vehicle-color-input.interface';
 
 @InputType('createVehicleColorInput')
 export class CreateVehicleColorInput implements ICreateVehicleColorInput {
