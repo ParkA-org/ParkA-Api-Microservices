@@ -11,11 +11,11 @@ import { VehicleType } from './types/vehicle.type';
 import { VehicleServiceService } from './vehicle-service.service';
 import { GetVehicleByIdInput } from './inputs/get-vehicle-by-id.input';
 import { Logger } from '@nestjs/common';
-import { VehicleModelService } from '../vehicle-model/vehicle-model.service';
+import { ModelService } from '../model/model.service';
 import { ColorService } from '../color/color.service';
 import { VehicleTypeService } from '../vehicle-type/vehicle-type.service';
-import { VehicleModelType } from '../vehicle-model/vehicle-model-data/vehicle-model.type';
-import { GetVehicleModelByIdInput } from '../vehicle-model/vehicle-model-inputs/get-vehicle-model-by-id.input';
+import { ModelType } from '../model/types/model.type';
+import { GetModelByIdInput } from '../model/inputs/get-model-by-id.input';
 import { ColorType } from '../color/types/color.type';
 import { GetColorByIdInput } from '../color/inputs/get-color-by-id.input';
 import { VehicleTypeType } from '../vehicle-type/vehicle-type-data/vehicle-type.type';
@@ -28,7 +28,7 @@ export class VehicleServiceResolver {
 
   constructor(
     private vehicleService: VehicleServiceService,
-    private vehicleModelService: VehicleModelService,
+    private vehicleModelService: ModelService,
     private vehicleColorService: ColorService,
     private vehicleTypeService: VehicleTypeService,
   ) {}
@@ -72,17 +72,13 @@ export class VehicleServiceResolver {
   }
 
   //Field Resolvers
-  @ResolveField(returns => VehicleModelType)
-  public async model(
-    @Parent() vehicle: VehicleType,
-  ): Promise<VehicleModelType> {
-    const getVehicleModelByIdInput: GetVehicleModelByIdInput = {
+  @ResolveField(returns => ModelType)
+  public async model(@Parent() vehicle: VehicleType): Promise<ModelType> {
+    const getVehicleModelByIdInput: GetModelByIdInput = {
       id: vehicle.model,
     };
 
-    return this.vehicleModelService.getVehicleModelById(
-      getVehicleModelByIdInput,
-    );
+    return this.vehicleModelService.getModelById(getVehicleModelByIdInput);
   }
 
   @ResolveField(returns => ColorType)

@@ -6,19 +6,19 @@ import { ColorService } from './color.service';
 
 @Resolver()
 export class ColorResolver {
-  constructor(private vehicleColorService: ColorService) {}
+  constructor(private colorService: ColorService) {}
 
   @Query(type => ColorType)
   public async getColorById(
     @Args('getColorByIdInput')
     getColorByIdInput: GetColorByIdInput,
   ): Promise<ColorType> {
-    return this.vehicleColorService.getColorById(getColorByIdInput);
+    return this.colorService.getColorById(getColorByIdInput);
   }
 
   @Query(type => [ColorType])
   public async getAllColors(): Promise<ColorType[]> {
-    return this.vehicleColorService.getAllColors();
+    return this.colorService.getAllColors();
   }
 
   @Mutation(of => ColorType)
@@ -26,6 +26,6 @@ export class ColorResolver {
     @Args('createColorInput')
     createColorInput: CreateColorInput,
   ): Promise<ColorType> {
-    return this.vehicleColorService.createColor(createColorInput);
+    return this.colorService.createColor(createColorInput);
   }
 }

@@ -1,5 +1,5 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { VehicleModelType } from 'src/vehicle-service/vehicle-model/vehicle-model-data/vehicle-model.type';
+import { ModelType } from 'src/vehicle-service/model/types/model.type';
 import { IMakeType } from '../interfaces/make-type.interface';
 
 @ObjectType()
@@ -13,6 +13,6 @@ export class MakeType implements IMakeType {
   @Field()
   name: string;
 
-  @Field(type => [VehicleModelType])
+  @Field(type => [ModelType])
   models: string[];
 }

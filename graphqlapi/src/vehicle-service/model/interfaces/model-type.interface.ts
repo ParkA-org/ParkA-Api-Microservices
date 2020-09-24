@@ -1,4 +1,4 @@
-export interface IVehicleModelType {
+export interface IModelType {
   id: string;
   make: string;
   name: string;

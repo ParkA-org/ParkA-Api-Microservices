@@ -6,8 +6,8 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import { GetManyVehiclesByIdInput } from '../vehicle-model/vehicle-model-inputs/get-many-vehicles-by-id.input';
-import { VehicleModelService } from '../vehicle-model/vehicle-model.service';
+import { GetManyModelsByIdInput } from '../model/inputs/get-many-models-by-id.input';
+import { ModelService } from '../model/model.service';
 import { CreateMakeInput } from './inputs/create-make.input';
 import { GetMakeByIdInput } from './inputs/get-make-by-id.inputs';
 import { MakeType } from './types/make.type';
@@ -16,8 +16,8 @@ import { MakeService } from './make.service';
 @Resolver(of => MakeType)
 export class MakeResolver {
   constructor(
-    private vehicleMakeService: MakeService,
-    private vehicleModelService: VehicleModelService,
+    private makeService: MakeService,
+    private modelService: ModelService,
   ) {}
 
   @Query(returns => MakeType)
@@ -25,12 +25,12 @@ export class MakeResolver {
     @Args('getMakeByIdInput')
     getMakeByIdInput: GetMakeByIdInput,
   ): Promise<MakeType> {
-    return this.vehicleMakeService.getMakeById(getMakeByIdInput);
+    return this.makeService.getMakeById(getMakeByIdInput);
   }
 
   @Query(returns => MakeType)
   public async getAllMakes(): Promise<MakeType> {
-    return this.vehicleMakeService.getAllMakes();
+    return this.makeService.getAllMakes();
   }
 
   @Mutation(of => MakeType)
@@ -38,17 +38,15 @@ export class MakeResolver {
     @Args('createMakeInput')
     createMakeInput: CreateMakeInput,
   ): Promise<MakeType> {
-    return this.vehicleMakeService.createMake(createMakeInput);
+    return this.makeService.createMake(createMakeInput);
   }
 
   @ResolveField()
   public async models(@Parent() make: MakeType) {
-    const getManyModelsByIdInput: GetManyVehiclesByIdInput = {
+    const getManyModelsByIdInput: GetManyModelsByIdInput = {
       ids: make.models,
     };
 
-    return this.vehicleModelService.getManyVehicleModelsById(
-      getManyModelsByIdInput,
-    );
+    return this.modelService.getManyModelsById(getManyModelsByIdInput);
   }
 }
