@@ -20,6 +20,7 @@ import { VehicleColorType } from '../vehicle-color/vehicle-color-type/vehicle-co
 import { GetVehicleColorByIdInput } from '../vehicle-color/vehicle-color-inputs/get-vehicle-color-by-id.input';
 import { VehicleTypeType } from '../vehicle-type/vehicle-type-data/vehicle-type.type';
 import { GetVehicleTypeByIdInput } from '../vehicle-type/vehicle-type-inputs/get-vehicle-type-by-id.input';
+import { UpdateVehicleInput } from './vehicle-inputs/update-vehicle.input';
 
 @Resolver(of => VehicleType)
 export class VehicleServiceResolver {
@@ -58,6 +59,16 @@ export class VehicleServiceResolver {
       `Received create vehicle with data ${JSON.stringify(createVehicleInput)}`,
     );
     return this.vehicleService.createVehicle(createVehicleInput);
+  }
+
+  @Mutation(of => VehicleType)
+  public async updateVehicle(
+    @Args('updateVehicleInput') updateVehicleInput: UpdateVehicleInput,
+  ): Promise<VehicleType> {
+    this.logger.debug(
+      `Received update vehicle with data ${JSON.stringify(updateVehicleInput)}`,
+    );
+    return this.vehicleService.updateVehicle(updateVehicleInput);
   }
 
   //Field Resolvers
