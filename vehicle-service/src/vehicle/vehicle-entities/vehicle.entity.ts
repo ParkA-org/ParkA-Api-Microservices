@@ -38,7 +38,7 @@ export class Vehicle implements IVehicle, IBaseEntity {
   alias: string;
 
   @Column()
-  vehicleType: string;
+  bodyStyle: string;
 
   @Column()
   createdAt: string;

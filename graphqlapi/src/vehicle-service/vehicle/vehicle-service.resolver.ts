@@ -97,11 +97,11 @@ export class VehicleServiceResolver {
   }
 
   @ResolveField(returns => BodyStyleType)
-  public async vehicleExterior(
+  public async bodyStyle(
     @Parent() vehicle: VehicleType,
   ): Promise<BodyStyleType> {
     const getVehicleTypeByIdInput: GetBodyStyleByIdInput = {
-      id: vehicle.vehicleType,
+      id: vehicle.bodyStyle,
     };
 
     return this.vehicleTypeService.getBodyStyleById(getVehicleTypeByIdInput);

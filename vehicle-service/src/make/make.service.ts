@@ -18,7 +18,7 @@ export class MakeService {
   }
 
   public async getAllMakes(): Promise<Make[]> {
-    return this.makeRepository.find();
+    return await this.makeRepository.find();
   }
 
   public async createMake(createMakeDto: CreateMakeDto): Promise<Make> {

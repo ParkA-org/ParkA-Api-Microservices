@@ -20,5 +20,5 @@ export interface IVehicle {
   year: string;
   alias: string;
 
-  vehicleType: string;
+  bodyStyle: string;
 }

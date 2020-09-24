@@ -28,7 +28,7 @@ export class MakeResolver {
     return this.makeService.getMakeById(getMakeByIdInput);
   }
 
-  @Query(returns => MakeType)
+  @Query(returns => [MakeType])
   public async getAllMakes(): Promise<MakeType> {
     return this.makeService.getAllMakes();
   }

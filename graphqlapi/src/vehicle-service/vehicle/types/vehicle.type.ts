@@ -36,5 +36,5 @@ export class VehicleType {
   alias: string;
 
   @Field(type => BodyStyleType)
-  vehicleType: string;
+  bodyStyle: string;
 }
