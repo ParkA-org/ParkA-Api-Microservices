@@ -6,21 +6,21 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import { CreateVehicleInput } from './vehicle-inputs/create-vehicle.input';
-import { VehicleType } from './vehicle-data/vehicle.type';
+import { CreateVehicleInput } from './inputs/create-vehicle.input';
+import { VehicleType } from './types/vehicle.type';
 import { VehicleServiceService } from './vehicle-service.service';
-import { GetVehicleByIdInput } from './vehicle-inputs/get-vehicle-by-id.input';
+import { GetVehicleByIdInput } from './inputs/get-vehicle-by-id.input';
 import { Logger } from '@nestjs/common';
 import { VehicleModelService } from '../vehicle-model/vehicle-model.service';
-import { ColorService } from '../colors/color.service';
+import { ColorService } from '../color/color.service';
 import { VehicleTypeService } from '../vehicle-type/vehicle-type.service';
 import { VehicleModelType } from '../vehicle-model/vehicle-model-data/vehicle-model.type';
 import { GetVehicleModelByIdInput } from '../vehicle-model/vehicle-model-inputs/get-vehicle-model-by-id.input';
-import { ColorType } from '../colors/types/color.type';
-import { GetColorByIdInput } from '../colors/inputs/get-color-by-id.input';
+import { ColorType } from '../color/types/color.type';
+import { GetColorByIdInput } from '../color/inputs/get-color-by-id.input';
 import { VehicleTypeType } from '../vehicle-type/vehicle-type-data/vehicle-type.type';
 import { GetVehicleTypeByIdInput } from '../vehicle-type/vehicle-type-inputs/get-vehicle-type-by-id.input';
-import { UpdateVehicleInput } from './vehicle-inputs/update-vehicle.input';
+import { UpdateVehicleInput } from './inputs/update-vehicle.input';
 
 @Resolver(of => VehicleType)
 export class VehicleServiceResolver {

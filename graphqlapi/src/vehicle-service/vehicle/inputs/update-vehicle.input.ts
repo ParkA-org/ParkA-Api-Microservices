@@ -2,7 +2,7 @@ import { Field, InputType } from '@nestjs/graphql';
 import { IsUUID, MaxLength, MinLength } from 'class-validator';
 import { IUpdateVehicleInput } from '../interfaces/update-vehicle-input.interface';
 
-@InputType('UpdateVehicleInput')
+@InputType('updateVehicleInput')
 export class UpdateVehicleInput implements IUpdateVehicleInput {
   @IsUUID('4')
   @Field()

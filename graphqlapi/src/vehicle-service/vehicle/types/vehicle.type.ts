@@ -1,5 +1,5 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { ColorType } from 'src/vehicle-service/colors/types/color.type';
+import { ColorType } from 'src/vehicle-service/color/types/color.type';
 import { VehicleModelType } from 'src/vehicle-service/vehicle-model/vehicle-model-data/vehicle-model.type';
 import { VehicleTypeType } from 'src/vehicle-service/vehicle-type/vehicle-type-data/vehicle-type.type';
 
