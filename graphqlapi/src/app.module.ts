@@ -4,7 +4,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { VehicleServiceModule } from './vehicle-service/vehicle/vehicle-service.module';
 import { VehicleTypeModule } from './vehicle-service/vehicle-type/vehicle-type.module';
 import { VehicleModelModule } from './vehicle-service/vehicle-model/vehicle-model.module';
-import { VehicleMakeModule } from './vehicle-service/vehicle-make/vehicle-make.module';
+import { MakeModule } from './vehicle-service/make/make.module';
 import { ColorModule } from './vehicle-service/colors/color.module';
 @Module({
   imports: [
@@ -13,7 +13,7 @@ import { ColorModule } from './vehicle-service/colors/color.module';
     AuthServiceModule,
     VehicleTypeModule,
     VehicleModelModule,
-    VehicleMakeModule,
+    MakeModule,
     ColorModule,
   ],
 })

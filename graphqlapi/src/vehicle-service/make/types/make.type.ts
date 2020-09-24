@@ -1,9 +1,9 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { VehicleModelType } from 'src/vehicle-service/vehicle-model/vehicle-model-data/vehicle-model.type';
-import { IVehicleMakeType } from '../vehicle-make-interfaces/vehicle-make-type.interface';
+import { IMakeType } from '../interfaces/make-type.interface';
 
 @ObjectType()
-export class VehicleMakeType implements IVehicleMakeType {
+export class MakeType implements IMakeType {
   @Field(type => ID)
   id: string;
 
