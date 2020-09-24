@@ -12,7 +12,7 @@ import { VehicleServiceService } from './vehicle-service.service';
 import { GetVehicleByIdInput } from './vehicle-inputs/get-vehicle-by-id.input';
 import { Logger } from '@nestjs/common';
 import { VehicleModelService } from '../vehicle-model/vehicle-model.service';
-import { ColorService } from '../colors/vehicle-color.service';
+import { ColorService } from '../colors/color.service';
 import { VehicleTypeService } from '../vehicle-type/vehicle-type.service';
 import { VehicleModelType } from '../vehicle-model/vehicle-model-data/vehicle-model.type';
 import { GetVehicleModelByIdInput } from '../vehicle-model/vehicle-model-inputs/get-vehicle-model-by-id.input';

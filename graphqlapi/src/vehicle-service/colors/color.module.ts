@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { VehicleColorResolver } from './vehicle-color.resolver';
-import { ColorService } from './vehicle-color.service';
+import { VehicleColorResolver } from './color.resolver';
+import { ColorService } from './color.service';
 
 @Module({
   providers: [VehicleColorResolver, ColorService],

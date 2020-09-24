@@ -2,7 +2,7 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CreateVehicleColorInput } from './inputs/create-vehicle-color.input';
 import { GetVehicleColorByIdInput } from './inputs/get-vehicle-color-by-id.input';
 import { VehicleColorType } from './types/vehicle-color.type';
-import { ColorService } from './vehicle-color.service';
+import { ColorService } from './color.service';
 
 @Resolver()
 export class VehicleColorResolver {
