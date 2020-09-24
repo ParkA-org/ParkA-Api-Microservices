@@ -5,7 +5,7 @@ import { GetVehicleColorByIdInput } from './inputs/get-vehicle-color-by-id.input
 import { VehicleColorType } from './types/vehicle-color.type';
 
 @Injectable()
-export class VehicleColorService {
+export class ColorService {
   @Client({
     transport: Transport.REDIS,
     options: {
