@@ -3,6 +3,7 @@ import { Client, ClientProxy, Transport } from '@nestjs/microservices';
 import { VehicleType } from './vehicle-data/vehicle.type';
 import { CreateVehicleInput } from './vehicle-inputs/create-vehicle.input';
 import { GetVehicleByIdInput } from './vehicle-inputs/get-vehicle-by-id.input';
+import { UpdateVehicleInput } from './vehicle-inputs/update-vehicle.input';
 
 @Injectable()
 export class VehicleServiceService {
@@ -40,6 +41,17 @@ export class VehicleServiceService {
     const response = await this.client.send<VehicleType>(
       { type: 'create-vehicle' },
       createVehicleInput,
+    );
+
+    return response.toPromise();
+  }
+
+  public async updateVehicle(
+    updateVehicleInput: UpdateVehicleInput,
+  ): Promise<VehicleType> {
+    const response = await this.client.send<VehicleType>(
+      { type: 'update-vehicle' },
+      updateVehicleInput,
     );
 
     return response.toPromise();
