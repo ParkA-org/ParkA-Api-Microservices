@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { VehicleColorModule } from '../color/vehicle-color.module';
+import { VehicleColorModule } from '../colors/vehicle-color.module';
 import { VehicleMakeModule } from '../vehicle-make/vehicle-make.module';
 import { VehicleModelModule } from '../vehicle-model/vehicle-model.module';
 import { VehicleTypeModule } from '../vehicle-type/vehicle-type.module';

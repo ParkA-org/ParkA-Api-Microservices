@@ -5,7 +5,7 @@ import { VehicleServiceModule } from './vehicle-service/vehicle/vehicle-service.
 import { VehicleTypeModule } from './vehicle-service/vehicle-type/vehicle-type.module';
 import { VehicleModelModule } from './vehicle-service/vehicle-model/vehicle-model.module';
 import { VehicleMakeModule } from './vehicle-service/vehicle-make/vehicle-make.module';
-import { VehicleColorModule } from './vehicle-service/color/vehicle-color.module';
+import { VehicleColorModule } from './vehicle-service/colors/vehicle-color.module';
 @Module({
   imports: [
     GraphQLModule.forRoot({ autoSchemaFile: true }),
