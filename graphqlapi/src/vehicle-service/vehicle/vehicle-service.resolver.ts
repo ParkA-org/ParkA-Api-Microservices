@@ -16,7 +16,7 @@ import { VehicleColorService } from '../colors/vehicle-color.service';
 import { VehicleTypeService } from '../vehicle-type/vehicle-type.service';
 import { VehicleModelType } from '../vehicle-model/vehicle-model-data/vehicle-model.type';
 import { GetVehicleModelByIdInput } from '../vehicle-model/vehicle-model-inputs/get-vehicle-model-by-id.input';
-import { VehicleColorType } from '../colors/vehicle-color-type/vehicle-color.type';
+import { VehicleColorType } from '../colors/types/vehicle-color.type';
 import { GetVehicleColorByIdInput } from '../colors/inputs/get-vehicle-color-by-id.input';
 import { VehicleTypeType } from '../vehicle-type/vehicle-type-data/vehicle-type.type';
 import { GetVehicleTypeByIdInput } from '../vehicle-type/vehicle-type-inputs/get-vehicle-type-by-id.input';

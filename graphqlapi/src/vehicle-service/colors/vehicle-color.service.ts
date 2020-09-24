@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Client, ClientProxy, Transport } from '@nestjs/microservices';
 import { CreateVehicleColorInput } from './inputs/create-vehicle-color.input';
 import { GetVehicleColorByIdInput } from './inputs/get-vehicle-color-by-id.input';
-import { VehicleColorType } from './vehicle-color-type/vehicle-color.type';
+import { VehicleColorType } from './types/vehicle-color.type';
 
 @Injectable()
 export class VehicleColorService {
