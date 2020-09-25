@@ -91,7 +91,6 @@ export class VehicleService {
 
     for (const field of updateFieldList) {
       if (vehicle.id != updateVehicleDto[field]) {
-        console.log(updateVehicleDto[field]);
         vehicle[field] = updateVehicleDto[field];
       }
     }

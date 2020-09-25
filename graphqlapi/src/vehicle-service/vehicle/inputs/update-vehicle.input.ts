@@ -13,7 +13,7 @@ export class UpdateVehicleInput implements IUpdateVehicleInput {
   alias: string;
 
   @Field({ nullable: true })
-  @ValidateIf((input: UpdateVehicleInput) => input.colorExterior === null)
+  @ValidateIf((input: UpdateVehicleInput) => input.colorExterior !== undefined)
   @IsUUID('4')
   colorExterior: string;
 
@@ -21,7 +21,7 @@ export class UpdateVehicleInput implements IUpdateVehicleInput {
   detail: string;
 
   @Field({ nullable: true })
-  @ValidateIf((input: UpdateVehicleInput) => input.licensePlate === null)
+  @ValidateIf((input: UpdateVehicleInput) => input.licensePlate !== undefined)
   @MaxLength(7)
   @MinLength(7)
   licensePlate: string;
@@ -30,19 +30,19 @@ export class UpdateVehicleInput implements IUpdateVehicleInput {
   mainPicture: string;
 
   @Field({ nullable: true })
-  @ValidateIf((input: UpdateVehicleInput) => input.model === null)
+  @ValidateIf((input: UpdateVehicleInput) => input.model !== undefined)
   @IsUUID('4')
   model: string;
 
   pictures: string[];
 
   @Field({ nullable: true })
-  @ValidateIf((input: UpdateVehicleInput) => input.bodyStyle === null)
+  @ValidateIf((input: UpdateVehicleInput) => input.bodyStyle !== undefined)
   @IsUUID('4')
   bodyStyle: string;
 
   @Field({ nullable: true })
-  @ValidateIf((input: UpdateVehicleInput) => input.year === null)
+  @ValidateIf((input: UpdateVehicleInput) => input.year !== undefined)
   @MaxLength(4)
   @MinLength(4)
   year: string;
