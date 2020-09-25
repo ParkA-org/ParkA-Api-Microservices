@@ -1,9 +1,10 @@
 import { Controller, Logger } from '@nestjs/common';
 import { JsonSocket, MessagePattern } from '@nestjs/microservices';
 import { AuthService } from './auth.service';
-import { AuthCredentialsDto } from './userData/auth-credential.dto';
-import { CreateUserDto } from './userData/create-user.dto';
-import { User } from './userData/user.entity';
+import { AuthCredentialsDto } from './dto/auth-credential.dto';
+import { CreateUserDto } from './dto/create-user.dto';
+import { User } from './entity/user.entity';
+import { LoginType } from './types/login';
 
 @Controller('auth')
 export class AuthController {
@@ -32,7 +33,9 @@ export class AuthController {
   }
 
   @MessagePattern({ type: 'sign-in' })
-  public async signIn(authCredentialsDto: AuthCredentialsDto): Promise<string> {
+  public async signIn(
+    authCredentialsDto: AuthCredentialsDto,
+  ): Promise<LoginType> {
     this.logger.debug(
       `Received login user message with data ${JSON.stringify(
         authCredentialsDto,

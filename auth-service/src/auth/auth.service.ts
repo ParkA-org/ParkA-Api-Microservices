@@ -1,14 +1,15 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Credential } from './credential/credential.entity';
-import { CreateUserDto } from './userData/create-user.dto';
-import { User } from './userData/user.entity';
+import { Credential } from './entity/credential.entity';
+import { CreateUserDto } from './dto/create-user.dto';
+import { User } from './entity/user.entity';
 import { v4 as uuid } from 'uuid';
 import { RpcException } from '@nestjs/microservices';
-import { UpdateUserDto } from './userData/update-user.dto';
-import { AuthCredentialsDto } from './userData/auth-credential.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { AuthCredentialsDto } from './dto/auth-credential.dto';
 import * as bcrypt from 'bcryptjs';
+import { LoginType } from './types/login';
 
 @Injectable()
 export class AuthService {
@@ -114,9 +115,13 @@ export class AuthService {
   }
 
   // InProgress
-  public async signIn(authCredentialDto: AuthCredentialsDto): Promise<string> {
+  public async signIn(
+    authCredentialDto: AuthCredentialsDto,
+  ): Promise<LoginType> {
     const { email, password } = authCredentialDto;
     const user = await this.authRepository.findOne({ email });
+
+    const result = new LoginType();
 
     if (user) {
       const credential = await this.credentialRepository.findOne(
@@ -124,7 +129,9 @@ export class AuthService {
       );
       const hash = await bcrypt.hash(password, await credential.salt);
       if (hash === password) {
-        return email;
+        result.user = user;
+        result.JWT = 'ComingSoon';
+        return result;
       }
     }
     return null;

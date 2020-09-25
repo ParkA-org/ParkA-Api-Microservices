@@ -21,14 +21,5 @@ export class UserType {
   profilePicture?: string;
 
   @Field()
-  createAt: string;
-
-  @Field()
-  updateAt: string;
-
-  @Field()
   confirmed: boolean;
-
-  @Field()
-  crendetial: string;
 }

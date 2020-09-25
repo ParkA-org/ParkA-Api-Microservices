@@ -4,8 +4,9 @@ import {
   CreateUserInput,
   LoginUserInput,
   UpdateUserInput,
-} from './user-data/user.input';
-import { UserType } from './user-data/user.type';
+} from './user-input/user.input';
+import { LoginType } from './user-type/login.type';
+import { UserType } from './user-type/user.type';
 
 @Injectable()
 export class AuthServiceService {
@@ -51,9 +52,9 @@ export class AuthServiceService {
     return response.toPromise();
   }
 
-  public async singIn(loginUserInput: LoginUserInput): Promise<UserType> {
+  public async login(loginUserInput: LoginUserInput): Promise<LoginType> {
     this.logger.log('Got LoginUserInput data');
-    const response = this.client.send<UserType>(
+    const response = this.client.send<LoginType>(
       { type: 'sing-in' },
       loginUserInput,
     );
