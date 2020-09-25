@@ -43,4 +43,16 @@ export class AuthController {
     );
     return await this.authService.signIn(authCredentialsDto);
   }
+
+  @MessagePattern({ type: 'update-user' })
+  public async updateUser(
+    authCredentialsDto: AuthCredentialsDto,
+  ): Promise<LoginType> {
+    this.logger.debug(
+      `Received login user message with data ${JSON.stringify(
+        authCredentialsDto,
+      )}`,
+    );
+    return await this.authService.signIn(authCredentialsDto);
+  }
 }
