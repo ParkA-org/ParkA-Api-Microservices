@@ -1,4 +1,4 @@
-import { User } from '../entity/user.entity';
+import { User } from '../auth-entity/user.entity';
 
 export class LoginType {
   JWT: string;

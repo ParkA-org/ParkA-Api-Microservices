@@ -1,10 +1,10 @@
 import { Controller, Logger } from '@nestjs/common';
 import { JsonSocket, MessagePattern } from '@nestjs/microservices';
 import { AuthService } from './auth.service';
-import { AuthCredentialsDto } from './dto/auth-credential.dto';
-import { CreateUserDto } from './dto/create-user.dto';
-import { User } from './entity/user.entity';
-import { LoginType } from './types/login';
+import { AuthCredentialsDto } from './auth-dto/auth-credential.dto';
+import { CreateUserDto } from './auth-dto/create-user.dto';
+import { User } from './auth-entity/user.entity';
+import { LoginType } from './auth-interface/login';
 
 @Controller('auth')
 export class AuthController {

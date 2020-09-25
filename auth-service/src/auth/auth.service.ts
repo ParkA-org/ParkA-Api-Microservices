@@ -1,15 +1,15 @@
 import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Credential } from './entity/credential.entity';
-import { CreateUserDto } from './dto/create-user.dto';
-import { User } from './entity/user.entity';
+import { Credential } from './auth-entity/credential.entity';
+import { CreateUserDto } from './auth-dto/create-user.dto';
+import { User } from './auth-entity/user.entity';
 import { v4 as uuid } from 'uuid';
 import { RpcException } from '@nestjs/microservices';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { AuthCredentialsDto } from './dto/auth-credential.dto';
+import { UpdateUserDto } from './auth-dto/update-user.dto';
+import { AuthCredentialsDto } from './auth-dto/auth-credential.dto';
 import * as bcrypt from 'bcryptjs';
-import { LoginType } from './types/login';
+import { LoginType } from './auth-interface/login';
 
 @Injectable()
 export class AuthService {
@@ -27,17 +27,16 @@ export class AuthService {
     this.logger.debug(
       `Received update user payload ${JSON.stringify(updateUserDto)}`,
     );
-    const { name, email, lastName, profilePicture } = updateUserDto;
-
-    var date = new Date();
+    const { id, name, email, lastName, profilePicture } = updateUserDto;
+    const user = await this.getUser(id);
     try {
       const user = this.authRepository.save({
         id: uuid(),
-        name,
-        lastName,
-        email,
-        profilePicture,
-        updateAt: date.toISOString(),
+        name: '',
+        lastName: '',
+        email: '',
+        profilePicture: '',
+        updateAt: new Date().toISOString(),
       });
 
       return await user;
