@@ -114,14 +114,13 @@ export class AuthService {
     return await user;
   }
 
-  // InProgress
+  // Add JWT in passportjs
   public async signIn(
     authCredentialDto: AuthCredentialsDto,
   ): Promise<LoginType> {
     this.logger.debug(
       `Received Login user payload ${JSON.stringify(authCredentialDto)}`,
     );
-
     const { email, password } = authCredentialDto;
     const user = await this.authRepository.findOne({ email });
     const credential = await this.credentialRepository.findOne({ email });

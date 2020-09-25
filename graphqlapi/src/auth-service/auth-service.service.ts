@@ -1,10 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Client, ClientProxy, Transport } from '@nestjs/microservices';
-import {
-  CreateUserInput,
-  LoginUserInput,
-  UpdateUserInput,
-} from './user-input/user.input';
+import { UpdateUserInput } from './user-input/update-user.input';
+import { CreateUserInput, LoginUserInput } from './user-input/user.input';
 import { LoginType } from './user-type/login.type';
 import { UserType } from './user-type/user.type';
 

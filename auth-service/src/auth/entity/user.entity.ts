@@ -36,7 +36,6 @@ export class User {
   @Column()
   password: string;
 
-  //TODO: add credential id
-
-  //TODO: information id
+  @Column()
+  confirmed: boolean;
 }

@@ -20,6 +20,6 @@ export class UserType {
   @Field({ nullable: true })
   profilePicture?: string;
 
-  @Field()
+  @Field({ nullable: true })
   confirmed: boolean;
 }
