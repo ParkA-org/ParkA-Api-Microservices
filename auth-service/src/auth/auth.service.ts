@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Credential } from './entity/credential.entity';
@@ -118,17 +118,17 @@ export class AuthService {
   public async signIn(
     authCredentialDto: AuthCredentialsDto,
   ): Promise<LoginType> {
+    this.logger.debug(
+      `Received Login user payload ${JSON.stringify(authCredentialDto)}`,
+    );
+
     const { email, password } = authCredentialDto;
     const user = await this.authRepository.findOne({ email });
-
+    const credential = await this.credentialRepository.findOne({ email });
     const result = new LoginType();
-
-    if (user) {
-      const credential = await this.credentialRepository.findOne(
-        user.credential,
-      );
-      const hash = await bcrypt.hash(password, await credential.salt);
-      if (hash === password) {
+    if (await user) {
+      const hash = await bcrypt.hash(password, credential.salt);
+      if (hash === credential.password) {
         result.user = user;
         result.JWT = 'ComingSoon';
         return result;

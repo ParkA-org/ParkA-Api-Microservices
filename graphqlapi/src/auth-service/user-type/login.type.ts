@@ -3,8 +3,9 @@ import { UserType } from './user.type';
 
 @ObjectType('Login')
 export class LoginType {
-  @Field(type => ID)
+  @Field({ nullable: true })
   JWT: string;
 
-  user: UserType;
+  @Field(type => UserType, { nullable: true })
+  user: string;
 }
