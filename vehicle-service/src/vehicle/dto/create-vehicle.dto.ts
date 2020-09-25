@@ -1,5 +1,5 @@
 import { IsBoolean, IsUUID, MaxLength, MinLength } from 'class-validator';
-import { ICreateVehicleDto } from '../vehicle-interfaces/create-vehicle-dto.interface';
+import { ICreateVehicleDto } from '../interfaces/create-vehicle-dto.interface';
 
 export class CreateVehicleDto implements ICreateVehicleDto {
   @IsUUID('all')

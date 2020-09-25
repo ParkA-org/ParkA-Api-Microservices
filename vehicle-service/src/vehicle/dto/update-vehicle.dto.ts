@@ -1,5 +1,5 @@
 import { IsUUID, MaxLength, MinLength } from 'class-validator';
-import { IUpdateVehicleDto } from '../vehicle-interfaces/update-vehicle-dto.interface';
+import { IUpdateVehicleDto } from '../interfaces/update-vehicle-dto.interface';
 
 export class UpdateVehicleDto implements IUpdateVehicleDto {
   @IsUUID('4')

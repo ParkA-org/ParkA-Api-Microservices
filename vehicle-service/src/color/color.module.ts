@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Color } from './color-entities/color.entity';
+import { Color } from './entities/color.entity';
 import { ColorController } from './color.controller';
 import { ColorService } from './color.service';
 

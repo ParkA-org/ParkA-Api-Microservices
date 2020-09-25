@@ -1,15 +1,15 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Vehicle } from './vehicle/vehicle-entities/vehicle.entity';
+import { Vehicle } from './vehicle/entities/vehicle.entity';
 import { VehicleModule } from './vehicle/vehicle.module';
 import { ModelModule } from './model/model.module';
 import { VehicleTypeModule } from './vehicle-type/vehicle-type.module';
 import { ColorModule } from './color/color.module';
 import { MakeModule } from './make/make.module';
-import { VehicleType } from './vehicle-type/vehicle-type-entities/vehicle-type.entity';
-import { Model } from './model/model-entities/model.entity';
-import { Make } from './make/make-entities/make.entity';
-import { Color } from './color/color-entities/color.entity';
+import { VehicleType } from './vehicle-type/entities/vehicle-type.entity';
+import { Model } from './model/entities/model.entity';
+import { Make } from './make/entities/make.entity';
+import { Color } from './color/entities/color.entity';
 
 @Module({
   imports: [

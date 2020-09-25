@@ -1,11 +1,11 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Make } from './make-entities/make.entity';
-import { CreateMakeDto } from './make-dto/create-make.dto';
-import { GetMakeByIdDto } from './make-dto/get-make-by-id.dto';
+import { Make } from './entities/make.entity';
+import { CreateMakeDto } from './dtos/create-make.dto';
+import { GetMakeByIdDto } from './dtos/get-make-by-id.dto';
 import { v4 as uuid } from 'uuid';
-import { UpdateCarModelListDto } from './make-dto/update-car-model-list.dto';
+import { UpdateCarModelListDto } from './dtos/update-car-model-list.dto';
 import { RpcException } from '@nestjs/microservices';
 
 @Injectable()

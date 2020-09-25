@@ -1,9 +1,9 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
-import { Model } from './model-entities/model.entity';
-import { CreateModelDto } from './model-dto/create-model.dto';
-import { GetManyModelsByIdDto } from './model-dto/get-many-models-by-id.dto';
-import { GetModelByIdDto } from './model-dto/get-model-by-id.dto';
+import { Model } from './entities/model.entity';
+import { CreateModelDto } from './dtos/create-model.dto';
+import { GetManyModelsByIdDto } from './dtos/get-many-models-by-id.dto';
+import { GetModelByIdDto } from './dtos/get-model-by-id.dto';
 import { ModelService } from './model.service';
 
 @Controller('model')

@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Make } from './make-entities/make.entity';
+import { Make } from './entities/make.entity';
 import { MakeController } from './make.controller';
 import { MakeService } from './make.service';
 

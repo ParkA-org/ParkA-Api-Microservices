@@ -1,11 +1,11 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Vehicle } from './vehicle-entities/vehicle.entity';
-import { CreateVehicleDto } from './vehicle-dto/create-vehicle.dto';
+import { Vehicle } from './entities/vehicle.entity';
+import { CreateVehicleDto } from './dto/create-vehicle.dto';
 import { v4 as uuid } from 'uuid';
-import { GetVehicleByIdDto } from './vehicle-dto/get-vehicle-by-id.dto';
-import { UpdateVehicleDto } from './vehicle-dto/update-vehicle.dto';
+import { GetVehicleByIdDto } from './dto/get-vehicle-by-id.dto';
+import { UpdateVehicleDto } from './dto/update-vehicle.dto';
 import { RpcException } from '@nestjs/microservices';
 
 @Injectable()

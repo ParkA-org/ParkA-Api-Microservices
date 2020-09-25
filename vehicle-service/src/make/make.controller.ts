@@ -1,9 +1,9 @@
 import { Controller } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
-import { Make } from './make-entities/make.entity';
-import { CreateMakeDto } from './make-dto/create-make.dto';
-import { GetMakeByIdDto } from './make-dto/get-make-by-id.dto';
-import { UpdateCarModelListDto } from './make-dto/update-car-model-list.dto';
+import { Make } from './entities/make.entity';
+import { CreateMakeDto } from './dtos/create-make.dto';
+import { GetMakeByIdDto } from './dtos/get-make-by-id.dto';
+import { UpdateCarModelListDto } from './dtos/update-car-model-list.dto';
 import { MakeService } from './make.service';
 
 @Controller('make')

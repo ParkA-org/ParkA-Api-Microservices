@@ -1,5 +1,5 @@
 import { IsUUID, MinLength } from 'class-validator';
-import { ICreateModelDto } from '../vehicle-interfaces/create-model-dto.interface';
+import { ICreateModelDto } from '../interfaces/create-model-dto.interface';
 
 export class CreateModelDto implements ICreateModelDto {
   @IsUUID('4')

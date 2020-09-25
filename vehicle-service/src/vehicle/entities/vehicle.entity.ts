@@ -1,6 +1,6 @@
-import { IBaseEntity } from 'src/make/make-interfaces/base-entity.interface';
+import { IBaseEntity } from 'src/make/interfaces/base-entity.interface';
 import { Column, Entity, ObjectIdColumn, PrimaryColumn } from 'typeorm';
-import { IVehicle } from '../vehicle-interfaces/vehicle-entity.interface';
+import { IVehicle } from '../interfaces/vehicle-entity.interface';
 
 @Entity()
 export class Vehicle implements IVehicle, IBaseEntity {

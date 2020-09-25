@@ -1,9 +1,9 @@
+import { IBaseEntity } from 'src/make/interfaces/base-entity.interface';
 import { Column, Entity, ObjectIdColumn, PrimaryColumn } from 'typeorm';
-import { IBaseEntity } from '../make-interfaces/base-entity.interface';
-import { IMake } from '../make-interfaces/make-entity.interface';
+import { IVehicleType } from '../interfaces/vehicle-type-entity.interface';
 
 @Entity()
-export class Make implements IMake, IBaseEntity {
+export class VehicleType implements IVehicleType, IBaseEntity {
   @ObjectIdColumn()
   _id: string;
 
@@ -12,12 +12,6 @@ export class Make implements IMake, IBaseEntity {
 
   @Column()
   name: string;
-
-  @Column()
-  icon: string;
-
-  @Column()
-  models: string[];
 
   @Column()
   createdAt: string;

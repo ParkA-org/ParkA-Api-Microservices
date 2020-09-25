@@ -1,5 +1,5 @@
 import { IsUUID, MinLength } from 'class-validator';
-import { ICreateMakeDto } from '../make-interfaces/create-make-dto.interface';
+import { ICreateMakeDto } from '../interfaces/create-make-dto.interface';
 
 export class CreateMakeDto implements ICreateMakeDto {
   @MinLength(2)

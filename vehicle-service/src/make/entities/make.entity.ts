@@ -1,9 +1,9 @@
 import { Column, Entity, ObjectIdColumn, PrimaryColumn } from 'typeorm';
-import { IBaseEntity } from '../vehicle-interfaces/base-entity.interface';
-import { IModel } from '../vehicle-interfaces/model-entity.interface';
+import { IBaseEntity } from '../interfaces/base-entity.interface';
+import { IMake } from '../interfaces/make-entity.interface';
 
 @Entity()
-export class Model implements IModel, IBaseEntity {
+export class Make implements IMake, IBaseEntity {
   @ObjectIdColumn()
   _id: string;
 
@@ -11,10 +11,13 @@ export class Model implements IModel, IBaseEntity {
   id: string;
 
   @Column()
-  make: string;
+  name: string;
 
   @Column()
-  name: string;
+  icon: string;
+
+  @Column()
+  models: string[];
 
   @Column()
   createdAt: string;

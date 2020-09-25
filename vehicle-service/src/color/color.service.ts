@@ -1,9 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Color } from './color-entities/color.entity';
-import { CreateColorDto } from './color-dto/create-color.dto';
-import { GetColorByIdDto } from './color-dto/get-color-by-id.dto';
+import { Color } from './entities/color.entity';
+import { CreateColorDto } from './dtos/create-color.dto';
+import { GetColorByIdDto } from './dtos/get-color-by-id.dto';
 import { v4 as uuid } from 'uuid';
 import { RpcException } from '@nestjs/microservices';
 
