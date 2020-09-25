@@ -51,7 +51,9 @@ export class AuthServiceService {
     return response.toPromise();
   }
 
-  public async login(loginUserInput: LoginUserInput): Promise<LoginType> {
+  public async login(
+    loginUserInput: LoginUserInput,
+  ): Promise<LoginType | String> {
     this.logger.log('Got LoginUserInput data');
     const response = this.client.send<LoginType>(
       { type: 'sign-in' },

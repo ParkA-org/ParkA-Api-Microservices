@@ -27,10 +27,10 @@ export class AuthServiceResolver {
     return await this.authServiceService.createUser(createUserInput);
   }
 
-  @Mutation(returns => LoginType)
+  @Mutation(returns => LoginType || String)
   async login(
     @Args('loginUserInput') loginUserInput: LoginUserInput,
-  ): Promise<LoginType> {
+  ): Promise<LoginType | String> {
     return await this.authServiceService.login(loginUserInput);
   }
 

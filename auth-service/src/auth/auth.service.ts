@@ -10,6 +10,7 @@ import { UpdateUserDto } from './auth-dto/update-user.dto';
 import { AuthCredentialsDto } from './auth-dto/auth-credential.dto';
 import * as bcrypt from 'bcryptjs';
 import { LoginType } from './auth-interface/login';
+import { exception } from 'console';
 
 @Injectable()
 export class AuthService {
@@ -21,7 +22,6 @@ export class AuthService {
     private credentialRepository: Repository<Credential>,
   ) {}
 
-  // Is Inprogress
   public async updateUser(updateUserDto: UpdateUserDto): Promise<User> {
     this.logger.debug(
       `Received update user payload ${JSON.stringify(updateUserDto)}`,
@@ -49,12 +49,22 @@ export class AuthService {
 
       return user;
     } catch (error) {
-      throw new RpcException('An undefined error occured');
+      throw new RpcException('User not Found');
     }
   }
 
-  // Is Inprogress
-  public async updateCredential(id: String, password: String) {}
+  public async updateCredential(id: string, password: string) {
+    this.logger.debug(
+      `Received update credential ""  payload ${JSON.stringify(id)}`,
+    );
+    const credential = await this.credentialRepository.findOne({ id });
+    const salt = await bcrypt.genSalt();
+    password = await this.hashPassword(password, salt);
+    credential.password = password;
+    credential.salt = salt;
+    credential.updatedAt = new Date().toISOString();
+    this.credentialRepository.save(credential);
+  }
 
   // Is Inprogress
   public async createUser(createUserDto: CreateUserDto): Promise<User> {
@@ -64,6 +74,7 @@ export class AuthService {
     var { name, email, lastName, profilePicture, password } = createUserDto;
 
     var date = new Date();
+    email.toLowerCase();
 
     try {
       const salt = await bcrypt.genSalt();
@@ -118,29 +129,40 @@ export class AuthService {
   }
 
   public async getUser(id: string): Promise<User> {
-    const user = this.authRepository.findOne({ id });
-    return await user;
+    try {
+      const user = this.authRepository.findOne({ id });
+      return await user;
+    } catch (error) {
+      throw new exception('User not Found');
+    }
   }
 
   // Add JWT in passportjs
   public async signIn(
     authCredentialDto: AuthCredentialsDto,
-  ): Promise<LoginType> {
+  ): Promise<LoginType | String> {
     this.logger.debug(
       `Received Login user payload ${JSON.stringify(authCredentialDto)}`,
     );
-    const { email, password } = authCredentialDto;
-    const user = await this.authRepository.findOne({ email });
-    const credential = await this.credentialRepository.findOne({ email });
-    const result = new LoginType();
-    if (await user) {
-      const hash = await bcrypt.hash(password, credential.salt);
-      if (hash === credential.password) {
-        result.user = user;
-        result.JWT = 'ComingSoon';
-        return result;
+    try {
+      const { email, password } = authCredentialDto;
+      email.toLowerCase();
+      const user = await this.authRepository.findOne({ email });
+      const credential = await this.credentialRepository.findOne({ email });
+      const result = new LoginType();
+      if (await user) {
+        const hash = await bcrypt.hash(password, credential.salt);
+        if (hash === credential.password) {
+          result.user = user;
+          result.JWT = 'ComingSoon';
+          if (!user.confirmed) {
+            throw new Error('Confirm your account');
+          }
+          return result;
+        }
       }
+    } catch {
+      throw new exception('Invalid Credentials');
     }
-    return null;
   }
 }
