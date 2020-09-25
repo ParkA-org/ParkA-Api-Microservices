@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Vehicle } from './vehicle-entities/vehicle.entity';
@@ -9,6 +9,8 @@ import { UpdateVehicleDto } from './vehicle-dto/update-vehicle.dto';
 
 @Injectable()
 export class VehicleService {
+  private logger = new Logger('VehicleService');
+
   constructor(
     @InjectRepository(Vehicle) private vehicleRepository: Repository<Vehicle>,
   ) {}
@@ -16,16 +18,29 @@ export class VehicleService {
   public async getVehicleById(
     getVehicleByIdDto: GetVehicleByIdDto,
   ): Promise<Vehicle> {
+    this.logger.debug(
+      `Received get vehicle by id with payload ${JSON.stringify(
+        getVehicleByIdDto,
+      )}`,
+    );
+
     return await this.vehicleRepository.findOne(getVehicleByIdDto);
   }
 
   public async getAllVehicles(): Promise<Vehicle[]> {
+    this.logger.debug(`Received get all vehicles by id with payload `);
     return this.vehicleRepository.find();
   }
 
   public async createVehicle(
     createVehicleDto: CreateVehicleDto,
   ): Promise<Vehicle> {
+    this.logger.debug(
+      `Received create vehicle with payload ${JSON.stringify(
+        createVehicleDto,
+      )}`,
+    );
+
     const {
       alias,
       colorExterior,
@@ -62,32 +77,24 @@ export class VehicleService {
   public async updateVehicle(
     updateVehicleDto: UpdateVehicleDto,
   ): Promise<Vehicle> {
-    const {
-      id,
-      alias,
-      colorExterior,
-      detail,
-      licensePlate,
-      mainPicture,
-      model,
-      pictures,
-      bodyStyle,
-      year,
-    } = updateVehicleDto;
+    this.logger.debug(
+      `Received update vehicle with payload ${JSON.stringify(
+        updateVehicleDto,
+      )}`,
+    );
+
+    const { id } = updateVehicleDto;
 
     const vehicle = await this.getVehicleById({ id });
 
-    vehicle.alias = alias ? alias : vehicle.alias;
-    vehicle.colorExterior = colorExterior
-      ? colorExterior
-      : vehicle.colorExterior;
-    vehicle.detail = detail ? detail : vehicle.detail;
-    vehicle.licensePlate = licensePlate ? licensePlate : vehicle.licensePlate;
-    vehicle.mainPicture = mainPicture ? mainPicture : vehicle.mainPicture;
-    vehicle.model = model ? model : vehicle.model;
-    vehicle.pictures = pictures ? pictures : vehicle.pictures;
-    vehicle.bodyStyle = bodyStyle ? bodyStyle : vehicle.bodyStyle;
-    vehicle.year = year ? year : vehicle.year;
+    const updateFieldList = Object.keys(updateVehicleDto);
+
+    for (const field of updateFieldList) {
+      if (vehicle.id != updateVehicleDto[field]) {
+        console.log(updateVehicleDto[field]);
+        vehicle[field] = updateVehicleDto[field];
+      }
+    }
 
     vehicle.updatedAt = new Date().toISOString();
 
