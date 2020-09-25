@@ -6,6 +6,7 @@ import { CreateModelDto } from './model-dto/create-model.dto';
 import { GetModelByIdDto } from './model-dto/get-model-by-id.dto';
 import { v4 as uuid } from 'uuid';
 import { GetManyModelsByIdDto } from './model-dto/get-many-models-by-id.dto';
+import { RpcException } from '@nestjs/microservices';
 
 @Injectable()
 export class ModelService {
@@ -22,7 +23,13 @@ export class ModelService {
       )}`,
     );
 
-    return this.modelRepository.findOne(getModelByIdDto);
+    const result = await this.modelRepository.findOne(getModelByIdDto);
+
+    if (!result) {
+      throw new RpcException('Entry not found');
+    }
+
+    return result;
   }
 
   public async getManyModelsById(
