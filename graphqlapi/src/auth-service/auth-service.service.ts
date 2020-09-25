@@ -1,6 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Client, ClientProxy, Transport } from '@nestjs/microservices';
-import { CreateUserInput, UpdateUserInput } from './user-data/user.input';
+import {
+  CreateUserInput,
+  LoginUserInput,
+  UpdateUserInput,
+} from './user-data/user.input';
 import { UserType } from './user-data/user.type';
 
 @Injectable()
