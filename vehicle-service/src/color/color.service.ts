@@ -32,7 +32,7 @@ export class ColorService {
   }
 
   public async getAllColors(): Promise<Color[]> {
-    this.logger.debug(`Received get All colors`);
+    this.logger.debug(`Received get all colors`);
 
     return await this.colorRepository.find();
   }

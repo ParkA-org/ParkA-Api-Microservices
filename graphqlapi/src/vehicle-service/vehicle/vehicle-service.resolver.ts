@@ -48,6 +48,8 @@ export class VehicleServiceResolver {
 
   @Query(returns => [VehicleType])
   public async getAllVehicles(): Promise<VehicleType[]> {
+    this.logger.debug(`Received get all vehicles`);
+
     return this.vehicleService.getAllVehicles();
   }
 
@@ -58,6 +60,7 @@ export class VehicleServiceResolver {
     this.logger.debug(
       `Received create vehicle with data ${JSON.stringify(createVehicleInput)}`,
     );
+
     return this.vehicleService.createVehicle(createVehicleInput);
   }
 
@@ -68,12 +71,17 @@ export class VehicleServiceResolver {
     this.logger.debug(
       `Received update vehicle with data ${JSON.stringify(updateVehicleInput)}`,
     );
+
     return this.vehicleService.updateVehicle(updateVehicleInput);
   }
 
   //Field Resolvers
   @ResolveField(returns => ModelType)
   public async model(@Parent() vehicle: VehicleType): Promise<ModelType> {
+    this.logger.debug(
+      `Received resolve field with payload ${JSON.stringify(vehicle)}`,
+    );
+
     const getVehicleModelByIdInput: GetModelByIdInput = {
       id: vehicle.model,
     };
@@ -85,6 +93,10 @@ export class VehicleServiceResolver {
   public async colorExterior(
     @Parent() vehicle: VehicleType,
   ): Promise<ColorType> {
+    this.logger.debug(
+      `Received resolve field with payload ${JSON.stringify(vehicle)}`,
+    );
+
     const getVehicleColorByIdInput: GetColorByIdInput = {
       id: vehicle.colorExterior,
     };
@@ -100,6 +112,10 @@ export class VehicleServiceResolver {
   public async bodyStyle(
     @Parent() vehicle: VehicleType,
   ): Promise<BodyStyleType> {
+    this.logger.debug(
+      `Received resolve field with payload ${JSON.stringify(vehicle)}`,
+    );
+
     const getVehicleTypeByIdInput: GetBodyStyleByIdInput = {
       id: vehicle.bodyStyle,
     };
