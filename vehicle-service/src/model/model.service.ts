@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Model } from './model-entities/model.entity';
@@ -9,18 +9,32 @@ import { GetManyModelsByIdDto } from './model-dto/get-many-models-by-id.dto';
 
 @Injectable()
 export class ModelService {
+  private logger = new Logger('ModelService');
+
   constructor(
     @InjectRepository(Model) private modelRepository: Repository<Model>,
   ) {}
 
   public async getModelById(getModelByIdDto: GetModelByIdDto): Promise<Model> {
-    return await this.modelRepository.findOne(getModelByIdDto);
+    this.logger.debug(
+      `Received get Model by id with payload ${JSON.stringify(
+        getModelByIdDto,
+      )}`,
+    );
+
+    return this.modelRepository.findOne(getModelByIdDto);
   }
 
   public async getManyModelsById(
     getManyModelsByIdDto: GetManyModelsByIdDto,
   ): Promise<Model[]> {
-    return await this.modelRepository.find({
+    this.logger.debug(
+      `Received get many Models by ids with payload ${JSON.stringify(
+        getManyModelsByIdDto,
+      )}`,
+    );
+
+    return this.modelRepository.find({
       where: {
         id: {
           $in: getManyModelsByIdDto.ids,
@@ -30,6 +44,10 @@ export class ModelService {
   }
 
   public async createModel(createModelDto: CreateModelDto): Promise<Model> {
+    this.logger.debug(
+      `Received create Model with payload ${JSON.stringify(createModelDto)}`,
+    );
+
     const { make, name } = createModelDto;
 
     const model = this.modelRepository.create({
@@ -40,6 +58,6 @@ export class ModelService {
       updatedAt: new Date().toISOString(),
     });
 
-    return await this.modelRepository.save(model);
+    return this.modelRepository.save(model);
   }
 }

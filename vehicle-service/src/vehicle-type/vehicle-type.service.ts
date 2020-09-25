@@ -9,7 +9,7 @@ import { RpcException } from '@nestjs/microservices';
 
 @Injectable()
 export class VehicleTypeService {
-  private logger = new Logger();
+  private logger = new Logger('BodyStyleService');
 
   constructor(
     @InjectRepository(VehicleType)
