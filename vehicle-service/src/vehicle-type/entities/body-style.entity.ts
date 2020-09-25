@@ -1,9 +1,9 @@
 import { IBaseEntity } from 'src/make/interfaces/base-entity.interface';
 import { Column, Entity, ObjectIdColumn, PrimaryColumn } from 'typeorm';
-import { IVehicleType } from '../interfaces/vehicle-type-entity.interface';
+import { IBodyStyle } from '../interfaces/body-style-entity.interface';
 
 @Entity()
-export class VehicleType implements IVehicleType, IBaseEntity {
+export class BodyStyle implements IBodyStyle, IBaseEntity {
   @ObjectIdColumn()
   _id: string;
 

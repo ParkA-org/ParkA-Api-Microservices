@@ -3,10 +3,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Vehicle } from './vehicle/entities/vehicle.entity';
 import { VehicleModule } from './vehicle/vehicle.module';
 import { ModelModule } from './model/model.module';
-import { VehicleTypeModule } from './vehicle-type/vehicle-type.module';
+import { BodyStyleModule } from './vehicle-type/body-style.module';
 import { ColorModule } from './color/color.module';
 import { MakeModule } from './make/make.module';
-import { VehicleType } from './vehicle-type/entities/vehicle-type.entity';
+import { BodyStyle } from './vehicle-type/entities/body-style.entity';
 import { Model } from './model/entities/model.entity';
 import { Make } from './make/entities/make.entity';
 import { Color } from './color/entities/color.entity';
@@ -21,10 +21,10 @@ import { Color } from './color/entities/color.entity';
       useUnifiedTopology: true,
       useNewUrlParser: true,
       synchronize: true,
-      entities: [Vehicle, VehicleType, Model, Make, Color],
+      entities: [Vehicle, BodyStyle, Model, Make, Color],
     }),
     ModelModule,
-    VehicleTypeModule,
+    BodyStyleModule,
     ColorModule,
     MakeModule,
   ],
