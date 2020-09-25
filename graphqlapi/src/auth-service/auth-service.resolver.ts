@@ -34,7 +34,7 @@ export class AuthServiceResolver {
     return await this.authServiceService.login(loginUserInput);
   }
 
-  @Mutation(returns => LoginType)
+  @Mutation(returns => UserType)
   async updateUser(
     @Args('updateUserInput') updateUserInput: UpdateUserInput,
   ): Promise<UserType> {

@@ -21,31 +21,40 @@ export class AuthService {
     private credentialRepository: Repository<Credential>,
   ) {}
 
-  // Bobop con el string del url
   // Is Inprogress
   public async updateUser(updateUserDto: UpdateUserDto): Promise<User> {
     this.logger.debug(
       `Received update user payload ${JSON.stringify(updateUserDto)}`,
     );
-    const { id, name, email, lastName, profilePicture } = updateUserDto;
-    const user = await this.getUser(id);
-    try {
-      const user = this.authRepository.save({
-        id: uuid(),
-        name: '',
-        lastName: '',
-        email: '',
-        profilePicture: '',
-        updateAt: new Date().toISOString(),
-      });
 
-      return await user;
+    try {
+      const { id, name, password, lastName, profilePicture } = updateUserDto;
+      const user = await this.getUser(id);
+
+      profilePicture !== undefined
+        ? (user.profilePicture = profilePicture)
+        : null;
+
+      password !== undefined
+        ? await this.updateCredential(user.credential, password)
+        : null;
+
+      lastName !== undefined ? (user.lastName = lastName) : null;
+
+      name !== undefined ? (user.name = name) : null;
+
+      user.updateAt = new Date().toISOString();
+
+      await this.authRepository.save(user);
+
+      return user;
     } catch (error) {
-      throw error.code === 11000
-        ? new RpcException('Duplicate field')
-        : new RpcException('An undefined error occured');
+      throw new RpcException('An undefined error occured');
     }
   }
+
+  // Is Inprogress
+  public async updateCredential(id: String, password: String) {}
 
   // Is Inprogress
   public async createUser(createUserDto: CreateUserDto): Promise<User> {

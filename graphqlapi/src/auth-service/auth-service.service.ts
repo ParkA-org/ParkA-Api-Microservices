@@ -41,10 +41,12 @@ export class AuthServiceService {
   }
 
   public async updateUser(updateUserInput: UpdateUserInput): Promise<UserType> {
-    this.logger.log(`Got updateUserInput data`);
+    this.logger.log(
+      `Got updateUserInput data ${JSON.stringify(updateUserInput)}`,
+    );
     const response = this.client.send<UserType>(
       { type: 'update-user' },
-      UpdateUserInput,
+      updateUserInput,
     );
     return response.toPromise();
   }

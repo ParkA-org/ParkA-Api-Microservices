@@ -5,6 +5,7 @@ import { AuthCredentialsDto } from './auth-dto/auth-credential.dto';
 import { CreateUserDto } from './auth-dto/create-user.dto';
 import { User } from './auth-entity/user.entity';
 import { LoginType } from './auth-interface/login';
+import { UpdateUserDto } from './auth-dto/update-user.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -45,14 +46,10 @@ export class AuthController {
   }
 
   @MessagePattern({ type: 'update-user' })
-  public async updateUser(
-    authCredentialsDto: AuthCredentialsDto,
-  ): Promise<LoginType> {
+  public async updateUser(updateUserDto: UpdateUserDto): Promise<User> {
     this.logger.debug(
-      `Received login user message with data ${JSON.stringify(
-        authCredentialsDto,
-      )}`,
+      `Received Update User message with data ${JSON.stringify(updateUserDto)}`,
     );
-    return await this.authService.signIn(authCredentialsDto);
+    return await this.authService.updateUser(updateUserDto);
   }
 }
