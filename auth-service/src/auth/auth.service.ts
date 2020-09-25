@@ -11,6 +11,8 @@ import { AuthCredentialsDto } from './auth-dto/auth-credential.dto';
 import * as bcrypt from 'bcryptjs';
 import { LoginType } from './auth-interface/login';
 import { exception } from 'console';
+import { JwtService } from '@nestjs/jwt';
+import { JwtPayload } from './auth-interface/jwt-payload.interface';
 
 @Injectable()
 export class AuthService {
@@ -20,6 +22,7 @@ export class AuthService {
     @InjectRepository(User) private authRepository: Repository<User>,
     @InjectRepository(Credential)
     private credentialRepository: Repository<Credential>,
+    private jwtService: JwtService,
   ) {}
 
   public async updateUser(updateUserDto: UpdateUserDto): Promise<User> {
@@ -144,17 +147,28 @@ export class AuthService {
     this.logger.debug(
       `Received Login user payload ${JSON.stringify(authCredentialDto)}`,
     );
+
     try {
       const { email, password } = authCredentialDto;
+
       email.toLowerCase();
       const user = await this.authRepository.findOne({ email });
+
       const credential = await this.credentialRepository.findOne({ email });
+
       const result = new LoginType();
+
+      const payload: JwtPayload = { email: email, id: user.id };
+
+      const accessToken = await this.jwtService.sign(payload);
+
       if (await user) {
         const hash = await bcrypt.hash(password, credential.salt);
+
         if (hash === credential.password) {
           result.user = user;
-          result.JWT = 'ComingSoon';
+          result.JWT = accessToken;
+
           if (!user.confirmed) {
             throw new Error('Confirm your account');
           }
