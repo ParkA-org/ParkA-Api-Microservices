@@ -5,6 +5,7 @@ export class UpdateVehicleDto implements IUpdateVehicleDto {
   @IsUUID('4')
   id: string;
 
+  @MaxLength(100)
   alias: string;
 
   @IsUUID('4')
@@ -24,8 +25,6 @@ export class UpdateVehicleDto implements IUpdateVehicleDto {
 
   @IsUUID('4')
   bodyStyle: string;
-
-  verified: boolean;
 
   @MaxLength(4)
   @MinLength(4)

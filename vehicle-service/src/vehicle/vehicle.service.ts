@@ -72,11 +72,22 @@ export class VehicleService {
       model,
       pictures,
       bodyStyle,
-      verified,
       year,
     } = updateVehicleDto;
 
     const vehicle = await this.getVehicleById({ id });
+
+    vehicle.alias = alias ? alias : vehicle.alias;
+    vehicle.colorExterior = colorExterior
+      ? colorExterior
+      : vehicle.colorExterior;
+    vehicle.detail = detail ? detail : vehicle.detail;
+    vehicle.licensePlate = licensePlate ? licensePlate : vehicle.licensePlate;
+    vehicle.mainPicture = mainPicture ? mainPicture : vehicle.mainPicture;
+    vehicle.model = model ? model : vehicle.model;
+    vehicle.pictures = pictures ? pictures : vehicle.pictures;
+    vehicle.bodyStyle = bodyStyle ? bodyStyle : vehicle.bodyStyle;
+    vehicle.year = year ? year : vehicle.year;
 
     vehicle.updatedAt = new Date().toISOString();
 
