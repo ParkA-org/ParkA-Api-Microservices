@@ -39,5 +39,5 @@ export class CreateVehicleInput implements ICreateVehicleInput {
 
   @Field(type => ID)
   @IsUUID('4')
-  vehicleType: string;
+  bodyStyle: string;
 }

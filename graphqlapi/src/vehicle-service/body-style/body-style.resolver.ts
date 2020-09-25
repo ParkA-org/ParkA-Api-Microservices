@@ -23,7 +23,7 @@ export class BodyStyleResolver {
 
   @Mutation(of => BodyStyleType)
   public async createBodyStyle(
-    @Args('createVehicleTypeInput')
+    @Args('createBodyStyleInput')
     createBodyStyleInput: CreateBodyStyleInput,
   ): Promise<BodyStyleType> {
     return this.bodyStyleService.createBodyStyle(createBodyStyleInput);

@@ -18,7 +18,7 @@ export class ModelService {
 
   public async getModelById(getModelByIdDto: GetModelByIdDto): Promise<Model> {
     this.logger.debug(
-      `Received get Model by id with payload ${JSON.stringify(
+      `Received get model by id with payload ${JSON.stringify(
         getModelByIdDto,
       )}`,
     );
@@ -36,7 +36,7 @@ export class ModelService {
     getManyModelsByIdDto: GetManyModelsByIdDto,
   ): Promise<Model[]> {
     this.logger.debug(
-      `Received get many Models by ids with payload ${JSON.stringify(
+      `Received get many models by ids with payload ${JSON.stringify(
         getManyModelsByIdDto,
       )}`,
     );
@@ -52,7 +52,7 @@ export class ModelService {
 
   public async createModel(createModelDto: CreateModelDto): Promise<Model> {
     this.logger.debug(
-      `Received create Model with payload ${JSON.stringify(createModelDto)}`,
+      `Received create model with payload ${JSON.stringify(createModelDto)}`,
     );
 
     const { make, name } = createModelDto;

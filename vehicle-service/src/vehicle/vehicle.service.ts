@@ -35,7 +35,7 @@ export class VehicleService {
   }
 
   public async getAllVehicles(): Promise<Vehicle[]> {
-    this.logger.debug(`Received get all vehicles by id with payload `);
+    this.logger.debug(`Received get all vehicles`);
 
     return this.vehicleRepository.find();
   }

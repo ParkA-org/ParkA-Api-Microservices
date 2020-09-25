@@ -20,7 +20,7 @@ export class BodyStyleService {
     getBodyStyleByIdDto: GetBodyStyleByIdDto,
   ): Promise<BodyStyle> {
     this.logger.debug(
-      `Received get color by id ${JSON.stringify(getBodyStyleByIdDto)}`,
+      `Received get body style by id ${JSON.stringify(getBodyStyleByIdDto)}`,
     );
     const result = await this.bodyStyleRepository.findOne(getBodyStyleByIdDto);
 
@@ -32,7 +32,7 @@ export class BodyStyleService {
   }
 
   public async getAllBodyStyles(): Promise<BodyStyle[]> {
-    this.logger.debug(`Received get all colors`);
+    this.logger.debug(`Received get all body styles`);
 
     return this.bodyStyleRepository.find();
   }
@@ -41,7 +41,7 @@ export class BodyStyleService {
     createBodyStyleDto: CreateBodyStyleDto,
   ): Promise<BodyStyle> {
     this.logger.debug(
-      `Received create color with payload ${JSON.stringify(
+      `Received create body style with payload ${JSON.stringify(
         createBodyStyleDto,
       )}`,
     );

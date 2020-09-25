@@ -17,7 +17,7 @@ export class ColorService {
 
   public async getColorById(getColorByIdDto: GetColorByIdDto): Promise<Color> {
     this.logger.debug(
-      `Received find color by id with payload ${JSON.stringify(
+      `Received get color by id with payload ${JSON.stringify(
         getColorByIdDto,
       )}`,
     );
@@ -32,7 +32,7 @@ export class ColorService {
   }
 
   public async getAllColors(): Promise<Color[]> {
-    this.logger.debug(`Received find All colors`);
+    this.logger.debug(`Received get All colors`);
 
     return await this.colorRepository.find();
   }
