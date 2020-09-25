@@ -1,7 +1,6 @@
 export interface ICreateVehicleDto {
   model: string;
   licensePlate: string;
-  verified: boolean;
   detail: string;
   colorExterior: string;
   mainPicture: string;

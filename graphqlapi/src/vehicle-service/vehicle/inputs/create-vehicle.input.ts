@@ -13,9 +13,6 @@ export class CreateVehicleInput implements ICreateVehicleInput {
   @MinLength(7)
   licensePlate: string;
 
-  @Field(type => Boolean, { defaultValue: false })
-  verified: boolean;
-
   @Field({ defaultValue: '' })
   detail: string;
 

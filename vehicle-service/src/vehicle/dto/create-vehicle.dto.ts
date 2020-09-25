@@ -1,4 +1,4 @@
-import { IsBoolean, IsUUID, MaxLength, MinLength } from 'class-validator';
+import { IsUUID, MaxLength, MinLength } from 'class-validator';
 import { ICreateVehicleDto } from '../interfaces/create-vehicle-dto.interface';
 
 export class CreateVehicleDto implements ICreateVehicleDto {
@@ -8,9 +8,6 @@ export class CreateVehicleDto implements ICreateVehicleDto {
   @MinLength(7)
   @MaxLength(7)
   licensePlate: string;
-
-  @IsBoolean()
-  verified: boolean;
 
   detail: string;
 

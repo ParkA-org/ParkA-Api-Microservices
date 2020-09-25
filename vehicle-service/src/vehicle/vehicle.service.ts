@@ -58,7 +58,6 @@ export class VehicleService {
       model,
       pictures,
       bodyStyle,
-      verified,
       year,
     } = createVehicleDto;
 
@@ -72,7 +71,7 @@ export class VehicleService {
       model,
       pictures,
       bodyStyle,
-      verified,
+      verified: false,
       year,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
