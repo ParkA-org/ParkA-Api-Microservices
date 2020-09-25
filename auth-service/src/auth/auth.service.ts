@@ -122,4 +122,17 @@ export class AuthService {
     user.email = email;
     user.password = password;
   }
+
+  public async validateUserPassword(
+    authCredentialDto: AuthCredentialsDto,
+  ): Promise<string> {
+    const { email, password } = authCredentialDto;
+    const user = await this.authRepository.findOne({ email });
+
+    if (user) {
+      const credential = this.credentialRepository.findOne(user.credential);
+    } else {
+      return null;
+    }
+  }
 }
