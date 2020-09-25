@@ -46,4 +46,13 @@ export class AuthServiceService {
     );
     return response.toPromise();
   }
+
+  public async singIn(loginUserInput: LoginUserInput): Promise<UserType> {
+    this.logger.log('Got LoginUserInput data');
+    const response = this.client.send<UserType>(
+      { type: 'sing-in' },
+      loginUserInput,
+    );
+    return response.toPromise();
+  }
 }

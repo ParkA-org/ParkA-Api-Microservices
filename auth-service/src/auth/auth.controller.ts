@@ -32,7 +32,7 @@ export class AuthController {
   }
 
   @MessagePattern({ type: 'sign-in' })
-  public async signIn(authCredentialsDto: AuthCredentialsDto): Promise<void> {
+  public async signIn(authCredentialsDto: AuthCredentialsDto): Promise<string> {
     this.logger.debug(
       `Received login user message with data ${JSON.stringify(
         authCredentialsDto,

@@ -24,4 +24,11 @@ export class AuthServiceResolver {
   ): Promise<UserType> {
     return await this.authServiceService.createUser(createUserInput);
   }
+
+  @Mutation(returns => UserType)
+  async singIn(
+    @Args('loginUserInput') loginUserInput: LoginUserInput,):Promise<UserType>{
+      return await this.authServiceService.singIn(loginUserInput);
+    }
+  )
 }

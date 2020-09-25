@@ -113,26 +113,20 @@ export class AuthService {
     return await user;
   }
 
-  // Is Inprogress
-  public async signIn(authCrendetialsDto: AuthCredentialsDto) {
-    const { email, password } = authCrendetialsDto;
-
-    const user = new User();
-
-    user.email = email;
-    user.password = password;
-  }
-
-  public async validateUserPassword(
-    authCredentialDto: AuthCredentialsDto,
-  ): Promise<string> {
+  // InProgress
+  public async signIn(authCredentialDto: AuthCredentialsDto): Promise<string> {
     const { email, password } = authCredentialDto;
     const user = await this.authRepository.findOne({ email });
 
     if (user) {
-      const credential = this.credentialRepository.findOne(user.credential);
-    } else {
-      return null;
+      const credential = await this.credentialRepository.findOne(
+        user.credential,
+      );
+      const hash = await bcrypt.hash(password, await credential.salt);
+      if (hash === password) {
+        return email;
+      }
     }
+    return null;
   }
 }
