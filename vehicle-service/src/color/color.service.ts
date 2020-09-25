@@ -5,6 +5,7 @@ import { Color } from './color-entities/color.entity';
 import { CreateColorDto } from './color-dto/create-color.dto';
 import { GetColorByIdDto } from './color-dto/get-color-by-id.dto';
 import { v4 as uuid } from 'uuid';
+import { RpcException } from '@nestjs/microservices';
 
 @Injectable()
 export class ColorService {
@@ -21,7 +22,13 @@ export class ColorService {
       )}`,
     );
 
-    return await this.colorRepository.findOne(getColorByIdDto);
+    const result = await this.colorRepository.findOne(getColorByIdDto);
+
+    if (!result) {
+      throw new RpcException('Entry not found');
+    }
+
+    return result;
   }
 
   public async getAllColors(): Promise<Color[]> {

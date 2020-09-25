@@ -6,6 +6,7 @@ import { CreateVehicleDto } from './vehicle-dto/create-vehicle.dto';
 import { v4 as uuid } from 'uuid';
 import { GetVehicleByIdDto } from './vehicle-dto/get-vehicle-by-id.dto';
 import { UpdateVehicleDto } from './vehicle-dto/update-vehicle.dto';
+import { RpcException } from '@nestjs/microservices';
 
 @Injectable()
 export class VehicleService {
@@ -24,11 +25,18 @@ export class VehicleService {
       )}`,
     );
 
-    return await this.vehicleRepository.findOne(getVehicleByIdDto);
+    const result = await this.vehicleRepository.findOne(getVehicleByIdDto);
+
+    if (!result) {
+      throw new RpcException('Entry not found');
+    }
+
+    return result;
   }
 
   public async getAllVehicles(): Promise<Vehicle[]> {
     this.logger.debug(`Received get all vehicles by id with payload `);
+
     return this.vehicleRepository.find();
   }
 
