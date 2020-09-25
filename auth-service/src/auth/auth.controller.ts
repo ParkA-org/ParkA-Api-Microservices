@@ -6,7 +6,7 @@ import { CreateUserDto } from './auth-dto/create-user.dto';
 import { User } from './auth-entity/user.entity';
 import { LoginType } from './auth-interface/login';
 import { UpdateUserDto } from './auth-dto/update-user.dto';
-import { AuthGuard } from '@nestjs/passport';
+// import { AuthGuard } from '@nestjs/passport';
 
 @Controller('auth')
 export class AuthController {
@@ -47,7 +47,7 @@ export class AuthController {
   }
 
   @MessagePattern({ type: 'update-user' })
-  @UseGuards(AuthGuard())
+  // @UseGuards(AuthGuard())
   public async updateUser(updateUserDto: UpdateUserDto): Promise<User> {
     this.logger.debug(
       `Received Update User message with data ${JSON.stringify(updateUserDto)}`,
