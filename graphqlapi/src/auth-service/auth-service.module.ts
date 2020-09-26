@@ -1,22 +1,22 @@
 import { Module } from '@nestjs/common';
-import { JwtModule } from '@nestjs/jwt/dist/jwt.module';
-import { PassportModule } from '@nestjs/passport/dist/passport.module';
+// import { JwtModule } from '@nestjs/jwt/dist/jwt.module';
+// import { PassportModule } from '@nestjs/passport/dist/passport.module';
 import { AuthServiceResolver } from './auth-service.resolver';
 import { AuthServiceService } from './auth-service.service';
-import { JwtStrategy } from './strategy/jwt.strategy';
+// import { JwtStrategy } from './strategy/jwt.strategy';
 
 @Module({
   imports: [
-    PassportModule.register({ defaultStrategy: 'jwt' }),
-    JwtModule.register({
-      secret: 'topSecret51',
-      signOptions: {
-        expiresIn: 604800,
-      },
-    }),
+    // PassportModule.register({ defaultStrategy: 'jwt' }),
+    // JwtModule.register({
+    //   secret: 'topSecret51',
+    //   signOptions: {
+    //     expiresIn: 604800,
+    //   },
+    // }),
   ],
-  providers: [AuthServiceService, AuthServiceResolver, JwtStrategy],
+  providers: [AuthServiceService, AuthServiceResolver /*JwtStrategy*/],
 
-  exports: [JwtStrategy, PassportModule],
+  //exports: [JwtStrategy, PassportModule],
 })
 export class AuthServiceModule {}
