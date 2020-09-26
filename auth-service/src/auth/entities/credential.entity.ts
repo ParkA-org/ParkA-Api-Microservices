@@ -1,8 +1,10 @@
 import { Column, Entity, ObjectIdColumn, PrimaryColumn, Unique } from 'typeorm';
+import { IBaseEntity } from '../interfaces/base-entity.interface';
+import { ICredential } from '../interfaces/credential-entity.interface';
 
 @Entity()
 @Unique(['email'])
-export class Credential {
+export class Credential implements ICredential, IBaseEntity {
   @ObjectIdColumn()
   _id: string;
 
