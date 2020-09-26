@@ -3,11 +3,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { User } from './auth/auth-entity/user.entity';
 import { Credential } from './auth/auth-entity/credential.entity';
+import { ConfigModule } from '@nestjs/config';
 
 //vUrmea2Sp4SSCBWj
 @Module({
   imports: [
     AuthModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     TypeOrmModule.forRoot({
       type: 'mongodb',
       url:

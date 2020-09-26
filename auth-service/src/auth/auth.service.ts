@@ -12,6 +12,7 @@ import * as bcrypt from 'bcryptjs';
 import { LoginType } from './auth-interface/login';
 import { exception } from 'console';
 import * as jwt from 'jsonwebtoken';
+import { ConfigService } from '@nestjs/config';
 @Injectable()
 export class AuthService {
   private logger = new Logger('AuthService');
@@ -20,6 +21,7 @@ export class AuthService {
     @InjectRepository(User) private authRepository: Repository<User>,
     @InjectRepository(Credential)
     private credentialRepository: Repository<Credential>,
+    private configService: ConfigService,
   ) {}
 
   public async updateUser(updateUserDto: UpdateUserDto): Promise<User> {
@@ -129,9 +131,13 @@ export class AuthService {
   }
 
   private createToken(email: string, id: string) {
-    return jwt.sign({ email: email, id: id }, 'secret', {
-      expiresIn: '100d',
-    });
+    return jwt.sign(
+      { email: email, id: id },
+      this.configService.get('JWT_SECRET'),
+      {
+        expiresIn: '100d',
+      },
+    );
   }
 
   public async getUser(id: string): Promise<User> {
