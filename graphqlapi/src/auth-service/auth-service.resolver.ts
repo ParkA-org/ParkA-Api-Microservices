@@ -18,13 +18,13 @@ export class AuthServiceResolver {
 
   @Query(returns => UserType)
   @UseGuards(AuthGuard)
-  user(@Args('id') id: string) {
+  getUserById(@Args('id') id: string) {
     return this.authServiceService.getUserById(id);
   }
 
   @Query(returns => [UserType])
   @UseGuards(AuthGuard)
-  users() {
+  getAllUsers() {
     return this.authServiceService.getAllUsers();
   }
 
