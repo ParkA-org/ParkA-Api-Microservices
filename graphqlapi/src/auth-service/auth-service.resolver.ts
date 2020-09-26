@@ -6,11 +6,10 @@ import {
 import { Query, Resolver, Mutation, Args } from '@nestjs/graphql';
 import { AuthGuard } from './strategy/auth.guard';
 import { AuthServiceService } from './auth-service.service';
-import { UpdateUserInput } from './user-input/update-user.input';
-import { CreateUserInput, LoginUserInput } from './user-input/user.input';
-import { LoginType } from './user-type/login.type';
-import { UserType } from './user-type/user.type';
-import * as jwt from 'jsonwebtoken';
+import { UpdateUserInput } from './inputs/update-user.input';
+import { CreateUserInput, LoginUserInput } from './inputs/user.input';
+import { LoginType } from './types/login.type';
+import { UserType } from './types/user.type';
 
 @Resolver(of => UserType)
 export class AuthServiceResolver {

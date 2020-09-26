@@ -1,10 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Client, ClientProxy, Transport } from '@nestjs/microservices';
-import { UpdateUserInput } from './user-input/update-user.input';
-import { CreateUserInput, LoginUserInput } from './user-input/user.input';
-import { LoginType } from './user-type/login.type';
-import { UserType } from './user-type/user.type';
+import { UpdateUserInput } from './inputs/update-user.input';
+import { CreateUserInput, LoginUserInput } from './inputs/user.input';
+import { LoginType } from './types/login.type';
+import { UserType } from './types/user.type';
 
 @Injectable()
 export class AuthServiceService {
