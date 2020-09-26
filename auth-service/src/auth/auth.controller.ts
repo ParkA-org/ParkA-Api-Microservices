@@ -1,4 +1,4 @@
-import { Controller, Logger, UseGuards } from '@nestjs/common';
+import { Controller, Logger } from '@nestjs/common';
 import { JsonSocket, MessagePattern } from '@nestjs/microservices';
 import { AuthService } from './auth.service';
 import { AuthCredentialsDto } from './auth-dto/auth-credential.dto';
@@ -6,7 +6,6 @@ import { CreateUserDto } from './auth-dto/create-user.dto';
 import { User } from './auth-entity/user.entity';
 import { LoginType } from './auth-interface/login';
 import { UpdateUserDto } from './auth-dto/update-user.dto';
-// import { AuthGuard } from '@nestjs/passport';
 
 @Controller('auth')
 export class AuthController {

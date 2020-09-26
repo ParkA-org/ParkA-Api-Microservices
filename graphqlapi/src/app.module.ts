@@ -7,7 +7,6 @@ import { GraphQLModule } from '@nestjs/graphql';
     GraphQLModule.forRoot({
       autoSchemaFile: true,
       context: ({ req }) => ({ headers: req.headers }),
-      // context: ({ req, res }) => ({ req, res }),
     }),
   ],
 })
