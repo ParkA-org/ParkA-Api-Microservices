@@ -1,11 +1,11 @@
-export interface IUpdateUserInput {
-  id: string;
+export interface IUserInput {
+  name: string;
 
-  name?: string;
+  lastName: string;
 
-  lastName?: string;
+  email: string;
 
   profilePicture?: string;
 
-  password?: string;
+  password: string;
 }

@@ -1,5 +1,5 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
-import { IUpdateUserInput } from '../interfaces/user-input.interface';
+import { IUpdateUserInput } from '../interfaces/update-user-input.interface';
 
 @InputType()
 export class UpdateUserInput implements IUpdateUserInput {
