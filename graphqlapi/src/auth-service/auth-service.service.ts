@@ -1,4 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { Client, ClientProxy, Transport } from '@nestjs/microservices';
 import { UpdateUserInput } from './user-input/update-user.input';
 import { CreateUserInput, LoginUserInput } from './user-input/user.input';
