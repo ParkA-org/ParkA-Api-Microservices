@@ -3,7 +3,7 @@ import { JsonSocket, MessagePattern } from '@nestjs/microservices';
 import { AuthService } from './auth.service';
 import { AuthCredentialsDto } from './auth-dto/auth-credential.dto';
 import { CreateUserDto } from './auth-dto/create-user.dto';
-import { User } from './auth-entity/user.entity';
+import { User } from './entities/user.entity';
 import { LoginType } from './login-class/login';
 import { UpdateUserDto } from './auth-dto/update-user.dto';
 

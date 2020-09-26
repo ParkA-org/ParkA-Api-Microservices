@@ -1,9 +1,9 @@
 import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Credential } from './auth-entity/credential.entity';
+import { Credential } from './entities/credential.entity';
 import { CreateUserDto } from './auth-dto/create-user.dto';
-import { User } from './auth-entity/user.entity';
+import { User } from './entities/user.entity';
 import { v4 as uuid } from 'uuid';
 import { RpcException } from '@nestjs/microservices';
 import { UpdateUserDto } from './auth-dto/update-user.dto';

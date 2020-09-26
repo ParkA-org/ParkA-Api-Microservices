@@ -1,6 +1,6 @@
 import { Column, Entity, ObjectIdColumn, PrimaryColumn, Unique } from 'typeorm';
-import { IBaseEntity } from '../auth-interface/base-entity.interface';
-import { IUser } from '../auth-interface/user-entity.interface';
+import { IBaseEntity } from '../interfaces/base-entity.interface';
+import { IUser } from '../interfaces/user-entity.interface';
 
 @Entity()
 @Unique(['email'])
@@ -24,10 +24,10 @@ export class User implements IUser, IBaseEntity {
   profilePicture?: string;
 
   @Column()
-  updateAt: string;
+  updatedAt: string;
 
   @Column()
-  createAt: string;
+  createdAt: string;
 
   @Column()
   accountData?: string;
