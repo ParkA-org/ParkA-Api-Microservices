@@ -1,9 +1,10 @@
 import { Column, Entity, ObjectIdColumn, PrimaryColumn, Unique } from 'typeorm';
+import { IBaseEntity } from '../auth-interface/base-entity.interface';
 import { IUser } from '../auth-interface/user-entity.interface';
 
 @Entity()
 @Unique(['email'])
-export class User implements IUser {
+export class User implements IUser, IBaseEntity {
   @ObjectIdColumn()
   _id: string;
 
