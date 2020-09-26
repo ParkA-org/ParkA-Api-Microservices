@@ -1,8 +1,9 @@
 import { Column, Entity, ObjectIdColumn, PrimaryColumn, Unique } from 'typeorm';
+import { IUser } from '../auth-interface/user-entity.interface';
 
 @Entity()
 @Unique(['email'])
-export class User {
+export class User implements IUser {
   @ObjectIdColumn()
   _id: string;
 
