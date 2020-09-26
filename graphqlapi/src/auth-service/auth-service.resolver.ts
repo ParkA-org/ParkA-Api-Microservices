@@ -1,4 +1,8 @@
-import { UnauthorizedException, UseGuards } from '@nestjs/common';
+import {
+  BadRequestException,
+  UnauthorizedException,
+  UseGuards,
+} from '@nestjs/common';
 import { Query, Resolver, Mutation, Args } from '@nestjs/graphql';
 import { AuthGuard } from './strategy/auth.guard';
 import { AuthServiceService } from './auth-service.service';
@@ -26,7 +30,12 @@ export class AuthServiceResolver {
   async createUser(
     @Args('createUserInput') createUserInput: CreateUserInput,
   ): Promise<UserType> {
-    return await this.authServiceService.createUser(createUserInput);
+    const user = await this.authServiceService.createUser(createUserInput);
+    if (!user) {
+      throw new BadRequestException('This user are exists');
+    }
+    await this.authServiceService.confirmUser(user.email);
+    return user;
   }
 
   @Mutation(returns => LoginType)
@@ -36,6 +45,12 @@ export class AuthServiceResolver {
     const login = await this.authServiceService.login(loginUserInput);
     if (!login) {
       throw new UnauthorizedException('Invalid Credentials');
+    }
+    if (!login.user.confirmed) {
+      await this.authServiceService.confirmUser(login.user.email);
+      throw new UnauthorizedException(
+        'Confirm your account ' + login.user.email,
+      );
     }
     return login;
   }

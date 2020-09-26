@@ -40,6 +40,15 @@ export class AuthServiceService {
     return response.toPromise();
   }
 
+  public async confirmUser(email: string): Promise<boolean> {
+    this.logger.log('Create new confirm email');
+    const response = await this.client.send<boolean>(
+      { type: 'confirm-email' },
+      email,
+    );
+    return response.toPromise();
+  }
+
   public async updateUser(updateUserInput: UpdateUserInput): Promise<UserType> {
     this.logger.log(
       `Got updateUserInput data ${JSON.stringify(updateUserInput)}`,

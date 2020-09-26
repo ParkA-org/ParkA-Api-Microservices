@@ -5,7 +5,7 @@ import { AuthGuard } from './strategy/auth.guard';
 
 @Module({
   imports: [],
-  providers: [AuthServiceService, AuthServiceResolver],
+  providers: [AuthServiceService, AuthServiceResolver, AuthGuard],
   exports: [AuthGuard],
 })
 export class AuthServiceModule {}
