@@ -11,6 +11,7 @@ import { AuthCredentialsDto } from './auth-dto/auth-credential.dto';
 import * as bcrypt from 'bcryptjs';
 import { LoginType } from './auth-interface/login';
 import { exception } from 'console';
+import * as jwt from 'jsonwebtoken';
 @Injectable()
 export class AuthService {
   private logger = new Logger('AuthService');
@@ -127,6 +128,12 @@ export class AuthService {
     }
   }
 
+  private createToken(email: string, id: string) {
+    return jwt.sign({ email: email, id: id }, 'secret', {
+      expiresIn: '100d',
+    });
+  }
+
   public async getUser(id: string): Promise<User> {
     try {
       const user = this.authRepository.findOne({ id });
@@ -158,7 +165,7 @@ export class AuthService {
 
         if (hash === credential.password) {
           result.user = user;
-          result.JWT = '';
+          result.JWT = this.createToken(user.id, user.email);
 
           return result;
         }

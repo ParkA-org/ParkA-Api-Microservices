@@ -34,19 +34,9 @@ export class AuthServiceResolver {
     @Args('loginUserInput') loginUserInput: LoginUserInput,
   ): Promise<LoginType> {
     const login = await this.authServiceService.login(loginUserInput);
-    var user = new UserType();
     if (!login) {
       throw new UnauthorizedException('Invalid Credentials');
     }
-
-    const accessToken = jwt.sign(
-      { email: login.user.email, id: login.user.id },
-      'secret',
-      {
-        expiresIn: '100d',
-      },
-    );
-    login.JWT = accessToken;
     return login;
   }
 
