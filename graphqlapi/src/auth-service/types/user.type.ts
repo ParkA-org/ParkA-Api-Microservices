@@ -1,7 +1,8 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { IUserType } from '../interfaces/user-type.interface';
 
 @ObjectType('User')
-export class UserType {
+export class UserType implements IUserType {
   @Field(type => ID, { nullable: true })
   id: string;
 
