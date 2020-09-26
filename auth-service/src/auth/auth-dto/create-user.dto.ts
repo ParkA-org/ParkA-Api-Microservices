@@ -1,7 +1,7 @@
 import { IsEmail, MaxLength, MinLength } from 'class-validator';
-import { IsNull } from 'typeorm';
+import { ICreateUserDto } from '../interfaces/create-user-dto.interface';
 
-export class CreateUserDto {
+export class CreateUserDto implements ICreateUserDto {
   @MinLength(2)
   @MaxLength(50)
   name: string;
