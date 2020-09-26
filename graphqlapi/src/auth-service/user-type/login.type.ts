@@ -7,5 +7,5 @@ export class LoginType {
   JWT: string;
 
   @Field(type => UserType, { nullable: true })
-  user: string;
+  user: UserType;
 }

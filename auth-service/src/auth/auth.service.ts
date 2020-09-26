@@ -160,9 +160,6 @@ export class AuthService {
           result.user = user;
           result.JWT = '';
 
-          if (!user.confirmed) {
-            throw new Error('Confirm your account');
-          }
           return result;
         }
       }
