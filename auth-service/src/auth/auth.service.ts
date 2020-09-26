@@ -161,12 +161,10 @@ export class AuthService {
       const result = new LoginType();
 
       if (await user) {
-        const hash = await bcrypt.hash(password, credential.salt);
-
+        const hash = await this.hashPassword(password, credential.salt);
         if (hash === credential.password) {
           result.user = user;
-          result.JWT = this.createToken(user.id, user.email);
-
+          result.JWT = await this.createToken(user.id, user.email);
           return result;
         }
       }
