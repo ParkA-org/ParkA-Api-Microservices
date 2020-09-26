@@ -45,7 +45,7 @@ export class AuthService {
 
       name !== undefined ? (user.name = name) : null;
 
-      user.updateAt = new Date().toISOString();
+      user.updatedAt = new Date().toISOString();
 
       await this.authRepository.save(user);
 
@@ -88,8 +88,8 @@ export class AuthService {
         email,
         password,
         salt,
-        createAt: date.toISOString(),
-        updateAt: date.toISOString(),
+        createdAt: date.toISOString(),
+        updatedAt: date.toISOString(),
       });
 
       this.logger.debug(
@@ -103,8 +103,8 @@ export class AuthService {
         lastName,
         email,
         profilePicture,
-        createAt: date.toISOString(),
-        updateAt: date.toISOString(),
+        createdAt: date.toISOString(),
+        updatedAt: date.toISOString(),
         confirmed: false,
         credential: id2,
       });
