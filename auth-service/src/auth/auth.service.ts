@@ -11,9 +11,6 @@ import { AuthCredentialsDto } from './auth-dto/auth-credential.dto';
 import * as bcrypt from 'bcryptjs';
 import { LoginType } from './auth-interface/login';
 import { exception } from 'console';
-// import { JwtService } from '@nestjs/jwt';
-import { JwtPayload } from '../../../graphqlapi/src/auth-service/strategy/jwt-payload.interface';
-
 @Injectable()
 export class AuthService {
   private logger = new Logger('AuthService');
@@ -21,7 +18,7 @@ export class AuthService {
   constructor(
     @InjectRepository(User) private authRepository: Repository<User>,
     @InjectRepository(Credential)
-    private credentialRepository: Repository<Credential>, // private jwtService: JwtService,
+    private credentialRepository: Repository<Credential>,
   ) {}
 
   public async updateUser(updateUserDto: UpdateUserDto): Promise<User> {
@@ -139,10 +136,9 @@ export class AuthService {
     }
   }
 
-  // Add JWT in passportjs
   public async signIn(
     authCredentialDto: AuthCredentialsDto,
-  ): Promise<LoginType | String> {
+  ): Promise<LoginType> {
     this.logger.debug(
       `Received Login user payload ${JSON.stringify(authCredentialDto)}`,
     );
@@ -156,10 +152,6 @@ export class AuthService {
       const credential = await this.credentialRepository.findOne({ email });
 
       const result = new LoginType();
-
-      // const payload: JwtPayload = { email: email, id: user.id };
-
-      // const accessToken = await this.jwtService.sign(payload);
 
       if (await user) {
         const hash = await bcrypt.hash(password, credential.salt);

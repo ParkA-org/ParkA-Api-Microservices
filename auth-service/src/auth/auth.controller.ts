@@ -47,7 +47,6 @@ export class AuthController {
   }
 
   @MessagePattern({ type: 'update-user' })
-  // @UseGuards(AuthGuard())
   public async updateUser(updateUserDto: UpdateUserDto): Promise<User> {
     this.logger.debug(
       `Received Update User message with data ${JSON.stringify(updateUserDto)}`,

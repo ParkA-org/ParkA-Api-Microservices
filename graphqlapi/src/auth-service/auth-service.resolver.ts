@@ -1,5 +1,6 @@
+import { UnauthorizedException } from '@nestjs/common';
 import { Query, Resolver, Mutation, Args } from '@nestjs/graphql';
-
+import { JwtService } from '@nestjs/jwt';
 import { AuthServiceService } from './auth-service.service';
 import { UpdateUserInput } from './user-input/update-user.input';
 import { CreateUserInput, LoginUserInput } from './user-input/user.input';
@@ -8,7 +9,10 @@ import { UserType } from './user-type/user.type';
 
 @Resolver(of => UserType)
 export class AuthServiceResolver {
-  constructor(private authServiceService: AuthServiceService) {}
+  constructor(
+    private authServiceService: AuthServiceService,
+    private jwtService: JwtService,
+  ) {}
 
   @Query(returns => UserType)
   user(@Args('id') id: string) {
@@ -31,7 +35,13 @@ export class AuthServiceResolver {
   async login(
     @Args('loginUserInput') loginUserInput: LoginUserInput,
   ): Promise<LoginType> {
-    return await this.authServiceService.login(loginUserInput);
+    const login = await this.authServiceService.login(loginUserInput);
+    if (!login) {
+      throw new UnauthorizedException('Invalid Credentials');
+    }
+    const accessToken = await this.jwtService.sign(login.user);
+    login.JWT = accessToken;
+    return login;
   }
 
   @Mutation(returns => UserType)
