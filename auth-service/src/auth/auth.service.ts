@@ -9,7 +9,7 @@ import { RpcException } from '@nestjs/microservices';
 import { UpdateUserDto } from './auth-dto/update-user.dto';
 import { AuthCredentialsDto } from './auth-dto/auth-credential.dto';
 import * as bcrypt from 'bcryptjs';
-import { LoginType } from './auth-interface/login';
+import { LoginType } from './login-class/login';
 import { exception } from 'console';
 import * as jwt from 'jsonwebtoken';
 import { ConfigService } from '@nestjs/config';
