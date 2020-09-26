@@ -29,7 +29,6 @@ export class AuthServiceService {
       { type: 'create-user' },
       createUserInput,
     );
-    console.log(response);
     return response.toPromise();
   }
 

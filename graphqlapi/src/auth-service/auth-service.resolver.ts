@@ -34,9 +34,10 @@ export class AuthServiceResolver {
   ): Promise<UserType> {
     const user = await this.authServiceService.createUser(createUserInput);
     if (!user) {
-      throw new BadRequestException('This user are exists');
+      throw new BadRequestException('This user already exists');
     }
-    await this.authServiceService.confirmUser(user.email);
+    // This part is for email services TO DO
+    //await this.authServiceService.confirmUser(user.email);
     return user;
   }
 

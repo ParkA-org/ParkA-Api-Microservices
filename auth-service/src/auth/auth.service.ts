@@ -73,20 +73,20 @@ export class AuthService {
     this.logger.debug(
       `Received create user payload ${JSON.stringify(createUserDto)}`,
     );
-    var { name, email, lastName, profilePicture, password } = createUserDto;
+    const { name, email, lastName, profilePicture, password } = createUserDto;
 
-    var date = new Date();
+    const date = new Date();
     email.toLowerCase();
 
     try {
       const salt = await bcrypt.genSalt();
-      password = await this.hashPassword(password, salt);
+      const password_tmp = await this.hashPassword(password, salt);
       const id = uuid();
 
-      var result = this.credentialRepository.save({
+      const result = this.credentialRepository.save({
         id,
         email,
-        password,
+        password: password_tmp,
         salt,
         createdAt: date.toISOString(),
         updatedAt: date.toISOString(),
