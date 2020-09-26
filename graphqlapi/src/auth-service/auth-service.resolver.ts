@@ -17,11 +17,13 @@ export class AuthServiceResolver {
   constructor(private authServiceService: AuthServiceService) {}
 
   @Query(returns => UserType)
+  @UseGuards(AuthGuard)
   user(@Args('id') id: string) {
     return this.authServiceService.getUserById(id);
   }
 
   @Query(returns => [UserType])
+  @UseGuards(AuthGuard)
   users() {
     return this.authServiceService.getAllUsers();
   }
