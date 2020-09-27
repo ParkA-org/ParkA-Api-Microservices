@@ -1,13 +1,7 @@
-export interface IUpdateUserDto {
-  id: string;
+export interface IUpdateUserPasswordDto {
+  email: string;
 
-  name?: string;
+  newPassword: string;
 
-  lastName?: string;
-
-  profilePicture?: string;
-
-  newPassword?: string;
-
-  oldPassword?: string;
+  oldPassword: string;
 }
