@@ -62,8 +62,10 @@ export class AuthService {
       )}`,
     );
 
+    const { oldPassword, newPassword, email } = updateUserPasswordDto;
+    email.toLowerCase();
+
     try {
-      const { oldPassword, newPassword, email } = updateUserPasswordDto;
       const credential = await this.credentialRepository.findOne({ email });
       const user = await this.authRepository.findOne({ email });
 
@@ -79,7 +81,7 @@ export class AuthService {
 
       return user;
     } catch (error) {
-      throw new RpcException('Invalid Email');
+      throw new RpcException('Invalid Password');
     }
   }
 

@@ -72,7 +72,7 @@ export class AuthServiceService {
     );
 
     const response = this.client.send<UserType>(
-      { type: 'update-user-passowrd' },
+      { type: 'update-user-password' },
       updateUserPasswordInput,
     );
 
