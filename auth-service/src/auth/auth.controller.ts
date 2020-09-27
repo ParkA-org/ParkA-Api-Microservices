@@ -6,6 +6,7 @@ import { CreateUserDto } from './auth-dto/create-user.dto';
 import { User } from './entities/user.entity';
 import { LoginType } from './login-class/login';
 import { UpdateUserDto } from './auth-dto/update-user.dto';
+import { UpdateUserPasswordDto } from './auth-dto/update-user-password.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -51,5 +52,17 @@ export class AuthController {
       `Received Update User message with data ${JSON.stringify(updateUserDto)}`,
     );
     return await this.authService.updateUser(updateUserDto);
+  }
+
+  @MessagePattern({ type: 'update-user-password' })
+  public async updateUserPassword(
+    updateUserPasswordDto: UpdateUserPasswordDto,
+  ): Promise<User> {
+    this.logger.debug(
+      `Received Update User Password message with data ${JSON.stringify(
+        updateUserPasswordDto,
+      )}`,
+    );
+    return await this.authService.updateUserPassword(updateUserPasswordDto);
   }
 }

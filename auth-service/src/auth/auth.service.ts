@@ -14,6 +14,7 @@ import { exception } from 'console';
 import * as jwt from 'jsonwebtoken';
 import { ConfigService } from '@nestjs/config';
 import { verify } from 'crypto';
+import { UpdateUserPasswordDto } from './auth-dto/update-user-password.dto';
 @Injectable()
 export class AuthService {
   private logger = new Logger('AuthService');
@@ -31,14 +32,38 @@ export class AuthService {
     );
 
     try {
-      const {
-        id,
-        name,
-        oldPassword,
-        lastName,
-        profilePicture,
-        newPassword,
-      } = updateUserDto;
+      const { id, name, lastName, profilePicture } = updateUserDto;
+      const user = await this.getUser(id);
+
+      profilePicture !== undefined
+        ? (user.profilePicture = profilePicture)
+        : null;
+
+      lastName !== undefined ? (user.lastName = lastName) : null;
+
+      name !== undefined ? (user.name = name) : null;
+
+      user.updatedAt = new Date().toISOString();
+
+      await this.authRepository.save(user);
+
+      return user;
+    } catch (error) {
+      throw new RpcException('User not Found');
+    }
+  }
+
+  public async updateUserPassword(
+    updateUserPasswordDto: UpdateUserPasswordDto,
+  ): Promise<User> {
+    this.logger.debug(
+      `Received update user password payload ${JSON.stringify(
+        updateUserPasswordDto,
+      )}`,
+    );
+
+    try {
+      const { oldPassword, newPassword, email } = updateUserPasswordDto;
       const user = await this.getUser(id);
 
       profilePicture !== undefined
@@ -55,13 +80,7 @@ export class AuthService {
           : null;
       }
 
-      lastName !== undefined ? (user.lastName = lastName) : null;
-
-      name !== undefined ? (user.name = name) : null;
-
       user.updatedAt = new Date().toISOString();
-
-      await this.authRepository.save(user);
 
       return user;
     } catch (error) {
