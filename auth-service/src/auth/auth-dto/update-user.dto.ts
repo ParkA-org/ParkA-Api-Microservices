@@ -5,5 +5,6 @@ export class UpdateUserDto implements IUpdateUserDto {
   name?: string;
   lastName?: string;
   profilePicture?: string;
-  password?: string;
+  newPassword?: string;
+  oldPassword?: string;
 }

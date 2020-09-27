@@ -13,6 +13,7 @@ import { LoginType } from './login-class/login';
 import { exception } from 'console';
 import * as jwt from 'jsonwebtoken';
 import { ConfigService } from '@nestjs/config';
+import { verify } from 'crypto';
 @Injectable()
 export class AuthService {
   private logger = new Logger('AuthService');
@@ -30,16 +31,29 @@ export class AuthService {
     );
 
     try {
-      const { id, name, password, lastName, profilePicture } = updateUserDto;
+      const {
+        id,
+        name,
+        oldPassword,
+        lastName,
+        profilePicture,
+        newPassword,
+      } = updateUserDto;
       const user = await this.getUser(id);
 
       profilePicture !== undefined
         ? (user.profilePicture = profilePicture)
         : null;
 
-      password !== undefined
-        ? await this.updateCredential(user.credential, password)
-        : null;
+      if (newPassword !== undefined) {
+        oldPassword !== undefined
+          ? await this.updateCredential(
+              user.credential,
+              oldPassword,
+              newPassword,
+            )
+          : null;
+      }
 
       lastName !== undefined ? (user.lastName = lastName) : null;
 
@@ -55,19 +69,45 @@ export class AuthService {
     }
   }
 
-  public async updateCredential(id: string, password: string) {
+  public async updateCredential(
+    id: string,
+    oldPassword: string,
+    newPassword: string,
+  ) {
     this.logger.debug(
       `Received update credential ""  payload ${JSON.stringify(id)}`,
     );
     const credential = await this.credentialRepository.findOne({ id });
-    const salt = await bcrypt.genSalt();
-    password = await this.hashPassword(password, salt);
-    credential.password = password;
-    credential.salt = salt;
-    credential.updatedAt = new Date().toISOString();
-    this.credentialRepository.save(credential);
+    if (await this.verifyPassword(oldPassword, credential)) {
+      const credential_tmp = await this.newCredentials(newPassword, credential);
+      this.credentialRepository.save(credential_tmp);
+    }
+    return null;
   }
 
+  private async newCredentials(
+    newPassword: string,
+    credential: Credential,
+  ): Promise<Credential> {
+    const salt = await bcrypt.genSalt();
+    newPassword = await this.hashPassword(newPassword, salt);
+    credential.password = newPassword;
+    credential.salt = salt;
+    credential.updatedAt = new Date().toISOString();
+
+    return credential;
+  }
+
+  private async verifyPassword(
+    oldPassword: string,
+    credential: Credential,
+  ): Promise<boolean> {
+    const verify = await this.hashPassword(oldPassword, credential.salt);
+    if (verify === credential.password) {
+      return true;
+    }
+    return false;
+  }
   // Is Inprogress
   public async createUser(createUserDto: CreateUserDto): Promise<User> {
     this.logger.debug(

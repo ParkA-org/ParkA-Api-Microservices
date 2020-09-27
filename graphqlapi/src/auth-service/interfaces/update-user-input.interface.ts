@@ -7,5 +7,7 @@ export interface IUpdateUserInput {
 
   profilePicture?: string;
 
-  password?: string;
+  newPassword?: string;
+
+  oldPassword?: string;
 }

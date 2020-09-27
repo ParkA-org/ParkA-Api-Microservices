@@ -7,5 +7,7 @@ export interface IUpdateUserDto {
 
   profilePicture?: string;
 
-  password?: string;
+  newPassword?: string;
+
+  oldPassword?: string;
 }
