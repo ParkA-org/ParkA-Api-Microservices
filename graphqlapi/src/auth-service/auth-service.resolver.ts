@@ -11,6 +11,7 @@ import { CreateUserInput } from './inputs/user.input';
 import { LoginUserInput } from './inputs/login-user.input';
 import { LoginType } from './types/login.type';
 import { UserType } from './types/user.type';
+import { UpdateUserPasswordInput } from './inputs/update-user-password.input';
 
 @Resolver(of => UserType)
 export class AuthServiceResolver {
@@ -26,6 +27,17 @@ export class AuthServiceResolver {
   @UseGuards(AuthGuard)
   getAllUsers() {
     return this.authServiceService.getAllUsers();
+  }
+
+  @Mutation(returns => UserType)
+  async updateUserPassword(
+    @Args('updateUserPasswordInput')
+    updateUserPasswordInput: UpdateUserPasswordInput,
+  ): Promise<UserType> {
+    const user = await this.authServiceService.updateUserPassword(
+      updateUserPasswordInput,
+    );
+    return user;
   }
 
   @Mutation(returns => UserType)

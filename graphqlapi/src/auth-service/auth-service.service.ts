@@ -6,6 +6,7 @@ import { CreateUserInput } from './inputs/user.input';
 import { LoginUserInput } from './inputs/login-user.input';
 import { LoginType } from './types/login.type';
 import { UserType } from './types/user.type';
+import { UpdateUserPasswordInput } from './inputs/update-user-password.input';
 
 @Injectable()
 export class AuthServiceService {
@@ -61,6 +62,22 @@ export class AuthServiceService {
     return response.toPromise();
   }
 
+  public async updateUserPassword(
+    updateUserPasswordInput: UpdateUserPasswordInput,
+  ): Promise<UserType> {
+    this.logger.log(
+      `Got updateUserPasswordInput data ${JSON.stringify(
+        updateUserPasswordInput,
+      )}`,
+    );
+
+    const response = this.client.send<UserType>(
+      { type: 'update-user-passowrd' },
+      updateUserPasswordInput,
+    );
+
+    return response.toPromise();
+  }
   public async login(loginUserInput: LoginUserInput): Promise<LoginType> {
     this.logger.log('Got LoginUserInput data');
     const response = this.client.send<LoginType>(
