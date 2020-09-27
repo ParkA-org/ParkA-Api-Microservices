@@ -64,47 +64,26 @@ export class AuthService {
 
     try {
       const { oldPassword, newPassword, email } = updateUserPasswordDto;
-      const user = await this.getUser(id);
+      const credential = await this.credentialRepository.findOne({ email });
+      const user = await this.authRepository.findOne({ email });
 
-      profilePicture !== undefined
-        ? (user.profilePicture = profilePicture)
-        : null;
-
-      if (newPassword !== undefined) {
-        oldPassword !== undefined
-          ? await this.updateCredential(
-              user.credential,
-              oldPassword,
-              newPassword,
-            )
-          : null;
+      if (await this.verifyPassword(oldPassword, credential)) {
+        const credential_tmp = await this.updateCredential(
+          newPassword,
+          credential,
+        );
+        this.credentialRepository.save(credential_tmp);
+      } else {
+        throw new RpcException('Invalid Password');
       }
-
-      user.updatedAt = new Date().toISOString();
 
       return user;
     } catch (error) {
-      throw new RpcException('User not Found');
+      throw new RpcException('Invalid Email');
     }
   }
 
-  public async updateCredential(
-    id: string,
-    oldPassword: string,
-    newPassword: string,
-  ) {
-    this.logger.debug(
-      `Received update credential ""  payload ${JSON.stringify(id)}`,
-    );
-    const credential = await this.credentialRepository.findOne({ id });
-    if (await this.verifyPassword(oldPassword, credential)) {
-      const credential_tmp = await this.newCredentials(newPassword, credential);
-      this.credentialRepository.save(credential_tmp);
-    }
-    return null;
-  }
-
-  private async newCredentials(
+  private async updateCredential(
     newPassword: string,
     credential: Credential,
   ): Promise<Credential> {
