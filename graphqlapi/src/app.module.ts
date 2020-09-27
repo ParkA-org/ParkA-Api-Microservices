@@ -6,9 +6,16 @@ import { BodyStyleModule } from './vehicle-service/body-style/body-style.module'
 import { ModelModule } from './vehicle-service/model/model.module';
 import { MakeModule } from './vehicle-service/make/make.module';
 import { ColorModule } from './vehicle-service/color/color.module';
+import { ConfigModule } from '@nestjs/config';
 @Module({
   imports: [
-    GraphQLModule.forRoot({ autoSchemaFile: true }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    GraphQLModule.forRoot({
+      autoSchemaFile: true,
+      context: ({ req }) => ({ headers: req.headers }),
+    }),
     VehicleServiceModule,
     AuthServiceModule,
     BodyStyleModule,

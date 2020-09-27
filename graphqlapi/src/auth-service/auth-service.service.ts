@@ -1,7 +1,12 @@
 import { Injectable, Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { Client, ClientProxy, Transport } from '@nestjs/microservices';
-import { CreateUserInput } from './user-data/user.input';
-import { UserType } from './user-data/user.type';
+import { UpdateUserInput } from './inputs/update-user.input';
+import { CreateUserInput } from './inputs/user.input';
+import { LoginUserInput } from './inputs/login-user.input';
+import { LoginType } from './types/login.type';
+import { UserType } from './types/user.type';
+import { UpdateUserPasswordInput } from './inputs/update-user-password.input';
 
 @Injectable()
 export class AuthServiceService {
@@ -15,7 +20,7 @@ export class AuthServiceService {
 
   public async getUserById(id: string): Promise<UserType> {
     this.logger.log(`Getting user`);
-    const response = await this.client.send<UserType>({ type: 'get-user' }, {});
+    const response = await this.client.send<UserType>({ type: 'get-user' }, id);
     return response.toPromise();
   }
 
@@ -24,6 +29,60 @@ export class AuthServiceService {
     const response = this.client.send<UserType>(
       { type: 'create-user' },
       createUserInput,
+    );
+    return response.toPromise();
+  }
+
+  public async getAllUsers(): Promise<UserType[]> {
+    this.logger.log('Getting users');
+    const response = await this.client.send<UserType[]>(
+      { type: 'get-users' },
+      {},
+    );
+    return response.toPromise();
+  }
+
+  public async confirmUser(email: string): Promise<boolean> {
+    this.logger.log('Create new confirm email');
+    const response = await this.client.send<boolean>(
+      { type: 'confirm-email' },
+      email,
+    );
+    return response.toPromise();
+  }
+
+  public async updateUser(updateUserInput: UpdateUserInput): Promise<UserType> {
+    this.logger.log(
+      `Got updateUserInput data ${JSON.stringify(updateUserInput)}`,
+    );
+    const response = this.client.send<UserType>(
+      { type: 'update-user' },
+      updateUserInput,
+    );
+    return response.toPromise();
+  }
+
+  public async updateUserPassword(
+    updateUserPasswordInput: UpdateUserPasswordInput,
+  ): Promise<UserType> {
+    this.logger.log(
+      `Got updateUserPasswordInput data ${JSON.stringify(
+        updateUserPasswordInput,
+      )}`,
+    );
+
+    const response = this.client.send<UserType>(
+      { type: 'update-user-password' },
+      updateUserPasswordInput,
+    );
+
+    return response.toPromise();
+  }
+  public async login(loginUserInput: LoginUserInput): Promise<LoginType> {
+    this.logger.log('Got LoginUserInput data');
+    const response = this.client.send<LoginType>(
+      { type: 'sign-in' },
+      loginUserInput,
     );
     return response.toPromise();
   }

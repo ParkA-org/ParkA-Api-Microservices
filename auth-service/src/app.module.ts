@@ -1,12 +1,15 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
-import { User } from './auth/userData/user.entity';
-
-//vUrmea2Sp4SSCBWj
+import { User } from './auth/entities/user.entity';
+import { Credential } from './auth/entities/credential.entity';
+import { ConfigModule } from '@nestjs/config';
 @Module({
   imports: [
     AuthModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     TypeOrmModule.forRoot({
       type: 'mongodb',
       url:
@@ -14,7 +17,7 @@ import { User } from './auth/userData/user.entity';
       useUnifiedTopology: true,
       useNewUrlParser: true,
       synchronize: true,
-      entities: [User],
+      entities: [User, Credential],
     }),
   ],
   controllers: [],
