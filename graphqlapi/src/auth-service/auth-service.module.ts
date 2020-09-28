@@ -1,9 +1,11 @@
 import { Module } from '@nestjs/common';
 import { AuthServiceResolver } from './auth-service.resolver';
 import { AuthServiceService } from './auth-service.service';
+import { AuthGuard } from './strategy/auth.guard';
 
 @Module({
-  providers: [AuthServiceService, AuthServiceResolver],
-  exports: [],
+  imports: [],
+  providers: [AuthServiceService, AuthServiceResolver, AuthGuard],
+  exports: [AuthGuard],
 })
 export class AuthServiceModule {}
