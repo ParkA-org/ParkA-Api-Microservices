@@ -1,12 +1,12 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { ILoginType } from '../interfaces/login-type.interface';
-import { UserType } from './user.type';
-
+import { Field, ObjectType } from '@nestjs/graphql';
+import { IsEmail } from 'class-validator';
+import { IConfirmEmailType } from '../interfaces/confirm-email-type.interface';
 @ObjectType('ConfirmEmail')
-export class ConfirmEmailType implements ILoginType {
-  @Field({ nullable: true })
-  JWT: string;
+export class ConfirmEmailType implements IConfirmEmailType {
+  @Field()
+  @IsEmail()
+  email: string;
 
-  @Field(type => UserType, { nullable: true })
-  user: UserType;
+  @Field()
+  origin: string;
 }
