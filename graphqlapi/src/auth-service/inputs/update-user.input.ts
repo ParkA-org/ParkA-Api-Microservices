@@ -14,4 +14,7 @@ export class UpdateUserInput implements IUpdateUserInput {
 
   @Field({ nullable: true })
   profilePicture?: string;
+
+  @Field()
+  origin: string;
 }

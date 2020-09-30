@@ -5,6 +5,8 @@ export interface IUserInput {
 
   email: string;
 
+  origin: string;
+
   profilePicture?: string;
 
   password: string;

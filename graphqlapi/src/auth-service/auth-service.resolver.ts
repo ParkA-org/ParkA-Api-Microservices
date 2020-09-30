@@ -49,7 +49,7 @@ export class AuthServiceResolver {
       throw new BadRequestException('This user already exists');
     }
     // This part is for email services TO DO
-    //await this.authServiceService.confirmUser(user.email);
+    await this.authServiceService.confirmUser(user.email);
     return user;
   }
 

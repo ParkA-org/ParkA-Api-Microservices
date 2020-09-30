@@ -32,7 +32,7 @@ export class AuthService {
     );
 
     try {
-      const { id, name, lastName, profilePicture } = updateUserDto;
+      const { id, name, lastName, profilePicture, origin } = updateUserDto;
       const user = await this.getUser(id);
 
       profilePicture !== undefined
@@ -44,6 +44,8 @@ export class AuthService {
       name !== undefined ? (user.name = name) : null;
 
       user.updatedAt = new Date().toISOString();
+
+      user.origin = origin;
 
       await this.authRepository.save(user);
 
@@ -113,7 +115,14 @@ export class AuthService {
     this.logger.debug(
       `Received create user payload ${JSON.stringify(createUserDto)}`,
     );
-    const { name, email, lastName, profilePicture, password } = createUserDto;
+    const {
+      name,
+      email,
+      lastName,
+      profilePicture,
+      password,
+      origin,
+    } = createUserDto;
 
     const date = new Date();
     email.toLowerCase();
@@ -144,6 +153,7 @@ export class AuthService {
         updatedAt: date.toISOString(),
         confirmed: false,
         credential: id2,
+        origin,
       });
 
       return await user;

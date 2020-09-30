@@ -40,4 +40,7 @@ export class User implements IUser, IBaseEntity {
 
   @Column()
   confirmed: boolean;
+
+  @Column()
+  origin: string;
 }
