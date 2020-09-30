@@ -10,7 +10,7 @@ export class AuthServiceResolver {
 
   @Mutation(returns => UserType)
   async confirmEmail(
-    @Args('confirmEmailInput') confirmEmailInput: CreateUserInput,
+    @Args('confirmEmailInput') confirmEmailInput: ConfirmEmailInput,
   ): Promise<UserType> {
     const user = await this.authServiceService.createUser(confirmEmailInput);
     if (!user) {
