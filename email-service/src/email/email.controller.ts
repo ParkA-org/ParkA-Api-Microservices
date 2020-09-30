@@ -3,10 +3,7 @@ import { MessagePattern } from '@nestjs/microservices';
 import { EmailService } from './email.service';
 import { CreateConfirmEmailDto } from './dto/create-confirm-email.dto';
 import { ConfirmEmail } from './entities/confirm-email.entity';
-import {
-  ValidateEmailCode,
-  ValidateEmailCodeDto,
-} from './dto/validate-email-code.dto';
+import { ValidateEmailCodeDto } from './dto/validate-email-code.dto';
 
 @Controller('email')
 export class EmailController {
