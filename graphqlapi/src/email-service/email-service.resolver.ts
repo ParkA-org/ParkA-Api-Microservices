@@ -19,6 +19,8 @@ export class EmailServiceResolver {
   async validateEmailCode(
     @Args('validateEmailCode') validateEmailCodeInput: ValidateEmailCodeInput,
   ): Promise<ConfirmEmailType> {
-    return await this.emailServiceService.validateEmailCode(validateEmailCode);
+    return await this.emailServiceService.validateEmailCode(
+      validateEmailCodeInput,
+    );
   }
 }
