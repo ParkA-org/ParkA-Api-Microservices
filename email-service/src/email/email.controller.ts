@@ -21,8 +21,8 @@ export class EmailController {
     return await this.emailService.confirmEmail(createConfirmEmailDto);
   }
 
-  @MessagePattern({ type: 'confirm-email-again' })
-  public async confirmEmailAgain(
+  @MessagePattern({ type: 'resend-email' })
+  public async ResendEmail(
     createConfirmEmailDto: CreateConfirmEmailDto,
   ): Promise<ConfirmEmail> {
     this.logger.debug(
@@ -30,7 +30,7 @@ export class EmailController {
         createConfirmEmailDto,
       )}`,
     );
-    return await this.emailService.confirmEmailAgain(createConfirmEmailDto);
+    return await this.emailService.ResendEmail(createConfirmEmailDto);
   }
 
   // TODO Validate Code

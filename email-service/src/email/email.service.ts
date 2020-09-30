@@ -59,7 +59,7 @@ export class EmailService {
     }
   }
 
-  public async confirmEmailAgain(
+  public async ResendEmail(
     createConfirmEmailDto: CreateConfirmEmailDto,
   ): Promise<ConfirmEmail> {
     this.logger.debug(
@@ -73,6 +73,19 @@ export class EmailService {
 
     try {
       const confirmEmail = await this.getConfirmEmail(email);
+      confirmEmail.updatedAt = new Date().toISOString();
+      confirmEmail.origin = origin;
+
+      const salt = await bcrypt.genSalt();
+      const message = await this.generateCode(origin);
+      const code = await this.hashCode(message, salt);
+
+      confirmEmail.code = code;
+      confirmEmail.salt = salt;
+
+      this.confirmEmailRepository.save(confirmEmail);
+
+      await sendEmail(email, message, origin);
 
       return confirmEmail;
     } catch (error) {
