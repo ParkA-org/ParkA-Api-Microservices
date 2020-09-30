@@ -11,8 +11,7 @@ import { EmailModule } from './email/email.module';
     }),
     TypeOrmModule.forRoot({
       type: 'mongodb',
-      url:
-        'mongodb+srv://parkaApiUser:vUrmea2Sp4SSCBWj@parkawebapimicroservice.br7y0.mongodb.net/ParkaMicroservices?retryWrites=true&w=majority',
+      url: process.env.URL_DB,
       useUnifiedTopology: true,
       useNewUrlParser: true,
       synchronize: true,
