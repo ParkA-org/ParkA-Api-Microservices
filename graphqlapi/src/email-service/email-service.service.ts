@@ -18,7 +18,7 @@ export class EmailServiceService {
   ): Promise<ConfirmEmailType> {
     this.logger.log(`Got createConfirmEmail data`);
     const response = this.client.send<ConfirmEmailType>(
-      { type: 'confirm-email' },
+      { type: 'confirm-email-again' },
       confirmEmailInput,
     );
     return response.toPromise();
