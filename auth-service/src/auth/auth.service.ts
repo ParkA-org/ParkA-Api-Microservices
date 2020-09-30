@@ -132,9 +132,6 @@ export class AuthService {
         updatedAt: date.toISOString(),
       });
 
-      this.logger.debug(
-        `Received create user payload ${JSON.stringify(result)}`,
-      );
       const id2 = id;
 
       const user = this.authRepository.save({

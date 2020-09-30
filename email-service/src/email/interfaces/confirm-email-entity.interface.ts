@@ -9,6 +9,8 @@ export interface IConfirmEmail {
 
   code: string;
 
+  salt: string;
+
   completed: boolean;
 
   updatedAt: string;

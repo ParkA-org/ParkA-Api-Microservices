@@ -21,6 +21,9 @@ export class ConfirmEmail implements IConfirmEmail, IBaseEntity {
   code: string;
 
   @Column()
+  salt: string;
+
+  @Column()
   completed: boolean;
 
   @Column()
