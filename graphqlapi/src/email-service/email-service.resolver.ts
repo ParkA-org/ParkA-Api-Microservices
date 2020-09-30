@@ -1,14 +1,12 @@
 import { BadRequestException } from '@nestjs/common';
 import { Resolver, Mutation, Args } from '@nestjs/graphql';
-import { AuthServiceService } from './auth-service.service';
-import { CreateUserInput } from './inputs/user.input';
-import { UserType } from './types/user.type';
+import { ConfirmEmailInput } from './inputs/confirm-email.input';
 
 @Resolver(of => UserType)
 export class AuthServiceResolver {
   constructor(private authServiceService: AuthServiceService) {}
 
-  @Mutation(returns => UserType)
+  @Mutation(returns => ConfirmEmailInput)
   async confirmEmail(
     @Args('confirmEmailInput') confirmEmailInput: ConfirmEmailInput,
   ): Promise<UserType> {
