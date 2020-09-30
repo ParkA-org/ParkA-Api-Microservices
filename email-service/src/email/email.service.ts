@@ -43,8 +43,9 @@ export class EmailService {
         salt = await bcrypt.genSalt();
       }
       const message = await this.generateCode(origin);
+      console.log('aqui 2');
       const code = await this.hashCode(message, salt);
-
+      console.log('Aqui');
       const confirmEmail = this.confirmEmailRepository.save({
         id: uuid(),
         email,
@@ -103,7 +104,7 @@ export class EmailService {
     validateEmailCodeDto: ValidateEmailCodeDto,
   ): Promise<ConfirmEmail> {
     this.logger.debug(
-      `Received resend confirm email payload ${JSON.stringify(
+      `Received validate email code payload ${JSON.stringify(
         validateEmailCodeDto,
       )}`,
     );
@@ -133,12 +134,15 @@ export class EmailService {
     } else {
       try {
         const result = await this.validateCode(code, origin);
-        const confirmEmail = await this.confirmEmailRepository.findOne(result);
+        const confirmEmail = await this.confirmEmailRepository.findOne({
+          code: result,
+        });
         confirmEmail.updatedAt = new Date().toISOString();
         confirmEmail.completed = true;
         await this.confirmEmailRepository.save(confirmEmail);
-
-        const user = await this.authRepository.findOne(confirmEmail.email);
+        console.log(confirmEmail);
+        const email2 = confirmEmail.email;
+        const user = await this.authRepository.findOne({ email: email2 });
         user.confirmed = true;
         user.updatedAt = new Date().toISOString();
 
@@ -165,6 +169,8 @@ export class EmailService {
   }
 
   private async hashCode(code: string, salt: string): Promise<string> {
+    if (salt == 'web') return code;
+    console.log('quizas');
     return bcrypt.hash(code, salt);
   }
 
