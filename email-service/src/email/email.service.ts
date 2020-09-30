@@ -8,6 +8,7 @@ import { v4 as uuid } from 'uuid';
 import * as bcrypt from 'bcryptjs';
 import { RpcException } from '@nestjs/microservices';
 import { promises } from 'dns';
+import { sendEmail } from './utils/sendEmail';
 
 @Injectable()
 export class EmailService {
@@ -33,18 +34,20 @@ export class EmailService {
     try {
       const salt = await bcrypt.genSalt();
       const message = await this.generateCode(origin);
-      const code = await this.hashCode('password', salt);
+      const code = await this.hashCode(message, salt);
 
       const confirmEmail = this.confirmEmailRepository.save({
         id: uuid(),
         email,
         salt,
+        origin,
         code,
         createdAt: date.toISOString(),
         updatedAt: date.toISOString(),
         completed: false,
       });
 
+      await sendEmail(email, message, origin);
       return await confirmEmail;
     } catch (error) {
       throw error.code === 11000
@@ -53,8 +56,8 @@ export class EmailService {
     }
   }
 
-  private async hashCode(password: string, salt: string): Promise<string> {
-    return bcrypt.hash(password, salt);
+  private async hashCode(code: string, salt: string): Promise<string> {
+    return bcrypt.hash(code, salt);
   }
 
   private async generateCode(origin: string): Promise<string> {

@@ -3,7 +3,7 @@ import * as nodemailer from 'nodemailer';
 export const sendEmail = async (
   email: string,
   message: string,
-  type: boolean,
+  origin: string,
 ) => {
   // create reusable transporter object using the default SMTP transport
   const transporter = nodemailer.createTransport({
@@ -17,7 +17,7 @@ export const sendEmail = async (
   });
 
   let html = `<b> Welcome to ParkA </b> <a href="${message}"> Confirm your Email </a>`;
-  if (type) {
+  if (origin == 'mobile') {
     html = `<b> Welcome to ParkA </b> <br> Open your ParkA app and put the code: ${message}`;
   }
   // send mail with defined transport object
