@@ -36,7 +36,12 @@ export class EmailService {
     email.toLowerCase();
 
     try {
-      const salt = await bcrypt.genSalt();
+      var salt;
+      if (origin == 'web') {
+        salt = origin;
+      } else {
+        salt = await bcrypt.genSalt();
+      }
       const message = await this.generateCode(origin);
       const code = await this.hashCode(message, salt);
 
