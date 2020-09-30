@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { typeOrmConfig } from './config/typeorm.config';
 import { EmailModule } from './email/email.module';
 
 @Module({
@@ -9,14 +10,7 @@ import { EmailModule } from './email/email.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    TypeOrmModule.forRoot({
-      type: 'mongodb',
-      url: process.env.URL_DB,
-      useUnifiedTopology: true,
-      useNewUrlParser: true,
-      synchronize: true,
-      entities: [],
-    }),
+    TypeOrmModule.forRoot(typeOrmConfig),
   ],
   controllers: [],
   providers: [],
