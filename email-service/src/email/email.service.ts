@@ -7,6 +7,7 @@ import { User } from './entities/user.entity';
 import { v4 as uuid } from 'uuid';
 import * as bcrypt from 'bcryptjs';
 import { RpcException } from '@nestjs/microservices';
+import { promises } from 'dns';
 
 @Injectable()
 export class EmailService {
@@ -31,11 +32,14 @@ export class EmailService {
 
     try {
       const salt = await bcrypt.genSalt();
+      const message = await this.generateCode(origin);
       const code = await this.hashCode('password', salt);
 
       const confirmEmail = this.confirmEmailRepository.save({
         id: uuid(),
         email,
+        salt,
+        code,
         createdAt: date.toISOString(),
         updatedAt: date.toISOString(),
         completed: false,
@@ -51,5 +55,22 @@ export class EmailService {
 
   private async hashCode(password: string, salt: string): Promise<string> {
     return bcrypt.hash(password, salt);
+  }
+
+  private async generateCode(origin: string): Promise<string> {
+    if (origin == 'mobile') {
+      return (await this.getRandomInt()).toString();
+    }
+    return uuid();
+  }
+
+  private async getRandomInt(): Promise<number> {
+    let result = 0;
+    const min = 99999;
+    const max = 1000000;
+    do {
+      result = Math.floor(Math.random() * Math.floor(max));
+    } while (result < min && result > max);
+    return result;
   }
 }
