@@ -1,8 +1,8 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { IValidateEmailCode } from '../interfaces/valid-email-code-input.interface';
+import { IValidateEmailCodeInput } from '../interfaces/valid-email-code-input.interface';
 
 @InputType()
-export class ValidateEmailCode implements IValidateEmailCode {
+export class ValidateEmailCodeInput implements IValidateEmailCodeInput {
   @Field({ nullable: true })
   email: string;
 

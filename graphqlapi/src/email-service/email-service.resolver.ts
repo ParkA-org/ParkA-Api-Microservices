@@ -1,6 +1,7 @@
 import { Resolver, Mutation, Args } from '@nestjs/graphql';
 import { EmailServiceService } from './email-service.service';
 import { ConfirmEmailInput } from './inputs/confirm-email.input';
+import { ValidateEmailCodeInput } from './inputs/validate-email-code.input';
 import { ConfirmEmailType } from './types/confirm-email.type';
 
 @Resolver(of => ConfirmEmailType)
@@ -16,7 +17,7 @@ export class EmailServiceResolver {
 
   @Mutation(returns => ConfirmEmailType)
   async validateEmailCode(
-    @Args('validateEmailCode') validateEmailCode: ValidateEmailCode,
+    @Args('validateEmailCode') validateEmailCodeInput: ValidateEmailCodeInput,
   ): Promise<ConfirmEmailType> {
     return await this.emailServiceService.validateEmailCode(validateEmailCode);
   }
