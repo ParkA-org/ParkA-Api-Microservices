@@ -3,6 +3,10 @@ import { MessagePattern } from '@nestjs/microservices';
 import { EmailService } from './email.service';
 import { CreateConfirmEmailDto } from './dto/create-confirm-email.dto';
 import { ConfirmEmail } from './entities/confirm-email.entity';
+import {
+  ValidateEmailCode,
+  ValidateEmailCodeDto,
+} from './dto/validate-email-code.dto';
 
 @Controller('email')
 export class EmailController {
@@ -22,7 +26,7 @@ export class EmailController {
   }
 
   @MessagePattern({ type: 'resend-email' })
-  public async ResendEmail(
+  public async resendEmail(
     createConfirmEmailDto: CreateConfirmEmailDto,
   ): Promise<ConfirmEmail> {
     this.logger.debug(
@@ -30,19 +34,19 @@ export class EmailController {
         createConfirmEmailDto,
       )}`,
     );
-    return await this.emailService.ResendEmail(createConfirmEmailDto);
+    return await this.emailService.resendEmail(createConfirmEmailDto);
   }
 
   @MessagePattern({ type: 'validate-email-code' })
-  public async ValidateEmailCode(
-    createConfirmEmailDto: CreateConfirmEmailDto,
+  public async validateEmailCode(
+    validateEmailCodeDto: ValidateEmailCodeDto,
   ): Promise<ConfirmEmail> {
     this.logger.debug(
       `Received validate email code message with data ${JSON.stringify(
-        createConfirmEmailDto,
+        validateEmailCodeDto,
       )}`,
     );
-    return await this.emailService.ResendEmail(createConfirmEmailDto);
+    return await this.emailService.validateEmailCode(validateEmailCodeDto);
   }
 
   // TODO Validate Code

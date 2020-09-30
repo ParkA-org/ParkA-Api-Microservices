@@ -10,6 +10,7 @@ import { RpcException } from '@nestjs/microservices';
 import { promises } from 'dns';
 import { sendEmail } from './utils/sendEmail';
 import { exception } from 'console';
+import { ValidateEmailCodeDto } from './dto/validate-email-code.dto';
 
 @Injectable()
 export class EmailService {
@@ -59,7 +60,7 @@ export class EmailService {
     }
   }
 
-  public async ResendEmail(
+  public async resendEmail(
     createConfirmEmailDto: CreateConfirmEmailDto,
   ): Promise<ConfirmEmail> {
     this.logger.debug(
@@ -91,6 +92,62 @@ export class EmailService {
     } catch (error) {
       throw new RpcException('Invalid Process');
     }
+  }
+
+  public async validateEmailCode(
+    validateEmailCodeDto: ValidateEmailCodeDto,
+  ): Promise<ConfirmEmail> {
+    this.logger.debug(
+      `Received resend confirm email payload ${JSON.stringify(
+        validateEmailCodeDto,
+      )}`,
+    );
+
+    const { email, origin, code } = validateEmailCodeDto;
+
+    if (origin == 'mobile') {
+      try {
+        const confirmEmail = await this.getConfirmEmail(email);
+        const result = await this.validateCode(code, confirmEmail.salt);
+        if (result == confirmEmail.code) {
+          confirmEmail.updatedAt = new Date().toISOString();
+          confirmEmail.completed = true;
+          const user = await this.authRepository.findOne(confirmEmail.email);
+          user.confirmed = true;
+          user.updatedAt = new Date().toISOString();
+
+          await this.authRepository.save(user);
+          await this.confirmEmailRepository.save(confirmEmail);
+        } else {
+          throw new RpcException('Invalid Code');
+        }
+        return confirmEmail;
+      } catch (error) {
+        throw new RpcException('Invalid Code');
+      }
+    } else {
+      try {
+        const result = await this.validateCode(code, origin);
+        const confirmEmail = await this.confirmEmailRepository.findOne(result);
+        confirmEmail.updatedAt = new Date().toISOString();
+        confirmEmail.completed = true;
+        await this.confirmEmailRepository.save(confirmEmail);
+
+        const user = await this.authRepository.findOne(confirmEmail.email);
+        user.confirmed = true;
+        user.updatedAt = new Date().toISOString();
+
+        await this.authRepository.save(user);
+
+        return confirmEmail;
+      } catch (error) {
+        throw new RpcException('Invalid Code');
+      }
+    }
+  }
+
+  public async validateCode(code: string, salt: string) {
+    return await this.hashCode(code, salt);
   }
 
   public async getConfirmEmail(email: string): Promise<ConfirmEmail> {

@@ -1,6 +1,6 @@
-import { IValidateEmailCode } from '../interfaces/validate-email-code-dto.interface';
+import { IValidateEmailCodeDto } from '../interfaces/validate-email-code-dto.interface';
 
-export class ValidateEmailCode implements IValidateEmailCode {
+export class ValidateEmailCodeDto implements IValidateEmailCodeDto {
   email?: string;
 
   origin: string;
