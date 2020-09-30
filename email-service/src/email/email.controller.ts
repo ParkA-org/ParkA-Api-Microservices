@@ -33,6 +33,18 @@ export class EmailController {
     return await this.emailService.ResendEmail(createConfirmEmailDto);
   }
 
+  @MessagePattern({ type: 'validate-email-code' })
+  public async ValidateEmailCode(
+    createConfirmEmailDto: CreateConfirmEmailDto,
+  ): Promise<ConfirmEmail> {
+    this.logger.debug(
+      `Received validate email code message with data ${JSON.stringify(
+        createConfirmEmailDto,
+      )}`,
+    );
+    return await this.emailService.ResendEmail(createConfirmEmailDto);
+  }
+
   // TODO Validate Code
 
   // TODO Reset Password
