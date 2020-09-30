@@ -1,4 +1,5 @@
 import * as nodemailer from 'nodemailer';
+import { confirmEmailLink } from './confirmEmail';
 
 export const sendEmail = async (
   email: string,
@@ -16,7 +17,9 @@ export const sendEmail = async (
     },
   });
 
-  let html = `<b> Welcome to ParkA </b> <a href="${message}"> Confirm your Email </a>`;
+  let html = `<b> Welcome to ParkA </b> <a href="${confirmEmailLink(
+    message,
+  )}"> Confirm your Email </a>`;
   if (origin == 'mobile') {
     html = `<b> Welcome to ParkA </b> <br> Open your ParkA app and put the code: ${message}`;
   }
