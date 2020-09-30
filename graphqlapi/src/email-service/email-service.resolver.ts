@@ -1,21 +1,16 @@
-import { BadRequestException } from '@nestjs/common';
 import { Resolver, Mutation, Args } from '@nestjs/graphql';
+import { EmailServiceService } from './email-service.service';
 import { ConfirmEmailInput } from './inputs/confirm-email.input';
+import { ConfirmEmailType } from './types/confirm-email.type';
 
-@Resolver(of => UserType)
-export class AuthServiceResolver {
-  constructor(private authServiceService: AuthServiceService) {}
+@Resolver(of => ConfirmEmailType)
+export class EmailServiceResolver {
+  constructor(private emailServiceService: EmailServiceService) {}
 
-  @Mutation(returns => ConfirmEmailInput)
+  @Mutation(returns => ConfirmEmailType)
   async confirmEmail(
     @Args('confirmEmailInput') confirmEmailInput: ConfirmEmailInput,
-  ): Promise<UserType> {
-    const user = await this.authServiceService.createUser(confirmEmailInput);
-    if (!user) {
-      throw new BadRequestException('This user already exists');
-    }
-    // This part is for email services TO DO
-    //await this.authServiceService.confirmUser(user.email);
-    return user;
+  ): Promise<ConfirmEmailType> {
+    return await this.emailServiceService.confirmEmail(confirmEmailInput);
   }
 }
