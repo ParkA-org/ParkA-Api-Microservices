@@ -9,6 +9,7 @@ import * as bcrypt from 'bcryptjs';
 import { RpcException } from '@nestjs/microservices';
 import { promises } from 'dns';
 import { sendEmail } from './utils/sendEmail';
+import { exception } from 'console';
 
 @Injectable()
 export class EmailService {
@@ -24,7 +25,9 @@ export class EmailService {
     createConfirmEmailDto: CreateConfirmEmailDto,
   ): Promise<ConfirmEmail> {
     this.logger.debug(
-      `Received create user payload ${JSON.stringify(createConfirmEmailDto)}`,
+      `Received create confirm email payload ${JSON.stringify(
+        createConfirmEmailDto,
+      )}`,
     );
     const { email, origin } = createConfirmEmailDto;
 
@@ -53,6 +56,36 @@ export class EmailService {
       throw error.code === 11000
         ? new RpcException('Duplicate field')
         : new RpcException('An undefined error occured');
+    }
+  }
+
+  public async confirmEmailAgain(
+    createConfirmEmailDto: CreateConfirmEmailDto,
+  ): Promise<ConfirmEmail> {
+    this.logger.debug(
+      `Received resend confirm email payload ${JSON.stringify(
+        createConfirmEmailDto,
+      )}`,
+    );
+
+    const { email, origin } = createConfirmEmailDto;
+    email.toLowerCase();
+
+    try {
+      const confirmEmail = await this.getConfirmEmail(email);
+
+      return confirmEmail;
+    } catch (error) {
+      throw new RpcException('Invalid Process');
+    }
+  }
+
+  public async getConfirmEmail(email: string): Promise<ConfirmEmail> {
+    try {
+      const confirm = await this.confirmEmailRepository.findOne(email);
+      return await confirm;
+    } catch (error) {
+      throw new exception('Email dont exist');
     }
   }
 

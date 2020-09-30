@@ -21,6 +21,18 @@ export class EmailController {
     return await this.emailService.confirmEmail(createConfirmEmailDto);
   }
 
+  @MessagePattern({ type: 'confirm-email-again' })
+  public async confirmEmailAgain(
+    createConfirmEmailDto: CreateConfirmEmailDto,
+  ): Promise<ConfirmEmail> {
+    this.logger.debug(
+      `Received confirm email message with data ${JSON.stringify(
+        createConfirmEmailDto,
+      )}`,
+    );
+    return await this.emailService.confirmEmailAgain(createConfirmEmailDto);
+  }
+
   // TODO Validate Code
 
   // TODO Reset Password
