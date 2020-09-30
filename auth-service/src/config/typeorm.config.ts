@@ -1,4 +1,6 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { Credential } from 'src/auth/entities/credential.entity';
+import { User } from 'src/auth/entities/user.entity';
 
 export const typeOrmConfig: TypeOrmModuleOptions = {
   type: 'mongodb',
@@ -7,5 +9,5 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
   useUnifiedTopology: true,
   useNewUrlParser: true,
   synchronize: true,
-  entities: [__dirname + '/../**/*.entity.ts'],
+  entities: [User, Credential],
 };
