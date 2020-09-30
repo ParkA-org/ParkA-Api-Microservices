@@ -16,9 +16,9 @@ export class EmailServiceService {
   public async confirmEmail(
     confirmEmailInput: ConfirmEmailInput,
   ): Promise<ConfirmEmailType> {
-    this.logger.log(`Got createConfirmEmail data`);
+    this.logger.log(`Got resend email data`);
     const response = this.client.send<ConfirmEmailType>(
-      { type: 'confirm-email-again' },
+      { type: 'resend-email' },
       confirmEmailInput,
     );
     return response.toPromise();

@@ -13,4 +13,11 @@ export class EmailServiceResolver {
   ): Promise<ConfirmEmailType> {
     return await this.emailServiceService.confirmEmail(confirmEmailInput);
   }
+
+  @Mutation(returns => ConfirmEmailType)
+  async validateEmailCode(
+    @Args('validateEmailCode') validateEmailCode: ValidateEmailCode,
+  ): Promise<ConfirmEmailType> {
+    return await this.emailServiceService.validateEmailCode(validateEmailCode);
+  }
 }
