@@ -17,7 +17,8 @@ export class EmailServiceResolver {
 
   @Mutation(returns => ConfirmEmailType)
   async validateEmailCode(
-    @Args('validateEmailCode') validateEmailCodeInput: ValidateEmailCodeInput,
+    @Args('validateEmailCodeInput')
+    validateEmailCodeInput: ValidateEmailCodeInput,
   ): Promise<ConfirmEmailType> {
     return await this.emailServiceService.validateEmailCode(
       validateEmailCodeInput,
