@@ -12,6 +12,7 @@ import { LoginUserInput } from './inputs/login-user.input';
 import { LoginType } from './types/login.type';
 import { UserType } from './types/user.type';
 import { UpdateUserPasswordInput } from './inputs/update-user-password.input';
+import { ConfirmEmailInput } from 'src/email-service/inputs/confirm-email.input';
 
 @Resolver(of => UserType)
 export class AuthServiceResolver {
@@ -48,8 +49,11 @@ export class AuthServiceResolver {
     if (!user) {
       throw new BadRequestException('This user already exists');
     }
-    // This part is for email services TO DO
-    await this.authServiceService.confirmUser(user.email);
+
+    const confirmEmail = new ConfirmEmailInput();
+    confirmEmail.email = user.email;
+    confirmEmail.origin = user.origin;
+    await this.authServiceService.confirmUser(confirmEmail);
     return user;
   }
 
@@ -62,7 +66,6 @@ export class AuthServiceResolver {
       throw new UnauthorizedException('Invalid Credentials');
     }
     if (!login.user.confirmed) {
-      await this.authServiceService.confirmUser(login.user.email);
       throw new UnauthorizedException(
         'Confirm your account ' + login.user.email,
       );
