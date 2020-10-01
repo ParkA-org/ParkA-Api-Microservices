@@ -1,5 +1,6 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { MinLength } from 'class-validator';
+import { IValidateResetPasswordCodeInput } from '../interfaces/validate-reset-password-code-input.interface';
 
 @InputType()
 export class ValidateResetPasswordCodeInput
