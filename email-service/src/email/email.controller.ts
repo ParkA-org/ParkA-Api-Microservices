@@ -22,6 +22,18 @@ export class EmailController {
     return await this.emailService.confirmEmail(createConfirmEmailDto);
   }
 
+  @MessagePattern({ type: 'reset-password' })
+  public async resetPassword(
+    resetPasswordDto: ResetPasswordDto,
+  ): Promise<ResetPassword> {
+    this.logger.debug(
+      `Received reset password message with data ${JSON.stringify(
+        resetPasswordDto,
+      )}`,
+    );
+    return await this.emailService.resetPassword(resetPasswordDto);
+  }
+
   @MessagePattern({ type: 'resend-email' })
   public async resendEmail(
     createConfirmEmailDto: CreateConfirmEmailDto,
