@@ -274,7 +274,7 @@ export class EmailService {
           const user = await this.authRepository.findOne(resetPassword.email);
           user.confirmed = true;
           user.updatedAt = new Date().toISOString();
-          await this.updateCredential(user.credential);
+          await this.updateCredential(user.credential, newPassword);
           await this.authRepository.save(user);
           await this.confirmEmailRepository.save(resetPassword);
         } else {
@@ -308,9 +308,11 @@ export class EmailService {
     }
   }
 
-  public async updateCredential(id: string): Promise<Credential> {
+  public async updateCredential(
+    id: string,
+    newPassword: string,
+  ): Promise<Credential> {
     const credential = await this.getCredential(id);
-
     return credential;
   }
 
