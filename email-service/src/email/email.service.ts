@@ -7,7 +7,6 @@ import { User } from './entities/user.entity';
 import { v4 as uuid } from 'uuid';
 import * as bcrypt from 'bcryptjs';
 import { RpcException } from '@nestjs/microservices';
-import { promises } from 'dns';
 import { sendEmail } from './utils/sendEmail';
 import { exception } from 'console';
 import { ValidateEmailCodeDto } from './dto/validate-email-code.dto';
