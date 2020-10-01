@@ -4,10 +4,11 @@ import { EmailController } from './email.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
 import { ConfirmEmail } from './entities/confirm-email.entity';
+import { ResetPassword } from './entities/reset-password.entity';
 
 @Module({
   providers: [EmailService],
   controllers: [EmailController],
-  imports: [TypeOrmModule.forFeature([User, ConfirmEmail])],
+  imports: [TypeOrmModule.forFeature([User, ConfirmEmail, ResetPassword])],
 })
 export class EmailModule {}

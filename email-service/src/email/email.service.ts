@@ -21,6 +21,8 @@ export class EmailService {
     @InjectRepository(User) private authRepository: Repository<User>,
     @InjectRepository(ConfirmEmail)
     private confirmEmailRepository: Repository<ConfirmEmail>,
+    @InjectRepository(ResetPassword)
+    private resetPasswordRepository: Repository<ResetPassword>,
   ) {}
 
   public async confirmEmail(
@@ -74,15 +76,27 @@ export class EmailService {
       )}`,
     );
     const { email, origin } = createResetPasswordDto;
-    
-    if(){
 
-    }else{
+    const resetPassword = await this.resetPasswordRepository.findOne({
+      email: email,
+    });
 
+    if (resetPassword) {
+      return await this.updateResetPassword(
+        resetPassword,
+        createResetPasswordDto,
+      );
+    } else {
+      return await this.createResetPassword(createResetPasswordDto);
     }
-
   }
 
+  public async updateResetPassword(
+    resetPassword: ResetPassword,
+    createResetPasswordDto: CreateResetPasswordDto,
+  ): Promise<ResetPassword> {
+    return resetPassword;
+  }
 
   public async resendEmail(
     createConfirmEmailDto: CreateConfirmEmailDto,
