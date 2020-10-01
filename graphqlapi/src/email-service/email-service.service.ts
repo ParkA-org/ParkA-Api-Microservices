@@ -1,8 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Client, ClientProxy, Transport } from '@nestjs/microservices';
 import { ConfirmEmailInput } from './inputs/confirm-email.input';
+import { ResetPasswordInput } from './inputs/reset-password.input';
 import { ValidateEmailCodeInput } from './inputs/validate-email-code.input';
 import { ConfirmEmailType } from './types/confirm-email.type';
+import { ResetPasswordType } from './types/reset-password.type';
 
 @Injectable()
 export class EmailServiceService {
@@ -21,6 +23,17 @@ export class EmailServiceService {
     const response = this.client.send<ConfirmEmailType>(
       { type: 'resend-email' },
       confirmEmailInput,
+    );
+    return response.toPromise();
+  }
+
+  public async resetPassword(
+    resetPasswordInput: ResetPasswordInput,
+  ): Promise<ResetPasswordType> {
+    this.logger.log(`Got reset password data`);
+    const response = this.client.send<ResetPasswordType>(
+      { type: 'reset-password' },
+      resetPasswordInput,
     );
     return response.toPromise();
   }
