@@ -3,6 +3,7 @@ import { Client, ClientProxy, Transport } from '@nestjs/microservices';
 import { ConfirmEmailInput } from './inputs/confirm-email.input';
 import { ResetPasswordInput } from './inputs/reset-password.input';
 import { ValidateEmailCodeInput } from './inputs/validate-email-code.input';
+import { ValidateResetPasswordCodeInput } from './inputs/validate-reset-password-code.input';
 import { ConfirmEmailType } from './types/confirm-email.type';
 import { ResetPasswordType } from './types/reset-password.type';
 
@@ -45,6 +46,17 @@ export class EmailServiceService {
     const response = this.client.send<ConfirmEmailType>(
       { type: 'validate-email-code' },
       validateEmailCodeInput,
+    );
+    return response.toPromise();
+  }
+
+  public async validateResetPasswordCode(
+    validateResetPasswordCodeInput: ValidateResetPasswordCodeInput,
+  ): Promise<ResetPasswordType> {
+    this.logger.log('Got validate reset password code');
+    const response = this.client.send<ResetPasswordType>(
+      { type: 'validate-reset-password-code' },
+      validateResetPasswordCodeInput,
     );
     return response.toPromise();
   }
