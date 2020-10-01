@@ -76,7 +76,7 @@ export class EmailService {
       )}`,
     );
     const { email, origin } = createResetPasswordDto;
-
+    email.toLowerCase();
     const resetPassword = await this.resetPasswordRepository.findOne({
       email: email,
     });
@@ -95,7 +95,31 @@ export class EmailService {
     resetPassword: ResetPassword,
     createResetPasswordDto: CreateResetPasswordDto,
   ): Promise<ResetPassword> {
-    return resetPassword;
+    try {
+      const { email, origin } = createResetPasswordDto;
+      resetPassword.updatedAt = new Date().toISOString();
+      resetPassword.origin = origin;
+
+      var salt;
+      if (origin == 'web') {
+        salt = origin;
+      } else {
+        salt = await bcrypt.genSalt();
+      }
+      const message = await this.generateCode(origin);
+      const code = await this.hashCode(message, salt);
+
+      resetPassword.code = code;
+      resetPassword.salt = salt;
+
+      this.resetPasswordRepository.save(resetPassword);
+
+      await sendEmail(email, message, origin, 1);
+
+      return resetPassword;
+    } catch (error) {
+      throw new RpcException('Invalid Process');
+    }
   }
 
   public async createResetPassword(
@@ -165,7 +189,7 @@ export class EmailService {
 
       this.confirmEmailRepository.save(confirmEmail);
 
-      await sendEmail(email, message, origin);
+      await sendEmail(email, message, origin, 0);
 
       return confirmEmail;
     } catch (error) {
