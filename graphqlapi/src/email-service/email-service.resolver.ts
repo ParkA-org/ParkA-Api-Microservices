@@ -7,7 +7,6 @@ import { ConfirmEmailType } from './types/confirm-email.type';
 @Resolver(of => ConfirmEmailType)
 export class EmailServiceResolver {
   constructor(private emailServiceService: EmailServiceService) {}
-
   @Mutation(returns => ConfirmEmailType)
   async confirmEmail(
     @Args('confirmEmailInput') confirmEmailInput: ConfirmEmailInput,
@@ -23,5 +22,13 @@ export class EmailServiceResolver {
     return await this.emailServiceService.validateEmailCode(
       validateEmailCodeInput,
     );
+  }
+
+  @Mutation(returns => ResetPasswordType)
+  async resetPassword(
+    @Args('resetPasswordInput')
+    resetPasswordInput: ResetPasswordInput,
+  ): Promise<ResetPasswordType> {
+    return await this.emailServiceService.resetPassword(resetPasswordInput);
   }
 }
