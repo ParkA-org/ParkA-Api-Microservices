@@ -13,6 +13,7 @@ import { ValidateEmailCodeDto } from './dto/validate-email-code.dto';
 import { CreateResetPasswordDto } from './dto/create-reset-password.dto';
 import { ResetPassword } from './entities/reset-password.entity';
 import { ValidateResetPasswordCode } from './dto/validate-reset-password-code.dto';
+import { Credential } from './entities/credential.entity';
 
 @Injectable()
 export class EmailService {
@@ -24,6 +25,8 @@ export class EmailService {
     private confirmEmailRepository: Repository<ConfirmEmail>,
     @InjectRepository(ResetPassword)
     private resetPasswordRepository: Repository<ResetPassword>,
+    @InjectRepository(Credential)
+    private credentialRespository: Repository<Credential>,
   ) {}
 
   public async confirmEmail(
