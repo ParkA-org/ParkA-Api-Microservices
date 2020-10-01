@@ -276,7 +276,9 @@ export class EmailService {
         if (result == resetPassword.code) {
           resetPassword.updatedAt = new Date().toISOString();
           resetPassword.completed = true;
-          const user = await this.authRepository.findOne(resetPassword.email);
+          const user = await this.authRepository.findOne({
+            email: resetPassword.email,
+          });
           await this.updateCredential(user.credential, newPassword);
           await this.resetPasswordRepository.save(resetPassword);
         } else {
