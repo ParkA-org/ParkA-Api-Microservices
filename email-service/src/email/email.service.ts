@@ -12,6 +12,7 @@ import { exception } from 'console';
 import { ValidateEmailCodeDto } from './dto/validate-email-code.dto';
 import { CreateResetPasswordDto } from './dto/create-reset-password.dto';
 import { ResetPassword } from './entities/reset-password.entity';
+import { ValidateResetPasswordCode } from './dto/validate-reset-password-code.dto';
 
 @Injectable()
 export class EmailService {
@@ -257,15 +258,15 @@ export class EmailService {
   ): Promise<ResetPassword> {
     this.logger.debug(
       `Received validate email code payload ${JSON.stringify(
-        validateEmailCodeDto,
+        validateResetPasswordCode,
       )}`,
     );
 
-    const { email, origin, code, newPassword } = validateEmailCodeDto;
+    const { email, origin, code, newPassword } = validateResetPasswordCode;
 
     if (origin == 'mobile') {
       try {
-        const confirmEmail = await this.getConfirmEmail(email);
+        const resetPassword = await this.getResetPassowrd(email);
         const result = await this.validateCode(code, confirmEmail.salt);
         if (result == confirmEmail.code) {
           confirmEmail.updatedAt = new Date().toISOString();
@@ -317,6 +318,17 @@ export class EmailService {
         email: email,
       });
       return await confirm;
+    } catch (error) {
+      throw new exception('Email dont exist');
+    }
+  }
+
+  public async getResetPassowrd(email: string): Promise<ResetPassword> {
+    try {
+      const reset = await this.resetPasswordRepository.findOne({
+        email: email,
+      });
+      return await reset;
     } catch (error) {
       throw new exception('Email dont exist');
     }
