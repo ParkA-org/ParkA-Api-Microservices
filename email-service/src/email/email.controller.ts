@@ -24,14 +24,14 @@ export class EmailController {
 
   @MessagePattern({ type: 'reset-password' })
   public async resetPassword(
-    resetPasswordDto: ResetPasswordDto,
-  ): Promise<ResetPassword> {
+    createResetPasswordDto: CreateResetPasswordDto,
+  ): Promise<CreateResetPasswordDto> {
     this.logger.debug(
       `Received reset password message with data ${JSON.stringify(
         resetPasswordDto,
       )}`,
     );
-    return await this.emailService.resetPassword(resetPasswordDto);
+    return await this.emailService.resetPassword(createResetPasswordDto);
   }
 
   @MessagePattern({ type: 'resend-email' })
