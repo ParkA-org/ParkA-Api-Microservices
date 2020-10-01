@@ -27,6 +27,16 @@ export class EmailServiceResolver {
   }
 
   @Mutation(returns => ResetPasswordType)
+  async validateResetPasswordCode(
+    @Args('validateResetPasswordCodeInput')
+    validateResetPasswordCodeInput: ValidateResetPasswordCodeInput,
+  ): Promise<ResetPasswordType> {
+    return await this.emailServiceService.validateResetPasswordCode(
+      validateResetPasswordCodeInput,
+    );
+  }
+
+  @Mutation(returns => ResetPasswordType)
   async resetPassword(
     @Args('resetPasswordInput')
     resetPasswordInput: ResetPasswordInput,
