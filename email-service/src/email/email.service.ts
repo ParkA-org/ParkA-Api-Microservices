@@ -266,21 +266,21 @@ export class EmailService {
 
     if (origin == 'mobile') {
       try {
-        const resetPassword = await this.getResetPassowrd(email);
-        const result = await this.validateCode(code, confirmEmail.salt);
-        if (result == confirmEmail.code) {
-          confirmEmail.updatedAt = new Date().toISOString();
-          confirmEmail.completed = true;
-          const user = await this.authRepository.findOne(confirmEmail.email);
+        const resetPassword = await this.getResetPassword(email);
+        const result = await this.validateCode(code, resetPassword.salt);
+        if (result == resetPassword.code) {
+          resetPassword.updatedAt = new Date().toISOString();
+          resetPassword.completed = true;
+          const user = await this.authRepository.findOne(resetPassword.email);
           user.confirmed = true;
           user.updatedAt = new Date().toISOString();
-
+          await this.updateCredential(user.credential);
           await this.authRepository.save(user);
-          await this.confirmEmailRepository.save(confirmEmail);
+          await this.confirmEmailRepository.save(resetPassword);
         } else {
           throw new RpcException('Invalid Code');
         }
-        return confirmEmail;
+        return resetPassword;
       } catch (error) {
         throw new RpcException('Invalid Code');
       }
@@ -308,8 +308,25 @@ export class EmailService {
     }
   }
 
+  public async updateCredential(id: string): Promise<Credential> {
+    const credential = await this.getCredential(id);
+
+    return credential;
+  }
+
   public async validateCode(code: string, salt: string) {
     return await this.hashCode(code, salt);
+  }
+
+  public async getCredential(id: string): Promise<Credential> {
+    try {
+      const credential = await this.credentialRespository.findOne({
+        id: id,
+      });
+      return await credential;
+    } catch (error) {
+      throw new exception('Email dont exist');
+    }
   }
 
   public async getConfirmEmail(email: string): Promise<ConfirmEmail> {
@@ -323,7 +340,7 @@ export class EmailService {
     }
   }
 
-  public async getResetPassowrd(email: string): Promise<ResetPassword> {
+  public async getResetPassword(email: string): Promise<ResetPassword> {
     try {
       const reset = await this.resetPasswordRepository.findOne({
         email: email,
