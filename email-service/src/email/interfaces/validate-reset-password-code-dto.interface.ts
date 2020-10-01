@@ -1,4 +1,4 @@
-export interface IValidateResetPasswordCode {
+export interface IValidateResetPasswordCodeDto {
   email?: string;
   code: string;
   origin: string;

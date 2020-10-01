@@ -12,7 +12,7 @@ import { exception } from 'console';
 import { ValidateEmailCodeDto } from './dto/validate-email-code.dto';
 import { CreateResetPasswordDto } from './dto/create-reset-password.dto';
 import { ResetPassword } from './entities/reset-password.entity';
-import { ValidateResetPasswordCode } from './dto/validate-reset-password-code.dto';
+import { ValidateResetPasswordCodeDto } from './dto/validate-reset-password-code.dto';
 import { Credential } from './entities/credential.entity';
 
 @Injectable()
@@ -257,15 +257,15 @@ export class EmailService {
   }
 
   public async validateResetPasswordCode(
-    validateResetPasswordCode: ValidateResetPasswordCode,
+    validateResetPasswordCodeDto: ValidateResetPasswordCodeDto,
   ): Promise<ResetPassword> {
     this.logger.debug(
       `Received validate email code payload ${JSON.stringify(
-        validateResetPasswordCode,
+        ValidateResetPasswordCodeDto,
       )}`,
     );
 
-    const { email, origin, code, newPassword } = validateResetPasswordCode;
+    const { email, origin, code, newPassword } = validateResetPasswordCodeDto;
 
     if (origin == 'mobile') {
       try {
