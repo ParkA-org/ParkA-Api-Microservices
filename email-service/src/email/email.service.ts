@@ -275,11 +275,8 @@ export class EmailService {
           resetPassword.updatedAt = new Date().toISOString();
           resetPassword.completed = true;
           const user = await this.authRepository.findOne(resetPassword.email);
-          user.confirmed = true;
-          user.updatedAt = new Date().toISOString();
           await this.updateCredential(user.credential, newPassword);
-          await this.authRepository.save(user);
-          await this.confirmEmailRepository.save(resetPassword);
+          await this.resetPasswordRepository.save(resetPassword);
         } else {
           throw new RpcException('Invalid Code');
         }
@@ -290,21 +287,18 @@ export class EmailService {
     } else {
       try {
         const result = await this.validateCode(code, origin);
-        const confirmEmail = await this.confirmEmailRepository.findOne({
+        const resetPassword = await this.resetPasswordRepository.findOne({
           code: result,
         });
-        confirmEmail.updatedAt = new Date().toISOString();
-        confirmEmail.completed = true;
-        await this.confirmEmailRepository.save(confirmEmail);
-        console.log(confirmEmail);
-        const email2 = confirmEmail.email;
-        const user = await this.authRepository.findOne({ email: email2 });
-        user.confirmed = true;
-        user.updatedAt = new Date().toISOString();
-
-        await this.authRepository.save(user);
-
-        return confirmEmail;
+        resetPassword.updatedAt = new Date().toISOString();
+        resetPassword.completed = true;
+        await this.confirmEmailRepository.save(resetPassword);
+        const user = await this.authRepository.findOne({
+          email: resetPassword.email,
+        });
+        await this.updateCredential(user.credential, newPassword);
+        await this.resetPasswordRepository.save(resetPassword);
+        return resetPassword;
       } catch (error) {
         throw new RpcException('Invalid Code');
       }
