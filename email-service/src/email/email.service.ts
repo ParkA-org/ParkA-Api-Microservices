@@ -252,6 +252,61 @@ export class EmailService {
     }
   }
 
+  public async validateResetPasswordCode(
+    validateResetPasswordCode: ValidateResetPasswordCode,
+  ): Promise<ResetPassword> {
+    this.logger.debug(
+      `Received validate email code payload ${JSON.stringify(
+        validateEmailCodeDto,
+      )}`,
+    );
+
+    const { email, origin, code, newPassword } = validateEmailCodeDto;
+
+    if (origin == 'mobile') {
+      try {
+        const confirmEmail = await this.getConfirmEmail(email);
+        const result = await this.validateCode(code, confirmEmail.salt);
+        if (result == confirmEmail.code) {
+          confirmEmail.updatedAt = new Date().toISOString();
+          confirmEmail.completed = true;
+          const user = await this.authRepository.findOne(confirmEmail.email);
+          user.confirmed = true;
+          user.updatedAt = new Date().toISOString();
+
+          await this.authRepository.save(user);
+          await this.confirmEmailRepository.save(confirmEmail);
+        } else {
+          throw new RpcException('Invalid Code');
+        }
+        return confirmEmail;
+      } catch (error) {
+        throw new RpcException('Invalid Code');
+      }
+    } else {
+      try {
+        const result = await this.validateCode(code, origin);
+        const confirmEmail = await this.confirmEmailRepository.findOne({
+          code: result,
+        });
+        confirmEmail.updatedAt = new Date().toISOString();
+        confirmEmail.completed = true;
+        await this.confirmEmailRepository.save(confirmEmail);
+        console.log(confirmEmail);
+        const email2 = confirmEmail.email;
+        const user = await this.authRepository.findOne({ email: email2 });
+        user.confirmed = true;
+        user.updatedAt = new Date().toISOString();
+
+        await this.authRepository.save(user);
+
+        return confirmEmail;
+      } catch (error) {
+        throw new RpcException('Invalid Code');
+      }
+    }
+  }
+
   public async validateCode(code: string, salt: string) {
     return await this.hashCode(code, salt);
   }
