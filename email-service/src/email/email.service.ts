@@ -316,6 +316,12 @@ export class EmailService {
     newPassword: string,
   ): Promise<Credential> {
     const credential = await this.getCredential(id);
+    const salt = await bcrypt.genSalt();
+    newPassword = await this.hashCode(newPassword, salt);
+    credential.password = newPassword;
+    credential.salt = salt;
+    credential.updatedAt = new Date().toISOString();
+
     return credential;
   }
 
