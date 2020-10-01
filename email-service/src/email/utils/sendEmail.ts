@@ -6,6 +6,7 @@ export const sendEmail = async (
   email: string,
   message: string,
   origin: string,
+  type: number,
 ) => {
   // create reusable transporter object using the default SMTP transport
   const transporter = nodemailer.createTransport({
@@ -18,15 +19,26 @@ export const sendEmail = async (
     },
   });
 
-  let html = confirmEmailWithLink(message);
-  if (origin == 'mobile') {
-    html = confirmEmailWithCode(message);
+  let html, subject;
+
+  if (type != 1) {
+    html = confirmEmailWithLink(message);
+    subject = 'ParkA Confirm Your Email';
+    if (origin == 'mobile') {
+      html = confirmEmailWithCode(message);
+    }
+  } else {
+    html = confirmEmailWithLink(message);
+    subject = 'ParkA Reset Your Password';
+    if (origin == 'mobile') {
+      html = confirmEmailWithCode(message);
+    }
   }
   // send mail with defined transport object
   const info = await transporter.sendMail({
     from: 'parka.contacto@gmail.com', // sender address
     to: email, // list of receivers
-    subject: 'ParkA Confirm Your Email', // Subject line
+    subject: subject, // Subject line
     text: 'Hello world?', // plain text body
     html: html, // html body
   });

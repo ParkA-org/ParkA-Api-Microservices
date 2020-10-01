@@ -58,7 +58,7 @@ export class EmailService {
         completed: false,
       });
 
-      await sendEmail(email, message, origin);
+      await sendEmail(email, message, origin, 0);
       return await confirmEmail;
     } catch (error) {
       throw error.code === 11000
@@ -96,6 +96,42 @@ export class EmailService {
     createResetPasswordDto: CreateResetPasswordDto,
   ): Promise<ResetPassword> {
     return resetPassword;
+  }
+
+  public async createResetPassword(
+    createResetPasswordDto: CreateResetPasswordDto,
+  ): Promise<ResetPassword> {
+    const { email, origin } = createResetPasswordDto;
+    const date = new Date();
+    email.toLowerCase();
+
+    try {
+      var salt;
+      if (origin == 'web') {
+        salt = origin;
+      } else {
+        salt = await bcrypt.genSalt();
+      }
+      const message = await this.generateCode(origin);
+      const code = await this.hashCode(message, salt);
+      const resetPassword = this.resetPasswordRepository.save({
+        id: uuid(),
+        email,
+        salt,
+        origin,
+        code,
+        createdAt: date.toISOString(),
+        updatedAt: date.toISOString(),
+        completed: false,
+      });
+
+      await sendEmail(email, message, origin, 1);
+      return await resetPassword;
+    } catch (error) {
+      throw error.code === 11000
+        ? new RpcException('Duplicate field')
+        : new RpcException('An undefined error occured');
+    }
   }
 
   public async resendEmail(
