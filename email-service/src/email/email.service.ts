@@ -43,9 +43,7 @@ export class EmailService {
         salt = await bcrypt.genSalt();
       }
       const message = await this.generateCode(origin);
-      console.log('aqui 2');
       const code = await this.hashCode(message, salt);
-      console.log('Aqui');
       const confirmEmail = this.confirmEmailRepository.save({
         id: uuid(),
         email,
@@ -83,7 +81,12 @@ export class EmailService {
       confirmEmail.updatedAt = new Date().toISOString();
       confirmEmail.origin = origin;
 
-      const salt = await bcrypt.genSalt();
+      var salt;
+      if (origin == 'web') {
+        salt = origin;
+      } else {
+        salt = await bcrypt.genSalt();
+      }
       const message = await this.generateCode(origin);
       const code = await this.hashCode(message, salt);
 
@@ -161,7 +164,9 @@ export class EmailService {
 
   public async getConfirmEmail(email: string): Promise<ConfirmEmail> {
     try {
-      const confirm = await this.confirmEmailRepository.findOne(email);
+      const confirm = await this.confirmEmailRepository.findOne({
+        email: email,
+      });
       return await confirm;
     } catch (error) {
       throw new exception('Email dont exist');
