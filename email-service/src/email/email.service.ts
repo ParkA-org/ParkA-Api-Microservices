@@ -219,7 +219,9 @@ export class EmailService {
         if (result == confirmEmail.code) {
           confirmEmail.updatedAt = new Date().toISOString();
           confirmEmail.completed = true;
-          const user = await this.authRepository.findOne(confirmEmail.email);
+          const user = await this.authRepository.findOne({
+            email: confirmEmail.email,
+          });
           user.confirmed = true;
           user.updatedAt = new Date().toISOString();
 
@@ -358,8 +360,7 @@ export class EmailService {
 
   private async hashCode(code: string, salt: string): Promise<string> {
     if (salt == 'web') return code;
-    console.log('quizas');
-    return bcrypt.hash(code, salt);
+    return await bcrypt.hash(code, salt);
   }
 
   private async generateCode(origin: string): Promise<string> {
