@@ -10,6 +10,8 @@ import { RpcException } from '@nestjs/microservices';
 import { sendEmail } from './utils/sendEmail';
 import { exception } from 'console';
 import { ValidateEmailCodeDto } from './dto/validate-email-code.dto';
+import { CreateResetPasswordDto } from './dto/create-reset-password.dto';
+import { ResetPassword } from './entities/reset-password.entity';
 
 @Injectable()
 export class EmailService {
@@ -62,6 +64,25 @@ export class EmailService {
         : new RpcException('An undefined error occured');
     }
   }
+
+  public async resetPassword(
+    createResetPasswordDto: CreateResetPasswordDto,
+  ): Promise<ResetPassword> {
+    this.logger.debug(
+      `Received reset password payload ${JSON.stringify(
+        createResetPasswordDto,
+      )}`,
+    );
+    const { email, origin } = createResetPasswordDto;
+    
+    if(){
+
+    }else{
+
+    }
+
+  }
+
 
   public async resendEmail(
     createConfirmEmailDto: CreateConfirmEmailDto,

@@ -1,5 +1,6 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { ConfirmEmail } from 'src/email/entities/confirm-email.entity';
+import { ResetPassword } from 'src/email/entities/reset-password.entity';
 import { User } from 'src/email/entities/user.entity';
 
 export const typeOrmConfig: TypeOrmModuleOptions = {
@@ -9,5 +10,5 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
   useUnifiedTopology: true,
   useNewUrlParser: true,
   synchronize: true,
-  entities: [ConfirmEmail, User],
+  entities: [ConfirmEmail, User, ResetPassword],
 };
