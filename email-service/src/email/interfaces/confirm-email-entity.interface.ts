@@ -1,8 +1,4 @@
 export interface IConfirmEmail {
-  _id: string;
-
-  id: string;
-
   email: string;
 
   origin: string;

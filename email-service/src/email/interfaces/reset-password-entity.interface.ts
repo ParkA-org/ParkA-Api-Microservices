@@ -1,8 +1,4 @@
 export interface IResetPassword {
-  _id: string;
-
-  id: string;
-
   email: string;
 
   origin: string;
