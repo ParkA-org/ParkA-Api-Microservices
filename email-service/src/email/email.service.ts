@@ -43,7 +43,7 @@ export class EmailService {
     email.toLowerCase();
 
     try {
-      var salt;
+      let salt;
       if (origin == 'web') {
         salt = origin;
       } else {
@@ -104,7 +104,7 @@ export class EmailService {
       resetPassword.updatedAt = new Date().toISOString();
       resetPassword.origin = origin;
 
-      var salt;
+      let salt;
       if (origin == 'web') {
         salt = origin;
       } else {
@@ -134,7 +134,7 @@ export class EmailService {
     email.toLowerCase();
 
     try {
-      var salt;
+      let salt;
       if (origin == 'web') {
         salt = origin;
       } else {
@@ -179,7 +179,7 @@ export class EmailService {
       confirmEmail.updatedAt = new Date().toISOString();
       confirmEmail.origin = origin;
 
-      var salt;
+      let salt;
       if (origin == 'web') {
         salt = origin;
       } else {
