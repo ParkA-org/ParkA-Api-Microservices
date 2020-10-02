@@ -1,3 +1,4 @@
+import { Logger } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
 import { confirmEmailWithCode } from './templates/confirmEmailwithCode';
 import { confirmEmailWithLink } from './templates/confirmEmailwithLink';
@@ -45,6 +46,7 @@ export const sendEmail = async (
     html: html, // html body
   });
 
+  //new Logger("SendEmail").debug('Message sent: %s', info.messageId);
   console.log('Message sent: %s', info.messageId);
   console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
 };

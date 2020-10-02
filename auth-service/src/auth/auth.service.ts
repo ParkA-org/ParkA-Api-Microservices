@@ -173,7 +173,7 @@ export class AuthService {
       const user = this.authRepository.find();
       return await user;
     } catch (error) {
-      console.log(error);
+      this.logger.debug(error);
     }
   }
 
