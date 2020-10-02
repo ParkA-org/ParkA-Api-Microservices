@@ -1,6 +1,8 @@
 import * as nodemailer from 'nodemailer';
 import { confirmEmailWithCode } from './templates/confirmEmailwithCode';
 import { confirmEmailWithLink } from './templates/confirmEmailwithLink';
+import { resetPasswordWithCode } from './templates/resetPasswordwithCode';
+import { resetPasswordWithLink } from './templates/resetPasswordWithLink';
 
 export const sendEmail = async (
   email: string,
@@ -28,10 +30,10 @@ export const sendEmail = async (
       html = confirmEmailWithCode(message);
     }
   } else {
-    html = confirmEmailWithLink(message);
+    html = resetPasswordWithLink(message);
     subject = 'ParkA Reset Your Password';
     if (origin == 'mobile') {
-      html = confirmEmailWithCode(message);
+      html = resetPasswordWithCode(message);
     }
   }
   // send mail with defined transport object
