@@ -18,4 +18,6 @@ export interface IUser {
   password: string;
 
   confirmed: boolean;
+
+  origin: string;
 }

@@ -23,4 +23,7 @@ export class UserType implements IUserType {
 
   @Field({ nullable: true })
   confirmed: boolean;
+
+  @Field()
+  origin: string;
 }

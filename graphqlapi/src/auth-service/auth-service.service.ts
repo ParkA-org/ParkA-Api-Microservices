@@ -7,6 +7,8 @@ import { LoginUserInput } from './inputs/login-user.input';
 import { LoginType } from './types/login.type';
 import { UserType } from './types/user.type';
 import { UpdateUserPasswordInput } from './inputs/update-user-password.input';
+import { ConfirmEmailInput } from 'src/email-service/inputs/confirm-email.input';
+import { ConfirmEmailType } from 'src/email-service/types/confirm-email.type';
 
 @Injectable()
 export class AuthServiceService {
@@ -42,11 +44,13 @@ export class AuthServiceService {
     return response.toPromise();
   }
 
-  public async confirmUser(email: string): Promise<boolean> {
+  public async confirmUser(
+    confirmEmailInput: ConfirmEmailInput,
+  ): Promise<ConfirmEmailType> {
     this.logger.log('Create new confirm email');
-    const response = await this.client.send<boolean>(
+    const response = await this.client.send<ConfirmEmailType>(
       { type: 'confirm-email' },
-      email,
+      confirmEmailInput,
     );
     return response.toPromise();
   }

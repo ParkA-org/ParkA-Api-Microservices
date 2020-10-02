@@ -14,6 +14,9 @@ export class CreateUserInput implements IUserInput {
   lastName: string;
 
   @Field()
+  origin: string;
+
+  @Field()
   @IsEmail()
   email: string;
 
