@@ -8,6 +8,7 @@ import { MakeModule } from './vehicle-service/make/make.module';
 import { ColorModule } from './vehicle-service/color/color.module';
 import { ConfigModule } from '@nestjs/config';
 import { ReservationModule } from './core-service/reservation/reservation.module';
+import { UserInformationModule } from './core-service/user-information/user-information.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -24,6 +25,7 @@ import { ReservationModule } from './core-service/reservation/reservation.module
     MakeModule,
     ColorModule,
     ReservationModule,
+    UserInformationModule,
   ],
 })
 export class AppModule {}
