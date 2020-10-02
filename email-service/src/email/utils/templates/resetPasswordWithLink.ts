@@ -1,4 +1,4 @@
-import { confirmEmailLink } from '../confirmEmail';
+import { resetPasswordLink } from '../confirmEmail';
 
 export const resetPasswordWithLink = (message: string) => {
   return `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -121,7 +121,7 @@ export const resetPasswordWithLink = (message: string) => {
                           <td class="es-m-txt-c" align="center" style="padding:0;Margin:0;padding-top:10px;padding-left:20px;padding-right:20px"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:14px;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;line-height:21px;color:#3F3D3D">For security reasons this email is sent, where the following method is sent to reset your password.&nbsp;</p></td> 
                          </tr> 
                          <tr style="border-collapse:collapse"> 
-                          <td align="center" style="Margin:0;padding-top:10px;padding-bottom:10px;padding-left:20px;padding-right:20px"><span class="es-button-border" style="border-style:solid;border-color:#2CB543;background:#63C7B2;border-width:0px;display:inline-block;border-radius:7px;width:auto"><a href="${confirmEmailLink(
+                          <td align="center" style="Margin:0;padding-top:10px;padding-bottom:10px;padding-left:20px;padding-right:20px"><span class="es-button-border" style="border-style:solid;border-color:#2CB543;background:#63C7B2;border-width:0px;display:inline-block;border-radius:7px;width:auto"><a href="${resetPasswordLink(
                             message,
                           )}" class="es-button" target="_blank" style="mso-style-priority:100 !important;text-decoration:none;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:roboto, 'helvetica neue', helvetica, arial, sans-serif;font-size:18px;color:#FFFFFF;border-style:solid;border-color:#63C7B2;border-width:10px 25px 10px 25px;display:inline-block;background:#63C7B2;border-radius:7px;font-weight:normal;font-style:normal;line-height:22px;width:auto;text-align:center">Reset your Password</a></span></td> 
                          </tr> 

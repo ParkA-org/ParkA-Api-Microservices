@@ -263,7 +263,7 @@ export class EmailService {
   ): Promise<ResetPassword> {
     this.logger.debug(
       `Received validate email code payload ${JSON.stringify(
-        ValidateResetPasswordCodeDto,
+        validateResetPasswordCodeDto,
       )}`,
     );
 
@@ -275,11 +275,11 @@ export class EmailService {
         const result = await this.validateCode(code, resetPassword.salt);
         if (result == resetPassword.code) {
           resetPassword.updatedAt = new Date().toISOString();
-          resetPassword.completed = true;
           const user = await this.authRepository.findOne({
             email: resetPassword.email,
           });
           await this.updateCredential(user.credential, newPassword);
+          resetPassword.completed = true;
           await this.resetPasswordRepository.save(resetPassword);
         } else {
           throw new RpcException('Invalid Code');
@@ -290,17 +290,15 @@ export class EmailService {
       }
     } else {
       try {
-        const result = await this.validateCode(code, origin);
         const resetPassword = await this.resetPasswordRepository.findOne({
-          code: result,
+          code: code,
         });
         resetPassword.updatedAt = new Date().toISOString();
-        resetPassword.completed = true;
-        await this.confirmEmailRepository.save(resetPassword);
         const user = await this.authRepository.findOne({
           email: resetPassword.email,
         });
         await this.updateCredential(user.credential, newPassword);
+        resetPassword.completed = true;
         await this.resetPasswordRepository.save(resetPassword);
         return resetPassword;
       } catch (error) {
@@ -319,7 +317,7 @@ export class EmailService {
     credential.password = newPassword;
     credential.salt = salt;
     credential.updatedAt = new Date().toISOString();
-
+    await this.credentialRespository.save(credential);
     return credential;
   }
 
