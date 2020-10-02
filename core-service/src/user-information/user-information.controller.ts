@@ -16,4 +16,19 @@ export class UserInformationController {
       getUserInformationByIdDto,
     );
   }
+
+  @MessagePattern({ type: 'create-user-information' })
+  public async createUserInformation() {
+    return {
+      birthDate: '',
+      documentNumber: '',
+      id: '12345-123456',
+      nationality: '',
+      parkings: [],
+      paymentInformation: '',
+      placeOfBirth: '',
+      telephoneNumber: '',
+      vehicles: [],
+    };
+  }
 }

@@ -1,4 +1,5 @@
-import { Args, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { CreateUserInformationInpuType } from './inputs/create-user-information.input';
 import { GetUserInformationByIdInput } from './inputs/get-user-information-by-id.input';
 import { UserInformationType } from './types/user-information.type';
 import { UserInformationService } from './user-information.service';
@@ -14,6 +15,16 @@ export class UserInformationResolver {
   ): Promise<UserInformationType> {
     return await this.userInformationService.getUserInformationById(
       getUserInformationByIdInput,
+    );
+  }
+
+  @Mutation(of => UserInformationType)
+  public async createUserInformation(
+    @Args('createUserInformationInpuType')
+    createUserInformationInpuType: CreateUserInformationInpuType,
+  ): Promise<UserInformationType> {
+    return this.userInformationService.createUserInformation(
+      createUserInformationInpuType,
     );
   }
 }
