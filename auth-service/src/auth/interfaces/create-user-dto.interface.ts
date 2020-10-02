@@ -8,4 +8,6 @@ export interface ICreateUserDto {
   profilePicture?: string;
 
   password: string;
+
+  origin: string;
 }

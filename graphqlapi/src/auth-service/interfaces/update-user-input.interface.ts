@@ -6,4 +6,6 @@ export interface IUpdateUserInput {
   lastName?: string;
 
   profilePicture?: string;
+
+  origin: string;
 }

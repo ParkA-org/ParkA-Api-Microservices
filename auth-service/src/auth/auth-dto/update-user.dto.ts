@@ -7,4 +7,5 @@ export class UpdateUserDto implements IUpdateUserDto {
   profilePicture?: string;
   newPassword?: string;
   oldPassword?: string;
+  origin: string;
 }
