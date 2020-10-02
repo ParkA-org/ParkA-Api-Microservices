@@ -243,7 +243,6 @@ export class EmailService {
         confirmEmail.updatedAt = new Date().toISOString();
         confirmEmail.completed = true;
         await this.confirmEmailRepository.save(confirmEmail);
-        console.log(confirmEmail);
         const email2 = confirmEmail.email;
         const user = await this.authRepository.findOne({ email: email2 });
         user.confirmed = true;
