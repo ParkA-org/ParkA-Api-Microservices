@@ -2,12 +2,13 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Reservation } from './reservation/entities/reservation.entity';
 import { ReservationModule } from './reservation/reservation.module';
-import { InformationModule } from './information/information.module';
-import { UserInformation } from './information/entities/user-information.entities';
+import { UserInformationModule } from './user-information/user-information.module';
+import { UserInformation } from './user-information/entities/user-information.entities';
 
 @Module({
   imports: [
     ReservationModule,
+    UserInformationModule,
     TypeOrmModule.forRoot({
       type: 'mongodb',
       url:
@@ -17,7 +18,6 @@ import { UserInformation } from './information/entities/user-information.entitie
       synchronize: true,
       entities: [Reservation, UserInformation],
     }),
-    InformationModule,
   ],
   controllers: [],
   providers: [],
