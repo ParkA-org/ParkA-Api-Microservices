@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Reservation } from './reservation/entities/reservation.entity';
 import { ReservationModule } from './reservation/reservation.module';
 import { InformationModule } from './information/information.module';
+import { UserInformation } from './information/entities/user-information.entities';
 
 @Module({
   imports: [
@@ -14,7 +15,7 @@ import { InformationModule } from './information/information.module';
       useUnifiedTopology: true,
       useNewUrlParser: true,
       synchronize: true,
-      entities: [Reservation],
+      entities: [Reservation, UserInformation],
     }),
     InformationModule,
   ],
