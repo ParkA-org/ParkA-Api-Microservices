@@ -6,4 +6,6 @@ export interface IUpdateUserDto {
   lastName?: string;
 
   profilePicture?: string;
+
+  origin: string;
 }

@@ -40,12 +40,24 @@ services:
     volumes:
       - ./vehicle-service:/usr/src/app
 
+  email-service:
+    container_name: "email-service"
+    restart: "always"
+    build:
+      context: ./email-service
+      dockerfile: Dockerfile
+    external_links:
+      - redis
+    ports:
+      - "3003:3000"
+    volumes:
+      - ./email-service:/usr/src/app
+
   core-service:
     container_name: "core-service"
     restart: "always"
     build:
       context: ./core-service
-      dockerfile: Dockerfile
     external_links:
       - redis
     ports:

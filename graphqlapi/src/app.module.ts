@@ -9,6 +9,7 @@ import { ColorModule } from './vehicle-service/color/color.module';
 import { ConfigModule } from '@nestjs/config';
 import { ReservationModule } from './core-service/reservation/reservation.module';
 import { UserInformationModule } from './core-service/user-information/user-information.module';
+import { EmailServiceModule } from './email-service/email-service.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -26,6 +27,8 @@ import { UserInformationModule } from './core-service/user-information/user-info
     ColorModule,
     ReservationModule,
     UserInformationModule,
+    EmailServiceModule,
   ],
+  providers: [],
 })
 export class AppModule {}

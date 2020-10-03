@@ -32,7 +32,7 @@ export class AuthService {
     );
 
     try {
-      const { id, name, lastName, profilePicture } = updateUserDto;
+      const { id, name, lastName, profilePicture, origin } = updateUserDto;
       const user = await this.getUser(id);
 
       profilePicture !== undefined
@@ -44,6 +44,8 @@ export class AuthService {
       name !== undefined ? (user.name = name) : null;
 
       user.updatedAt = new Date().toISOString();
+
+      user.origin = origin;
 
       await this.authRepository.save(user);
 
@@ -66,8 +68,10 @@ export class AuthService {
     email.toLowerCase();
 
     try {
-      const credential = await this.credentialRepository.findOne({ email });
-      const user = await this.authRepository.findOne({ email });
+      const credential = await this.credentialRepository.findOne({
+        email: email,
+      });
+      const user = await this.authRepository.findOne({ email: email });
 
       if (await this.verifyPassword(oldPassword, credential)) {
         const credential_tmp = await this.updateCredential(
@@ -113,7 +117,14 @@ export class AuthService {
     this.logger.debug(
       `Received create user payload ${JSON.stringify(createUserDto)}`,
     );
-    const { name, email, lastName, profilePicture, password } = createUserDto;
+    const {
+      name,
+      email,
+      lastName,
+      profilePicture,
+      password,
+      origin,
+    } = createUserDto;
 
     const date = new Date();
     email.toLowerCase();
@@ -132,9 +143,6 @@ export class AuthService {
         updatedAt: date.toISOString(),
       });
 
-      this.logger.debug(
-        `Received create user payload ${JSON.stringify(result)}`,
-      );
       const id2 = id;
 
       const user = this.authRepository.save({
@@ -147,6 +155,7 @@ export class AuthService {
         updatedAt: date.toISOString(),
         confirmed: false,
         credential: id2,
+        origin,
       });
 
       return await user;
@@ -166,13 +175,13 @@ export class AuthService {
       const user = this.authRepository.find();
       return await user;
     } catch (error) {
-      console.log(error);
+      this.logger.debug(error);
     }
   }
 
-  private createToken(email: string, id: string) {
+  private createToken(id: string, email: string, userInformation: string) {
     return jwt.sign(
-      { email: email, id: id },
+      { id: id, email: email, userInformation: userInformation },
       this.configService.get('JWT_SECRET'),
       {
         expiresIn: '100d',
@@ -200,9 +209,11 @@ export class AuthService {
       const { email, password } = authCredentialDto;
 
       email.toLowerCase();
-      const user = await this.authRepository.findOne({ email });
+      const user = await this.authRepository.findOne({ email: email });
 
-      const credential = await this.credentialRepository.findOne({ email });
+      const credential = await this.credentialRepository.findOne({
+        email: email,
+      });
 
       const result = new LoginType();
 
@@ -210,7 +221,11 @@ export class AuthService {
         const hash = await this.hashPassword(password, credential.salt);
         if (hash === credential.password) {
           result.user = user;
-          result.JWT = await this.createToken(user.id, user.email);
+          result.JWT = await this.createToken(
+            user.id,
+            user.email,
+            user.userInformation,
+          );
           return result;
         }
       }

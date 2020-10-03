@@ -18,4 +18,6 @@ export class CreateUserDto implements ICreateUserDto {
 
   @MinLength(8)
   password: string;
+
+  origin: string;
 }
