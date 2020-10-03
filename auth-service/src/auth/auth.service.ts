@@ -68,8 +68,10 @@ export class AuthService {
     email.toLowerCase();
 
     try {
-      const credential = await this.credentialRepository.findOne({ email });
-      const user = await this.authRepository.findOne({ email });
+      const credential = await this.credentialRepository.findOne({
+        email: email,
+      });
+      const user = await this.authRepository.findOne({ email: email });
 
       if (await this.verifyPassword(oldPassword, credential)) {
         const credential_tmp = await this.updateCredential(
@@ -177,9 +179,9 @@ export class AuthService {
     }
   }
 
-  private createToken(email: string, id: string) {
+  private createToken(id: string, email: string, userInformation: string) {
     return jwt.sign(
-      { email: email, id: id },
+      { id: id, email: email, userInformation: userInformation },
       this.configService.get('JWT_SECRET'),
       {
         expiresIn: '100d',
@@ -207,9 +209,11 @@ export class AuthService {
       const { email, password } = authCredentialDto;
 
       email.toLowerCase();
-      const user = await this.authRepository.findOne({ email });
+      const user = await this.authRepository.findOne({ email: email });
 
-      const credential = await this.credentialRepository.findOne({ email });
+      const credential = await this.credentialRepository.findOne({
+        email: email,
+      });
 
       const result = new LoginType();
 
@@ -217,7 +221,11 @@ export class AuthService {
         const hash = await this.hashPassword(password, credential.salt);
         if (hash === credential.password) {
           result.user = user;
-          result.JWT = await this.createToken(user.id, user.email);
+          result.JWT = await this.createToken(
+            user.id,
+            user.email,
+            user.userInformation,
+          );
           return result;
         }
       }

@@ -1,4 +1,6 @@
-export interface IUpdateUserInput {
+export interface IInternUpdateUser {
+  id: string;
+
   name?: string;
 
   lastName?: string;

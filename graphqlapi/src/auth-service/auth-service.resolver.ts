@@ -3,7 +3,7 @@ import {
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
-import { Query, Resolver, Mutation, Args } from '@nestjs/graphql';
+import { Query, Resolver, Mutation, Args, Context } from '@nestjs/graphql';
 import { AuthGuard } from './strategy/auth.guard';
 import { AuthServiceService } from './auth-service.service';
 import { UpdateUserInput } from './inputs/update-user.input';
@@ -13,6 +13,8 @@ import { LoginType } from './types/login.type';
 import { UserType } from './types/user.type';
 import { UpdateUserPasswordInput } from './inputs/update-user-password.input';
 import { ConfirmEmailInput } from 'src/email-service/inputs/confirm-email.input';
+import { JWTpayload } from './types/jwt.type';
+import { AdvancedConsoleLogger } from 'typeorm';
 
 @Resolver(of => UserType)
 export class AuthServiceResolver {
@@ -31,14 +33,17 @@ export class AuthServiceResolver {
   }
 
   @Mutation(returns => UserType)
+  @UseGuards(AuthGuard)
   async updateUserPassword(
     @Args('updateUserPasswordInput')
     updateUserPasswordInput: UpdateUserPasswordInput,
+    @Context('user') user: JWTpayload,
   ): Promise<UserType> {
-    const user = await this.authServiceService.updateUserPassword(
+    const updateUser = await this.authServiceService.updateUserPassword(
       updateUserPasswordInput,
+      user,
     );
-    return user;
+    return updateUser;
   }
 
   @Mutation(returns => UserType)
@@ -77,7 +82,8 @@ export class AuthServiceResolver {
   @UseGuards(AuthGuard)
   async updateUser(
     @Args('updateUserInput') updateUserInput: UpdateUserInput,
+    @Context('user') user: JWTpayload,
   ): Promise<UserType> {
-    return await this.authServiceService.updateUser(updateUserInput);
+    return await this.authServiceService.updateUser(updateUserInput, user);
   }
 }

@@ -4,10 +4,6 @@ import { IUpdateUserPasswordInput } from '../interfaces/update-user-password-inp
 
 @InputType()
 export class UpdateUserPasswordInput implements IUpdateUserPasswordInput {
-  @Field()
-  @IsEmail()
-  email: string;
-
   @MinLength(8)
   @Field()
   newPassword: string;
