@@ -52,6 +52,8 @@ export class UserInformationService {
       id: '',
     });
 
+    userInformation.updatedAt = new Date().toISOString();
+
     return await this.userInformationRepository.save(userInformation);
   }
 }
