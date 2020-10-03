@@ -4,6 +4,7 @@ import { Reservation } from './reservation/entities/reservation.entity';
 import { ReservationModule } from './reservation/reservation.module';
 import { UserInformationModule } from './user-information/user-information.module';
 import { UserInformation } from './user-information/entities/user-information.entities';
+import { ParkingRentalModule } from './parking-rental/parking-rental.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { UserInformation } from './user-information/entities/user-information.en
       synchronize: true,
       entities: [Reservation, UserInformation],
     }),
+    ParkingRentalModule,
   ],
   controllers: [],
   providers: [],
