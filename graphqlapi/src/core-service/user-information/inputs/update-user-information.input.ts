@@ -1,46 +1,38 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
 import { IsDateString, IsUUID, Length, ValidateIf } from 'class-validator';
 
-@InputType('CreateUserInformationInpuType')
-export class CreateUserInformationInpuType
-  implements ICreateUserInformationInputType {
+@InputType('updateUserInformationInput')
+export class UpdateUserInformationInput implements IUpdateUserInformationInput {
   @Field()
-  @IsUUID('4')
   paymentInformation: string;
 
   @Field({ nullable: true })
   @ValidateIf(
-    (input: CreateUserInformationInpuType) =>
-      input.documentNumber !== undefined,
+    (input: UpdateUserInformationInput) => input.documentNumber !== undefined,
   )
   @Length(11, 12)
   documentNumber: string;
 
   @Field(type => [ID], { nullable: true, defaultValue: [] })
   @ValidateIf(
-    (input: CreateUserInformationInpuType) => input.vehicles !== undefined,
+    (input: UpdateUserInformationInput) => input.vehicles !== undefined,
   )
   @IsUUID('4', { each: true })
   vehicles: string[];
 
   @Field(type => [ID], { nullable: true, defaultValue: [] })
   @ValidateIf(
-    (input: CreateUserInformationInpuType) => input.parkings !== undefined,
+    (input: UpdateUserInformationInput) => input.parkings !== undefined,
   )
   @IsUUID('4', { each: true })
   parkings: string[];
 
-  @Field({ nullable: true })
-  @ValidateIf(
-    (input: CreateUserInformationInpuType) =>
-      input.telephoneNumber !== undefined,
-  )
-  @Length(10, 11)
+  @Field()
   telephoneNumber: string;
 
   @Field({ nullable: true })
   @ValidateIf(
-    (input: CreateUserInformationInpuType) => input.birthDate !== undefined,
+    (input: UpdateUserInformationInput) => input.birthDate !== undefined,
   )
   @IsDateString()
   birthDate: string;

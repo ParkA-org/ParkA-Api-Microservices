@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Client, ClientProxy, Transport } from '@nestjs/microservices';
 import { CreateUserInformationInpuType } from './inputs/create-user-information.input';
 import { GetUserInformationByIdInput } from './inputs/get-user-information-by-id.input';
+import { UpdateUserInformationInput } from './inputs/update-user-information.input';
 import { UserInformationType } from './types/user-information.type';
 
 @Injectable()
@@ -31,6 +32,17 @@ export class UserInformationService {
     const response = await this.client.send<UserInformationType>(
       { type: 'create-user-information' },
       createUserInformationInpuType,
+    );
+
+    return response.toPromise();
+  }
+
+  public async updateUserInformation(
+    updateUserInformationInput: UpdateUserInformationInput,
+  ): Promise<UserInformationType> {
+    const response = await this.client.send<UserInformationType>(
+      { type: 'update-user-information' },
+      updateUserInformationInput,
     );
 
     return response.toPromise();
