@@ -1,4 +1,7 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { UseGuards } from '@nestjs/common';
+import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { AuthGuard } from 'src/auth-service/strategy/auth.guard';
+import { JWTpayload } from 'src/auth-service/types/jwt.type';
 import { CreateUserInformationInpuType } from './inputs/create-user-information.input';
 import { GetUserInformationByIdInput } from './inputs/get-user-information-by-id.input';
 import { UpdateUserInformationInput } from './inputs/update-user-information.input';
@@ -9,6 +12,7 @@ import { UserInformationService } from './user-information.service';
 export class UserInformationResolver {
   constructor(private userInformationService: UserInformationService) {}
 
+  @UseGuards(AuthGuard)
   @Query(returns => UserInformationType)
   public async getUserInformationById(
     @Args('getUserInformationByIdInput')
@@ -29,11 +33,14 @@ export class UserInformationResolver {
     );
   }
 
+  @UseGuards(AuthGuard)
   @Mutation(of => UserInformationType)
   public async updateUserInformation(
     @Args('updateUserInformationInput')
     updateUserInformationInput: UpdateUserInformationInput,
+    @Context('user') user: JWTpayload,
   ): Promise<UserInformationType> {
+    console.log(user);
     return this.userInformationService.updateUserInformation(
       updateUserInformationInput,
     );

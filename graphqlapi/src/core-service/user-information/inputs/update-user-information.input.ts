@@ -27,7 +27,7 @@ export class UpdateUserInformationInput implements IUpdateUserInformationInput {
   @IsUUID('4', { each: true })
   parkings: string[];
 
-  @Field()
+  @Field({ nullable: true })
   telephoneNumber: string;
 
   @Field({ nullable: true })
