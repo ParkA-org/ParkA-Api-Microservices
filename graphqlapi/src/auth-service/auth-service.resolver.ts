@@ -33,12 +33,12 @@ export class AuthServiceResolver {
   }
 
   @Mutation(returns => UserType)
+  @UseGuards(AuthGuard)
   async updateUserPassword(
     @Args('updateUserPasswordInput')
     updateUserPasswordInput: UpdateUserPasswordInput,
     @Context('user') user: JWTpayload,
   ): Promise<UserType> {
-    console.log(user);
     const updateUser = await this.authServiceService.updateUserPassword(
       updateUserPasswordInput,
       user,
