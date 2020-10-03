@@ -13,6 +13,8 @@ import { LoginType } from './types/login.type';
 import { UserType } from './types/user.type';
 import { UpdateUserPasswordInput } from './inputs/update-user-password.input';
 import { ConfirmEmailInput } from 'src/email-service/inputs/confirm-email.input';
+import { JWTpayload } from './types/jwt.type';
+import { AdvancedConsoleLogger } from 'typeorm';
 
 @Resolver(of => UserType)
 export class AuthServiceResolver {
@@ -77,10 +79,13 @@ export class AuthServiceResolver {
   @UseGuards(AuthGuard)
   async updateUser(
     @Args('updateUserInput') updateUserInput: UpdateUserInput,
-    @Context('user') user: string,
+    @Context('user') user: JWTpayload,
   ): Promise<UserType> {
     console.log(' Desde el resolver ');
     console.log(user);
+    const { id, email } = user;
+    console.log(id);
+    console.log(updateUserInput);
     return await this.authServiceService.updateUser(updateUserInput);
   }
 }
