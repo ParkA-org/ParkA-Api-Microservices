@@ -11,6 +11,7 @@ import { ConfirmEmailInput } from 'src/email-service/inputs/confirm-email.input'
 import { ConfirmEmailType } from 'src/email-service/types/confirm-email.type';
 import { JWTpayload } from './types/jwt.type';
 import { InternUpdateUser } from './inputs/intern-update-user';
+import { InternUpdatePassword } from './inputs/intern-update-password';
 
 @Injectable()
 export class AuthServiceService {
@@ -89,9 +90,14 @@ export class AuthServiceService {
       )}`,
     );
 
+    const internUpdatePassword = new InternUpdatePassword();
+    internUpdatePassword.newPassword = updateUserPasswordInput.newPassword;
+    internUpdatePassword.oldPassword = updateUserPasswordInput.oldPassword;
+    internUpdatePassword.email = user.id;
+
     const response = this.client.send<UserType>(
       { type: 'update-user-password' },
-      updateUserPasswordInput,
+      internUpdatePassword,
     );
 
     return response.toPromise();
