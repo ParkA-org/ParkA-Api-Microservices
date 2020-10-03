@@ -5,6 +5,7 @@ import { CreateUserInformationDto } from './dtos/create-user-information.dto';
 import { GetUserInformationByIdDto } from './dtos/get-user-information-by-id.dto';
 import { UserInformation } from './entities/user-information.entities';
 import { v4 as uuid } from 'uuid';
+import { UpdateUserInformationDto } from './dtos/update-user-information.dto';
 @Injectable()
 export class UserInformationService {
   private logger = new Logger('UserInformationService');
@@ -33,6 +34,22 @@ export class UserInformationService {
       id: uuid(),
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
+    });
+
+    return await this.userInformationRepository.save(userInformation);
+  }
+
+  public async updateUserInformation(
+    updateUserInformationDto: UpdateUserInformationDto,
+  ): Promise<UserInformation> {
+    this.logger.debug(
+      `Received update user information with payload ${JSON.stringify(
+        updateUserInformationDto,
+      )}`,
+    );
+
+    const userInformation = await this.getUserInformationById({
+      id: '',
     });
 
     return await this.userInformationRepository.save(userInformation);
