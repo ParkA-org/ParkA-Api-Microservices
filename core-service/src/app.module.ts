@@ -10,6 +10,7 @@ import { ParkingRentalModule } from './parking-rental/parking-rental.module';
   imports: [
     ReservationModule,
     UserInformationModule,
+    ParkingRentalModule,
     TypeOrmModule.forRoot({
       type: 'mongodb',
       url:
@@ -19,7 +20,6 @@ import { ParkingRentalModule } from './parking-rental/parking-rental.module';
       synchronize: true,
       entities: [Reservation, UserInformation],
     }),
-    ParkingRentalModule,
   ],
   controllers: [],
   providers: [],
