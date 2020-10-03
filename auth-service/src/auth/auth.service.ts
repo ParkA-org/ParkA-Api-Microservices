@@ -179,10 +179,14 @@ export class AuthService {
     }
   }
 
-  private createToken(email: string, id: string) {
-    return jwt.sign({ id, email }, this.configService.get('JWT_SECRET'), {
-      expiresIn: '100d',
-    });
+  private createToken(id: string, email: string) {
+    return jwt.sign(
+      { id: id, email: email },
+      this.configService.get('JWT_SECRET'),
+      {
+        expiresIn: '100d',
+      },
+    );
   }
 
   public async getUser(id: string): Promise<User> {
