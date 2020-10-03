@@ -13,14 +13,14 @@ export class UpdateUserInformationInput implements IUpdateUserInformationInput {
   @Length(11, 12)
   documentNumber: string;
 
-  @Field(type => [ID], { nullable: true, defaultValue: [] })
+  @Field(type => [ID], { nullable: true })
   @ValidateIf(
     (input: UpdateUserInformationInput) => input.vehicles !== undefined,
   )
   @IsUUID('4', { each: true })
   vehicles: string[];
 
-  @Field(type => [ID], { nullable: true, defaultValue: [] })
+  @Field(type => [ID], { nullable: true })
   @ValidateIf(
     (input: UpdateUserInformationInput) => input.parkings !== undefined,
   )

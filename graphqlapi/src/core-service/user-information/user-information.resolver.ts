@@ -4,6 +4,7 @@ import { AuthGuard } from 'src/auth-service/strategy/auth.guard';
 import { JWTpayload } from 'src/auth-service/types/jwt.type';
 import { CreateUserInformationInpuType } from './inputs/create-user-information.input';
 import { GetUserInformationByIdInput } from './inputs/get-user-information-by-id.input';
+import { UpdateUserInformationInternalInput } from './inputs/update-user-information-internal-input';
 import { UpdateUserInformationInput } from './inputs/update-user-information.input';
 import { UserInformationType } from './types/user-information.type';
 import { UserInformationService } from './user-information.service';
@@ -40,9 +41,15 @@ export class UserInformationResolver {
     updateUserInformationInput: UpdateUserInformationInput,
     @Context('user') user: JWTpayload,
   ): Promise<UserInformationType> {
-    console.log(user);
+    const updateUserInformationInternalInput: UpdateUserInformationInternalInput = {
+      getUserInformationByIdDto: {
+        id: user.userInformation,
+      },
+      updateUserInformationPayloadDto: updateUserInformationInput,
+    };
+
     return this.userInformationService.updateUserInformation(
-      updateUserInformationInput,
+      updateUserInformationInternalInput,
     );
   }
 }

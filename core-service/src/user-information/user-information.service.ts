@@ -48,9 +48,20 @@ export class UserInformationService {
       )}`,
     );
 
-    const userInformation = await this.getUserInformationById({
-      id: 'f2637912-d301-4c67-9d78-f4bfaf36ec1f',
-    });
+    const {
+      getUserInformationByIdDto,
+      updateUserInformationPayloadDto,
+    } = updateUserInformationDto;
+
+    const userInformation = await this.getUserInformationById(
+      getUserInformationByIdDto,
+    );
+
+    const updateFieldList = Object.keys(updateUserInformationPayloadDto);
+
+    for (const field of updateFieldList) {
+      userInformation[field] = updateUserInformationPayloadDto[field];
+    }
 
     userInformation.updatedAt = new Date().toISOString();
 
