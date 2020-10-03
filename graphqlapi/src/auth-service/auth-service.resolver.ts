@@ -81,11 +81,6 @@ export class AuthServiceResolver {
     @Args('updateUserInput') updateUserInput: UpdateUserInput,
     @Context('user') user: JWTpayload,
   ): Promise<UserType> {
-    console.log(' Desde el resolver ');
-    console.log(user);
-    const { id, email } = user;
-    console.log(id);
-    console.log(updateUserInput);
-    return await this.authServiceService.updateUser(updateUserInput);
+    return await this.authServiceService.updateUser(updateUserInput, user);
   }
 }

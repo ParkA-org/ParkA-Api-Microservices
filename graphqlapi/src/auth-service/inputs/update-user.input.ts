@@ -4,9 +4,6 @@ import { IUpdateUserInput } from '../interfaces/update-user-input.interface';
 
 @InputType()
 export class UpdateUserInput implements IUpdateUserInput {
-  @Field(type => ID)
-  id: string;
-
   @Field({ nullable: true })
   @ValidateIf((input: UpdateUserInput) => input.name !== undefined)
   @MinLength(2)

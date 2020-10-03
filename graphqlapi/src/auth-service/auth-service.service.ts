@@ -9,6 +9,7 @@ import { UserType } from './types/user.type';
 import { UpdateUserPasswordInput } from './inputs/update-user-password.input';
 import { ConfirmEmailInput } from 'src/email-service/inputs/confirm-email.input';
 import { ConfirmEmailType } from 'src/email-service/types/confirm-email.type';
+import { JWTpayload } from './types/jwt.type';
 
 @Injectable()
 export class AuthServiceService {
@@ -55,7 +56,10 @@ export class AuthServiceService {
     return response.toPromise();
   }
 
-  public async updateUser(updateUserInput: UpdateUserInput): Promise<UserType> {
+  public async updateUser(
+    updateUserInput: UpdateUserInput,
+    user: JWTpayload,
+  ): Promise<UserType> {
     this.logger.log(
       `Got updateUserInput data ${JSON.stringify(updateUserInput)}`,
     );
