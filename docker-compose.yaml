@@ -58,6 +58,7 @@ services:
     restart: "always"
     build:
       context: ./core-service
+      dockerfile: Dockerfile
     external_links:
       - redis
     ports:
