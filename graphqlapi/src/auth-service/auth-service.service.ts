@@ -67,7 +67,7 @@ export class AuthServiceService {
     );
 
     const internUpdateUser = new InternUpdateUser();
-    internUpdateUser.id = user.email;
+    internUpdateUser.id = user.id;
     internUpdateUser.lastName = updateUserInput.lastName;
     internUpdateUser.origin = updateUserInput.origin;
     internUpdateUser.profilePicture = updateUserInput.profilePicture;
@@ -92,7 +92,7 @@ export class AuthServiceService {
     const internUpdatePassword = new InternUpdatePassword();
     internUpdatePassword.newPassword = updateUserPasswordInput.newPassword;
     internUpdatePassword.oldPassword = updateUserPasswordInput.oldPassword;
-    internUpdatePassword.email = user.id;
+    internUpdatePassword.email = user.email;
 
     const response = this.client.send<UserType>(
       { type: 'update-user-password' },

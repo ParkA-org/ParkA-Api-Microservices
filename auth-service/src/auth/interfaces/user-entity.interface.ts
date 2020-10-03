@@ -11,7 +11,7 @@ export interface IUser {
 
   profilePicture?: string;
 
-  accountData?: string;
+  userInformation?: string;
 
   credential: string;
 
