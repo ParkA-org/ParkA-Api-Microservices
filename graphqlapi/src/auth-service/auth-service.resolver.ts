@@ -3,7 +3,7 @@ import {
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
-import { Query, Resolver, Mutation, Args } from '@nestjs/graphql';
+import { Query, Resolver, Mutation, Args, Context } from '@nestjs/graphql';
 import { AuthGuard } from './strategy/auth.guard';
 import { AuthServiceService } from './auth-service.service';
 import { UpdateUserInput } from './inputs/update-user.input';
@@ -77,7 +77,10 @@ export class AuthServiceResolver {
   @UseGuards(AuthGuard)
   async updateUser(
     @Args('updateUserInput') updateUserInput: UpdateUserInput,
+    @Context('user') user: string,
   ): Promise<UserType> {
+    console.log(' Desde el resolver ');
+    console.log(user);
     return await this.authServiceService.updateUser(updateUserInput);
   }
 }
