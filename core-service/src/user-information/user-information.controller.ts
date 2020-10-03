@@ -1,11 +1,14 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Logger } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
+import { CreateUserInformationDto } from './dtos/create-user-information.dto';
 import { GetUserInformationByIdDto } from './dtos/get-user-information-by-id.dto';
 import { UserInformation } from './entities/user-information.entities';
 import { UserInformationService } from './user-information.service';
 
 @Controller('information')
 export class UserInformationController {
+  private logger = new Logger('UserInformationController');
+
   constructor(private userInformationService: UserInformationService) {}
 
   @MessagePattern({ type: 'get-user-information-by-id' })
@@ -18,17 +21,17 @@ export class UserInformationController {
   }
 
   @MessagePattern({ type: 'create-user-information' })
-  public async createUserInformation() {
-    return {
-      birthDate: '',
-      documentNumber: '',
-      id: '12345-123456',
-      nationality: '',
-      parkings: [],
-      paymentInformation: '',
-      placeOfBirth: '',
-      telephoneNumber: '',
-      vehicles: [],
-    };
+  public async createUserInformation(
+    createUserInformationDto: CreateUserInformationDto,
+  ): Promise<UserInformation> {
+    this.logger.debug(
+      `Received create user information with payload ${JSON.stringify(
+        createUserInformationDto,
+      )}`,
+    );
+
+    return this.userInformationService.createUserInformation(
+      createUserInformationDto,
+    );
   }
 }
