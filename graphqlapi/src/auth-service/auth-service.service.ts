@@ -10,6 +10,7 @@ import { UpdateUserPasswordInput } from './inputs/update-user-password.input';
 import { ConfirmEmailInput } from 'src/email-service/inputs/confirm-email.input';
 import { ConfirmEmailType } from 'src/email-service/types/confirm-email.type';
 import { JWTpayload } from './types/jwt.type';
+import { InternUpdateUser } from './inputs/intern-update-user';
 
 @Injectable()
 export class AuthServiceService {
@@ -63,15 +64,24 @@ export class AuthServiceService {
     this.logger.log(
       `Got updateUserInput data ${JSON.stringify(updateUserInput)}`,
     );
+
+    const internUpdateUser = new InternUpdateUser();
+    internUpdateUser.id = user.email;
+    internUpdateUser.lastName = updateUserInput.lastName;
+    internUpdateUser.origin = updateUserInput.origin;
+    internUpdateUser.profilePicture = updateUserInput.profilePicture;
+    internUpdateUser.name = updateUserInput.name;
+
     const response = this.client.send<UserType>(
       { type: 'update-user' },
-      updateUserInput,
+      internUpdateUser,
     );
     return response.toPromise();
   }
 
   public async updateUserPassword(
     updateUserPasswordInput: UpdateUserPasswordInput,
+    user: JWTpayload,
   ): Promise<UserType> {
     this.logger.log(
       `Got updateUserPasswordInput data ${JSON.stringify(

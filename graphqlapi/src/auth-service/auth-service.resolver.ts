@@ -36,9 +36,11 @@ export class AuthServiceResolver {
   async updateUserPassword(
     @Args('updateUserPasswordInput')
     updateUserPasswordInput: UpdateUserPasswordInput,
+    @Context('user') jwt: JWTpayload,
   ): Promise<UserType> {
     const user = await this.authServiceService.updateUserPassword(
       updateUserPasswordInput,
+      jwt,
     );
     return user;
   }

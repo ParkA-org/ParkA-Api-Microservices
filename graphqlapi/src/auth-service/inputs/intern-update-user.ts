@@ -1,4 +1,6 @@
-export class InternUpdateUser implements IIntern {
+import { IInternUpdateUser } from '../interfaces/intern-update-user.interface';
+
+export class InternUpdateUser implements IInternUpdateUser {
   id: string;
 
   name?: string;
