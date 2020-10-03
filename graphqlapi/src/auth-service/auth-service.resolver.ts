@@ -36,13 +36,14 @@ export class AuthServiceResolver {
   async updateUserPassword(
     @Args('updateUserPasswordInput')
     updateUserPasswordInput: UpdateUserPasswordInput,
-    @Context('user') jwt: JWTpayload,
+    @Context('user') user: JWTpayload,
   ): Promise<UserType> {
-    const user = await this.authServiceService.updateUserPassword(
+    console.log(user);
+    const updateUser = await this.authServiceService.updateUserPassword(
       updateUserPasswordInput,
-      jwt,
+      user,
     );
-    return user;
+    return updateUser;
   }
 
   @Mutation(returns => UserType)

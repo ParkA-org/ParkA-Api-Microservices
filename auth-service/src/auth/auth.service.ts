@@ -68,8 +68,10 @@ export class AuthService {
     email.toLowerCase();
 
     try {
-      const credential = await this.credentialRepository.findOne({ email });
-      const user = await this.authRepository.findOne({ email });
+      const credential = await this.credentialRepository.findOne({
+        email: email,
+      });
+      const user = await this.authRepository.findOne({ email: email });
 
       if (await this.verifyPassword(oldPassword, credential)) {
         const credential_tmp = await this.updateCredential(

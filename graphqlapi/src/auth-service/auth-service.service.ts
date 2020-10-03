@@ -89,7 +89,7 @@ export class AuthServiceService {
         updateUserPasswordInput,
       )}`,
     );
-
+    console.log(user);
     const internUpdatePassword = new InternUpdatePassword();
     internUpdatePassword.newPassword = updateUserPasswordInput.newPassword;
     internUpdatePassword.oldPassword = updateUserPasswordInput.oldPassword;
