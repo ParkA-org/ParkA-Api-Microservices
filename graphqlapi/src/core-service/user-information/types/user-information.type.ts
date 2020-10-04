@@ -6,6 +6,8 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
+import { CountryType } from 'src/core-service/country/types/country.type';
+import { NationalityType } from 'src/core-service/nationality/types/nationality.type';
 
 @ObjectType('UserInformation')
 export class UserInformationType implements IUserInformationType {
@@ -38,9 +40,9 @@ export class UserInformationType implements IUserInformationType {
   @IsDateString()
   birthDate: string;
 
-  @Field()
+  @Field(type => CountryType)
   placeOfBirth: string;
 
-  @Field()
+  @Field(type => NationalityType)
   nationality: string;
 }

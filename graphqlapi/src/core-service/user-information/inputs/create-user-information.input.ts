@@ -46,8 +46,16 @@ export class CreateUserInformationInpuType
   birthDate: string;
 
   @Field({ nullable: true })
+  @ValidateIf(
+    (input: CreateUserInformationInpuType) => input.placeOfBirth !== undefined,
+  )
+  @IsUUID('4')
   placeOfBirth: string;
 
   @Field({ nullable: true })
+  @IsUUID('4')
+  @ValidateIf(
+    (input: CreateUserInformationInpuType) => input.nationality !== undefined,
+  )
   nationality: string;
 }

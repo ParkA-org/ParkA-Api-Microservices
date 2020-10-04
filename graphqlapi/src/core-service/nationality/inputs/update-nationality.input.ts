@@ -6,6 +6,7 @@ import { UpdateNationalityPayload } from './update-nationality-payload.input';
 export class UpdateNationalityInput implements IUpdateNationalityInput {
   @Field()
   getNationalityByIdDto: GetNationalityByIdInput;
+
   @Field()
   updateNationalityPayload: UpdateNationalityPayload;
 }

@@ -30,8 +30,27 @@ export class UserInformationService {
       )}`,
     );
 
+    const {
+      birthDate,
+      documentNumber,
+      nationality,
+      parkings,
+      paymentInformation,
+      placeOfBirth,
+      telephoneNumber,
+      vehicles,
+    } = createUserInformationDto;
+
     const userInformation = this.userInformationRepository.create({
       id: uuid(),
+      birthDate,
+      documentNumber,
+      nationality,
+      parkings,
+      paymentInformation,
+      placeOfBirth,
+      telephoneNumber,
+      vehicles,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     });
