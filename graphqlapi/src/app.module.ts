@@ -11,6 +11,7 @@ import { ReservationModule } from './core-service/reservation/reservation.module
 import { UserInformationModule } from './core-service/user-information/user-information.module';
 import { EmailServiceModule } from './email-service/email-service.module';
 import { NationalityModule } from './core-service/nationality/nationality.module';
+import { CountryModule } from './core-service/country/country.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -30,6 +31,7 @@ import { NationalityModule } from './core-service/nationality/nationality.module
     UserInformationModule,
     EmailServiceModule,
     NationalityModule,
+    CountryModule,
   ],
   providers: [],
 })
