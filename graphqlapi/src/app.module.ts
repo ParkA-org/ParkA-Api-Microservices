@@ -10,6 +10,7 @@ import { ConfigModule } from '@nestjs/config';
 import { ReservationModule } from './core-service/reservation/reservation.module';
 import { UserInformationModule } from './core-service/user-information/user-information.module';
 import { EmailServiceModule } from './email-service/email-service.module';
+import { NationalityModule } from './core-service/nationality/nationality.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -28,6 +29,7 @@ import { EmailServiceModule } from './email-service/email-service.module';
     ReservationModule,
     UserInformationModule,
     EmailServiceModule,
+    NationalityModule,
   ],
   providers: [],
 })
