@@ -4,6 +4,8 @@ import { Reservation } from './reservation/entities/reservation.entity';
 import { ReservationModule } from './reservation/reservation.module';
 import { UserInformationModule } from './user-information/user-information.module';
 import { UserInformation } from './user-information/entities/user-information.entities';
+import { NationalityModule } from './nationality/nationality.module';
+import { Nationality } from './nationality/entities/nationality.entity';
 
 @Module({
   imports: [
@@ -16,8 +18,9 @@ import { UserInformation } from './user-information/entities/user-information.en
       useUnifiedTopology: true,
       useNewUrlParser: true,
       synchronize: true,
-      entities: [Reservation, UserInformation],
+      entities: [Reservation, UserInformation, Nationality],
     }),
+    NationalityModule,
   ],
   controllers: [],
   providers: [],
