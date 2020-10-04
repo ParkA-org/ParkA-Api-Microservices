@@ -16,7 +16,7 @@ import { ConfirmEmailInput } from 'src/email-service/inputs/confirm-email.input'
 import { JWTpayload } from './types/jwt.type';
 
 @Resolver(of => UserType)
-export class AuthServiceResolver {
+export class AuthResolver {
   constructor(private authService: AuthService) {}
 
   @Query(returns => UserType)
