@@ -2,19 +2,19 @@ import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Credential } from './entities/credential.entity';
-import { CreateUserDto } from './auth-dto/create-user.dto';
+import { CreateUserDto } from './dtos/create-user.dto';
 import { User } from './entities/user.entity';
 import { v4 as uuid } from 'uuid';
 import { RpcException } from '@nestjs/microservices';
-import { UpdateUserDto } from './auth-dto/update-user.dto';
-import { AuthCredentialsDto } from './auth-dto/auth-credential.dto';
+import { UpdateUserDto } from './dtos/update-user.dto';
+import { AuthCredentialsDto } from './dtos/auth-credential.dto';
 import * as bcrypt from 'bcryptjs';
 import { LoginType } from './login-class/login';
 import { exception } from 'console';
 import * as jwt from 'jsonwebtoken';
 import { ConfigService } from '@nestjs/config';
 import { verify } from 'crypto';
-import { UpdateUserPasswordDto } from './auth-dto/update-user-password.dto';
+import { UpdateUserPasswordDto } from './dtos/update-user-password.dto';
 @Injectable()
 export class AuthService {
   private logger = new Logger('AuthService');
