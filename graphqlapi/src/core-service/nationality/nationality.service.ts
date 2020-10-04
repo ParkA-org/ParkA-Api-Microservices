@@ -18,7 +18,7 @@ export class NationalityService {
     this.client = ClientProxyFactory.create({
       transport: Transport.REDIS,
       options: {
-        url: `redis://redis-parka-microservices:6379`,
+        url: `${process.env.REDIS_URL}`,
       },
     });
   }
