@@ -1,0 +1,3 @@
+interface ICreateCountryDto {
+  name: string;
+}

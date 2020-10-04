@@ -1,0 +1,3 @@
+interface IGetCountryById {
+  id: string;
+}

@@ -6,7 +6,8 @@ import { UserInformationModule } from './user-information/user-information.modul
 import { UserInformation } from './user-information/entities/user-information.entities';
 import { NationalityModule } from './nationality/nationality.module';
 import { Nationality } from './nationality/entities/nationality.entity';
-import { CountriesModule } from './countries/countries.module';
+import { CountriesModule } from './country/country.module';
+import { Country } from './country/entities/country.entity';
 
 @Module({
   imports: [
@@ -19,7 +20,7 @@ import { CountriesModule } from './countries/countries.module';
       useUnifiedTopology: true,
       useNewUrlParser: true,
       synchronize: true,
-      entities: [Reservation, UserInformation, Nationality],
+      entities: [Reservation, UserInformation, Nationality, Country],
     }),
     NationalityModule,
     CountriesModule,
