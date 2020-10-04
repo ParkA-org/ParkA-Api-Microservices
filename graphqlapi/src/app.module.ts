@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { AuthServiceModule } from './auth-service/auth-service.module';
+import { AuthModule } from './auth-service/auth.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { VehicleServiceModule } from './vehicle-service/vehicle/vehicle-service.module';
 import { BodyStyleModule } from './vehicle-service/body-style/body-style.module';
@@ -21,7 +21,7 @@ import { CardModule } from './payment-service/card/card.module';
       context: ({ req }) => ({ headers: req.headers }),
     }),
     VehicleServiceModule,
-    AuthServiceModule,
+    AuthModule,
     BodyStyleModule,
     ModelModule,
     MakeModule,
