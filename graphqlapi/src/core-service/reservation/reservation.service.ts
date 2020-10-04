@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import {
   ClientProxy,
   ClientProxyFactory,
@@ -10,6 +10,7 @@ import { ReservationType } from './types/reservation.type';
 @Injectable()
 export class ReservationService {
   private client: ClientProxy;
+  private logger = new Logger('ReservationService');
 
   constructor() {
     this.client = ClientProxyFactory.create({
@@ -23,6 +24,12 @@ export class ReservationService {
   public async getReservationById(
     getReservationByIdInput: GetReservationByIdInput,
   ): Promise<ReservationType> {
+    this.logger.debug(
+      `Received get reservation by id with payload ${JSON.stringify(
+        getReservationByIdInput,
+      )}`,
+    );
+
     const response = await this.client.send<ReservationType>(
       { type: 'get-reservation-by-id' },
       getReservationByIdInput,
@@ -32,6 +39,8 @@ export class ReservationService {
   }
 
   public async getAllReservations(): Promise<ReservationType[]> {
+    this.logger.debug(`Received get all reservatios`);
+
     const response = await this.client.send<ReservationType[]>(
       { type: 'get-all-reservations' },
       {},

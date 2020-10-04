@@ -1,4 +1,4 @@
-import { UseGuards } from '@nestjs/common';
+import { Logger, UseGuards } from '@nestjs/common';
 import {
   Args,
   Context,
@@ -23,6 +23,8 @@ import { UserInformationService } from './user-information.service';
 
 @Resolver(of => UserInformationType)
 export class UserInformationResolver {
+  private logger = new Logger('UserInformationResolver');
+
   constructor(
     private userInformationService: UserInformationService,
     private countryService: CountryService,
@@ -35,6 +37,12 @@ export class UserInformationResolver {
     @Args('getUserInformationByIdInput')
     getUserInformationByIdInput: GetUserInformationByIdInput,
   ): Promise<UserInformationType> {
+    this.logger.debug(
+      `Received get user information by id with payload ${JSON.stringify(
+        getUserInformationByIdInput,
+      )}`,
+    );
+
     return await this.userInformationService.getUserInformationById(
       getUserInformationByIdInput,
     );
@@ -45,6 +53,12 @@ export class UserInformationResolver {
     @Args('createUserInformationInpuType')
     createUserInformationInpuType: CreateUserInformationInpuType,
   ): Promise<UserInformationType> {
+    this.logger.debug(
+      `Received create user information with payload ${JSON.stringify(
+        createUserInformationInpuType,
+      )}`,
+    );
+
     return this.userInformationService.createUserInformation(
       createUserInformationInpuType,
     );
@@ -57,6 +71,12 @@ export class UserInformationResolver {
     updateUserInformationInput: UpdateUserInformationInput,
     @Context('user') user: JWTpayload,
   ): Promise<UserInformationType> {
+    this.logger.debug(
+      `Received update user information with payload ${JSON.stringify(
+        updateUserInformationInput,
+      )}`,
+    );
+
     const updateUserInformationInternalInput: UpdateUserInformationInternalInput = {
       getUserInformationByIdPayload: {
         id: user.userInformation,

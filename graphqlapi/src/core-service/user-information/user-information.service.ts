@@ -12,7 +12,7 @@ import { UserInformationType } from './types/user-information.type';
 
 @Injectable()
 export class UserInformationService {
-  private logger = new Logger();
+  private logger = new Logger('UserInformationService');
   private client: ClientProxy;
 
   constructor() {
@@ -27,6 +27,12 @@ export class UserInformationService {
   public async getUserInformationById(
     getUserInformationByIdInput: GetUserInformationByIdInput,
   ): Promise<UserInformationType> {
+    this.logger.debug(
+      `Received get user information by id with payload ${JSON.stringify(
+        getUserInformationByIdInput,
+      )}`,
+    );
+
     const response = await this.client.send<UserInformationType>(
       { type: 'get-user-information-by-id' },
       getUserInformationByIdInput,
@@ -38,6 +44,12 @@ export class UserInformationService {
   public async createUserInformation(
     createUserInformationInpuType: CreateUserInformationInpuType,
   ): Promise<UserInformationType> {
+    this.logger.debug(
+      `Received create user information with payload ${JSON.stringify(
+        createUserInformationInpuType,
+      )}`,
+    );
+
     const response = await this.client.send<UserInformationType>(
       { type: 'create-user-information' },
       createUserInformationInpuType,
@@ -49,6 +61,12 @@ export class UserInformationService {
   public async updateUserInformation(
     updateUserInformationInternalInput: UpdateUserInformationInternalInput,
   ): Promise<UserInformationType> {
+    this.logger.debug(
+      `Received update user information with payload ${JSON.stringify(
+        updateUserInformationInternalInput,
+      )}`,
+    );
+
     const response = await this.client.send<UserInformationType>(
       { type: 'update-user-information' },
       updateUserInformationInternalInput,

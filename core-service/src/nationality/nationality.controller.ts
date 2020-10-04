@@ -27,6 +27,7 @@ export class NationalityController {
   @MessagePattern({ type: 'get-all-nationalities' })
   public async getAllNationalities(): Promise<Nationality[]> {
     this.logger.debug(`Received get all nationalities`);
+
     return this.nationalityService.getAllNationalities();
   }
 

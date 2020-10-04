@@ -8,7 +8,7 @@ import { CountryType } from './types/country.type';
 
 @Resolver(of => CountryType)
 export class CountryResolver {
-  private logger = new Logger();
+  private logger = new Logger('CountryResolver');
 
   constructor(private countryService: CountryService) {}
 

@@ -18,6 +18,12 @@ export class UserInformationService {
   public async getUserInformationById(
     getUserInformationByIdDto: GetUserInformationByIdDto,
   ): Promise<UserInformation> {
+    this.logger.debug(
+      `Received get user information by id with payload ${JSON.stringify(
+        getUserInformationByIdDto,
+      )}`,
+    );
+
     return this.userInformationRepository.findOne(getUserInformationByIdDto);
   }
 

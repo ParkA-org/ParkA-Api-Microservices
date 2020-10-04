@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GetCountryByIdDto } from './dtos/get-country-by-id.dto';
@@ -9,6 +9,8 @@ import { UpdateCountryDto } from './dtos/update-country.dto';
 
 @Injectable()
 export class CountryService {
+  private logger = new Logger('CountryService');
+
   constructor(
     @InjectRepository(Country) private countryRepository: Repository<Country>,
   ) {}
@@ -16,16 +18,28 @@ export class CountryService {
   public async getCountryById(
     getCountryByIdDto: GetCountryByIdDto,
   ): Promise<Country> {
+    this.logger.debug(
+      `Received get country by id ${JSON.stringify(getCountryByIdDto)}`,
+    );
+
     return this.countryRepository.findOne(getCountryByIdDto);
   }
 
   public async getAllCountries(): Promise<Country[]> {
+    this.logger.debug(`Received get all countries`);
+
     return this.countryRepository.find();
   }
 
   public async createCountry(
     createCountryDto: CreateCountryDto,
   ): Promise<Country> {
+    this.logger.debug(
+      `Received create country with payload ${JSON.stringify(
+        createCountryDto,
+      )}`,
+    );
+
     const { name } = createCountryDto;
 
     const country = this.countryRepository.create({
@@ -41,6 +55,12 @@ export class CountryService {
   public async updateCountry(
     updateCountryDto: UpdateCountryDto,
   ): Promise<Country> {
+    this.logger.debug(
+      `Received create country with payload ${JSON.stringify(
+        updateCountryDto,
+      )}`,
+    );
+
     const {
       getCountryByIdPayload: getCountryByIdDto,
       updateCountryPayload,

@@ -12,7 +12,7 @@ import { CountryType } from './types/country.type';
 @Injectable()
 export class CountryService {
   private client: ClientProxy;
-  private logger = new Logger();
+  private logger = new Logger('CountryService');
 
   constructor() {
     this.client = ClientProxyFactory.create({

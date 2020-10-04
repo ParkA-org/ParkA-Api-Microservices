@@ -30,6 +30,7 @@ export class NationalityService {
 
   public async getAllNationalities(): Promise<Nationality[]> {
     this.logger.debug(`Received get all nationalities`);
+
     return this.nationalityRepository.find();
   }
 
