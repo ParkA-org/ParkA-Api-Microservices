@@ -30,7 +30,7 @@ export class NationalityController {
     return this.nationalityService.getAllNationalities();
   }
 
-  @MessagePattern({ type: 'create-nationalitiy' })
+  @MessagePattern({ type: 'create-nationality' })
   public async createNationality(
     createNationalityDto: CreateNationalityDto,
   ): Promise<Nationality> {
