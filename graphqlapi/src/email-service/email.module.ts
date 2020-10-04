@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { EmailServiceResolver } from './email-service.resolver';
-import { EmailServiceService } from './email-service.service';
+import { EmailServiceResolver } from './email.resolver';
+import { EmailServiceService } from './email.service';
 
 @Module({
   providers: [EmailServiceService, EmailServiceResolver],

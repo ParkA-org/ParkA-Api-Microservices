@@ -8,7 +8,7 @@ import { ConfirmEmailType } from './types/confirm-email.type';
 import { ResetPasswordType } from './types/reset-password.type';
 
 @Injectable()
-export class EmailServiceService {
+export class EmailService {
   private logger = new Logger('EmailServiceService');
 
   @Client({
