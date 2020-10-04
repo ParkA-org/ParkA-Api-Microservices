@@ -1,3 +1,4 @@
+import { Logger } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CountryService } from './country.service';
 import { CreateCountryInput } from './inputs/create-country.input';
@@ -7,6 +8,8 @@ import { CountryType } from './types/country.type';
 
 @Resolver(of => CountryType)
 export class CountryResolver {
+  private logger = new Logger();
+
   constructor(private countryService: CountryService) {}
 
   @Query(returns => CountryType)
@@ -14,11 +17,19 @@ export class CountryResolver {
     @Args('getCountryByIdInput')
     getCountryByIdInput: GetCountryByIdInput,
   ): Promise<CountryType> {
+    this.logger.debug(
+      `Received get country by id with payload ${JSON.stringify(
+        getCountryByIdInput,
+      )}`,
+    );
+
     return this.countryService.getCountryById(getCountryByIdInput);
   }
 
   @Query(returns => [CountryType])
   public async getAllCountries(): Promise<CountryType[]> {
+    this.logger.debug(`Received get all countries`);
+
     return this.countryService.getAllCountries();
   }
 
@@ -27,6 +38,12 @@ export class CountryResolver {
     @Args('createCountryInput')
     createCountryInput: CreateCountryInput,
   ): Promise<CountryType> {
+    this.logger.debug(
+      `Received create country with payload ${JSON.stringify(
+        createCountryInput,
+      )}`,
+    );
+
     return this.countryService.createCountry(createCountryInput);
   }
 
@@ -35,6 +52,12 @@ export class CountryResolver {
     @Args('updateCountryInput')
     updateCountryInput: UpdateCountryInput,
   ): Promise<CountryType> {
+    this.logger.debug(
+      `Received update country with payload ${JSON.stringify(
+        updateCountryInput,
+      )}`,
+    );
+
     return this.countryService.updateCountry(updateCountryInput);
   }
 }

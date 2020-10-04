@@ -26,6 +26,12 @@ export class CountryService {
   public async getCountryById(
     getCountryByIdInput: GetCountryByIdInput,
   ): Promise<CountryType> {
+    this.logger.debug(
+      `Received get country by id with payload ${JSON.stringify(
+        getCountryByIdInput,
+      )}`,
+    );
+
     const response = this.client.send<CountryType>(
       { type: 'get-country-by-id' },
       getCountryByIdInput,
@@ -35,6 +41,8 @@ export class CountryService {
   }
 
   public async getAllCountries(): Promise<CountryType[]> {
+    this.logger.debug(`Received get all countries`);
+
     const response = this.client.send<CountryType[]>(
       { type: 'get-all-countries' },
       {},
@@ -46,6 +54,12 @@ export class CountryService {
   public async createCountry(
     createCountryInput: CreateCountryInput,
   ): Promise<CountryType> {
+    this.logger.debug(
+      `Received create country with payload ${JSON.stringify(
+        createCountryInput,
+      )}`,
+    );
+
     const response = this.client.send<CountryType>(
       { type: 'create-country' },
       createCountryInput,
@@ -57,6 +71,12 @@ export class CountryService {
   public async updateCountry(
     updateCountryInput: UpdateCountryInput,
   ): Promise<CountryType> {
+    this.logger.debug(
+      `Received update country with payload ${JSON.stringify(
+        updateCountryInput,
+      )}`,
+    );
+
     const response = this.client.send<CountryType>(
       { type: 'update-country' },
       updateCountryInput,
