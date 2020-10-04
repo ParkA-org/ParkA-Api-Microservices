@@ -5,4 +5,4 @@ import { EmailService } from './email.service';
 @Module({
   providers: [EmailService, EmailResolver],
 })
-export class EmailServiceModule {}
+export class EmailModule {}

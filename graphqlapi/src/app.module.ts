@@ -7,7 +7,7 @@ import { ModelModule } from './vehicle-service/model/model.module';
 import { MakeModule } from './vehicle-service/make/make.module';
 import { ColorModule } from './vehicle-service/color/color.module';
 import { ConfigModule } from '@nestjs/config';
-import { EmailServiceModule } from './email-service/email.module';
+import { EmailModule } from './email-service/email.module';
 import { PaymentModule } from './payment-service/payment/payment.module';
 import { CardModule } from './payment-service/card/card.module';
 
@@ -26,7 +26,7 @@ import { CardModule } from './payment-service/card/card.module';
     ModelModule,
     MakeModule,
     ColorModule,
-    EmailServiceModule,
+    EmailModule,
     PaymentModule,
     CardModule,
   ],
