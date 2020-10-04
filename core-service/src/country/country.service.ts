@@ -41,7 +41,10 @@ export class CountryService {
   public async updateCountry(
     updateCountryDto: UpdateCountryDto,
   ): Promise<Country> {
-    const { getCountryByIdDto, updateCountryPayload } = updateCountryDto;
+    const {
+      getCountryByIdPayload: getCountryByIdDto,
+      updateCountryPayload,
+    } = updateCountryDto;
 
     const country = await this.getCountryById(getCountryByIdDto);
 

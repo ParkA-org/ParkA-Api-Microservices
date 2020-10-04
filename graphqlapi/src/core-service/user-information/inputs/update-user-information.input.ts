@@ -32,7 +32,10 @@ export class UpdateUserInformationInput implements IUpdateUserInformationInput {
   @IsUUID('4', { each: true })
   parkings: string[];
 
-  @Field({ nullable: true })
+  @ValidateIf(
+    (input: UpdateUserInformationInput) => input.telephoneNumber !== undefined,
+  )
+  @Length(10, 11)
   telephoneNumber: string;
 
   @Field({ nullable: true })

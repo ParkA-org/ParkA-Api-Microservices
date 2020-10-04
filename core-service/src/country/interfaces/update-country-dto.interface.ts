@@ -1,4 +1,4 @@
 interface IUpdateCountryDto {
-  getCountryByIdDto: IGetCountryByIdDto;
+  getCountryByIdPayload: IGetCountryByIdDto;
   updateCountryPayload: IUpdateCountryPayload;
 }

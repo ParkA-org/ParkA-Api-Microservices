@@ -5,7 +5,7 @@ import { UpdateCountryPayload } from './update-country-payload.input';
 @InputType('updateCountryInput')
 export class UpdateCountryInput implements IUpdateCountryInput {
   @Field()
-  getCountryByIdDto: GetCountryByIdInput;
+  getCountryByIdPayload: GetCountryByIdInput;
 
   @Field()
   updateCountryPayload: UpdateCountryPayload;
