@@ -8,7 +8,7 @@ import { ConfirmEmailType } from './types/confirm-email.type';
 import { ResetPasswordType } from './types/reset-password.type';
 
 @Resolver(of => ConfirmEmailType)
-export class EmailServiceResolver {
+export class EmailResolver {
   constructor(private emailService: EmailService) {}
   @Mutation(returns => ConfirmEmailType)
   async confirmEmail(
