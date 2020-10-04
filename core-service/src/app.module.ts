@@ -8,15 +8,18 @@ import { NationalityModule } from './nationality/nationality.module';
 import { Nationality } from './nationality/entities/nationality.entity';
 import { CountryModule } from './country/country.module';
 import { Country } from './country/entities/country.entity';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     ReservationModule,
     UserInformationModule,
     TypeOrmModule.forRoot({
       type: 'mongodb',
-      url:
-        'mongodb+srv://parkaApiUser:vUrmea2Sp4SSCBWj@parkawebapimicroservice.br7y0.mongodb.net/ParkaMicroservices?retryWrites=true&w=majority',
+      url: `${process.env.MONGODB_CONNECTION_STRING}`,
       useUnifiedTopology: true,
       useNewUrlParser: true,
       synchronize: true,
