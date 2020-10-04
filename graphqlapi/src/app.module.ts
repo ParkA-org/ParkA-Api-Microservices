@@ -8,6 +8,8 @@ import { MakeModule } from './vehicle-service/make/make.module';
 import { ColorModule } from './vehicle-service/color/color.module';
 import { ConfigModule } from '@nestjs/config';
 import { EmailServiceModule } from './email-service/email-service.module';
+import { PaymentServiceController } from './payment-service/payment-service.controller';
+import { PaymentServiceModule } from './payment-service/payment-service.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -24,7 +26,9 @@ import { EmailServiceModule } from './email-service/email-service.module';
     MakeModule,
     ColorModule,
     EmailServiceModule,
+    PaymentServiceModule,
   ],
   providers: [],
+  controllers: [PaymentServiceController],
 })
 export class AppModule {}
