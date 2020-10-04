@@ -8,7 +8,9 @@ import { MakeModule } from './vehicle-service/make/make.module';
 import { ColorModule } from './vehicle-service/color/color.module';
 import { ConfigModule } from '@nestjs/config';
 import { EmailServiceModule } from './email-service/email-service.module';
-import { PaymentServiceModule } from './payment-service/payment-service.module';
+import { PaymentModule } from './payment-service/payment/payment.module';
+import { CardModule } from './payment-service/card/card.module';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -25,7 +27,8 @@ import { PaymentServiceModule } from './payment-service/payment-service.module';
     MakeModule,
     ColorModule,
     EmailServiceModule,
-    PaymentServiceModule,
+    PaymentModule,
+    CardModule,
   ],
   providers: [],
 })
