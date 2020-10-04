@@ -1,5 +1,5 @@
 import { Column, Entity, ObjectIdColumn, PrimaryColumn, Unique } from 'typeorm';
-import { IBaseEntity } from '../interfaces/base-entity.interface';
+import { IBaseEntity } from '../../payment/interfaces/base-entity.interface';
 import { ICard } from '../interfaces/card-entity.interface';
 
 @Entity()
