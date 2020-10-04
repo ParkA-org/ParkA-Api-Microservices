@@ -1,6 +1,4 @@
 interface IUpdateCountryInput {
-  idObject: IGetCountryByIdInput;
-  updateCountryInput: {
-    name: string;
-  };
+  getCountryByIdDto: IGetCountryByIdInput;
+  updateCountryPayload: IUpdateCountryPayload;
 }

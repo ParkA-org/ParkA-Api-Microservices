@@ -6,6 +6,7 @@ import {
 } from '@nestjs/microservices';
 import { CreateCountryInput } from './inputs/create-country.input';
 import { GetCountryByIdInput } from './inputs/get-country-by-id.input';
+import { UpdateCountryInput } from './inputs/update-country.input';
 import { CountryType } from './types/country.type';
 
 @Injectable()
@@ -53,10 +54,12 @@ export class CountryService {
     return response.toPromise();
   }
 
-  public async updateCountry(): Promise<CountryType> {
+  public async updateCountry(
+    updateCountryInput: UpdateCountryInput,
+  ): Promise<CountryType> {
     const response = this.client.send<CountryType>(
-      { type: 'create-country' },
-      {},
+      { type: 'update-country' },
+      updateCountryInput,
     );
 
     return response.toPromise();
