@@ -69,6 +69,7 @@ export class UserInformationResolver {
     );
   }
 
+  //Field resolvers
   @ResolveField(returns => CountryType)
   public async placeOfBirth(
     @Parent() userInformation: UserInformationType,

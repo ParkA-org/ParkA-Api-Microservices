@@ -4,6 +4,11 @@ import { IsDateString, IsUUID, Length, ValidateIf } from 'class-validator';
 @InputType('updateUserInformationInput')
 export class UpdateUserInformationInput implements IUpdateUserInformationInput {
   @Field()
+  @ValidateIf(
+    (input: UpdateUserInformationInput) =>
+      input.paymentInformation !== undefined,
+  )
+  @IsUUID('4')
   paymentInformation: string;
 
   @Field({ nullable: true })
@@ -38,8 +43,10 @@ export class UpdateUserInformationInput implements IUpdateUserInformationInput {
   birthDate: string;
 
   @Field({ nullable: true })
+  @IsUUID('4')
   placeOfBirth: string;
 
   @Field({ nullable: true })
+  @IsUUID('4')
   nationality: string;
 }
