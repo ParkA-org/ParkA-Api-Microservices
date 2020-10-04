@@ -2,6 +2,7 @@ import { Logger } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CreateNationalityInput } from './inputs/create-nationality.input';
 import { GetNationalityByIdInput } from './inputs/get-nationality-by-id.input';
+import { UpdateNationalityInput } from './inputs/update-nationality.input';
 import { NationalityService } from './nationality.service';
 import { NationalityType } from './types/nationality.type';
 
@@ -44,5 +45,19 @@ export class NationalityResolver {
     );
 
     return this.nationalityService.createNationality(createNationalityInput);
+  }
+
+  @Mutation(of => NationalityType)
+  public async updateNationality(
+    @Args('updateNationalityInput')
+    updateNationalityInput: UpdateNationalityInput,
+  ): Promise<NationalityType> {
+    this.logger.debug(
+      `Received create nationality with payload ${JSON.stringify(
+        updateNationalityInput,
+      )}`,
+    );
+
+    return this.nationalityService.updateNationality(updateNationalityInput);
   }
 }

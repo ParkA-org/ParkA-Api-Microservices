@@ -73,7 +73,7 @@ export class NationalityService {
     const fieldsToUpdateList = Object.keys(updateNationalityPayload);
 
     for (const field of fieldsToUpdateList) {
-      nationality[field] = updateNationalityDto[field];
+      nationality[field] = updateNationalityPayload[field];
     }
 
     nationality.updatedAt = new Date().toISOString();

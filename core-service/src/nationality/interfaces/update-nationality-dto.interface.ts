@@ -1,6 +1,4 @@
 interface IUpdateNationalityDto {
   getNationalityByIdDto: IGetNationalityByIdDto;
-  updateNationalityPayload: {
-    name: string;
-  };
+  updateNationalityPayload: IUpdateNationalityPayload;
 }
