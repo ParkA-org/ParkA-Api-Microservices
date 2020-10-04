@@ -25,6 +25,4 @@ export class Credential implements ICredential, IBaseEntity {
 
   @Column()
   updatedAt: string;
-
-  //TODO: information id
 }
