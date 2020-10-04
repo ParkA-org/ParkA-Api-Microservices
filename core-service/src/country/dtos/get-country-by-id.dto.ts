@@ -1,3 +1,3 @@
-export class GetCountryByIdDto implements IGetCountryById {
+export class GetCountryByIdDto implements IGetCountryByIdDto {
   id: string;
 }

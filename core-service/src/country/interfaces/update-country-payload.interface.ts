@@ -1,0 +1,3 @@
+interface IUpdateCountryPayload {
+  name: string;
+}

@@ -1,3 +1,3 @@
-interface IGetCountryById {
+interface IGetCountryByIdDto {
   id: string;
 }
