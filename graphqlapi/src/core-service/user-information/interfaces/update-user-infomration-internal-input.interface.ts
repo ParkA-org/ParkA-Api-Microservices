@@ -1,4 +1,4 @@
 interface IUpdateUserInformationInternalInput {
-  getUserInformationByIdDto: IGetUserInformationByIdInput;
-  updateUserInformationPayloadDto: IUpdateUserInformationInput;
+  getUserInformationByIdPayload: IGetUserInformationByIdInput;
+  updateUserInformationPayload: IUpdateUserInformationInput;
 }

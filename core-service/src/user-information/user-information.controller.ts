@@ -16,6 +16,12 @@ export class UserInformationController {
   public async getUserInformationById(
     getUserInformationByIdDto: GetUserInformationByIdDto,
   ): Promise<UserInformation> {
+    this.logger.debug(
+      `Received get user information by id with payload ${JSON.stringify(
+        getUserInformationByIdDto,
+      )}`,
+    );
+
     return this.userInformationService.getUserInformationById(
       getUserInformationByIdDto,
     );

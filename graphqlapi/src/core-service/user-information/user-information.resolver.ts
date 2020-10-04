@@ -58,10 +58,10 @@ export class UserInformationResolver {
     @Context('user') user: JWTpayload,
   ): Promise<UserInformationType> {
     const updateUserInformationInternalInput: UpdateUserInformationInternalInput = {
-      getUserInformationByIdDto: {
+      getUserInformationByIdPayload: {
         id: user.userInformation,
       },
-      updateUserInformationPayloadDto: updateUserInformationInput,
+      updateUserInformationPayload: updateUserInformationInput,
     };
 
     return this.userInformationService.updateUserInformation(

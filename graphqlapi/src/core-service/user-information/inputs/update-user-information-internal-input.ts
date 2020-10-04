@@ -3,6 +3,6 @@ import { UpdateUserInformationInput } from './update-user-information.input';
 
 export class UpdateUserInformationInternalInput
   implements IUpdateUserInformationInternalInput {
-  getUserInformationByIdDto: GetUserInformationByIdInput;
-  updateUserInformationPayloadDto: UpdateUserInformationInput;
+  getUserInformationByIdPayload: GetUserInformationByIdInput;
+  updateUserInformationPayload: UpdateUserInformationInput;
 }

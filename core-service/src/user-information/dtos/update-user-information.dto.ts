@@ -1,13 +1,6 @@
+import { UpdateUserInformationPayload } from './update-user-information.payload';
+
 export class UpdateUserInformationDto implements IUpdateUserInformationDto {
-  getUserInformationByIdDto: IGetUserInformationByIdDto;
-  updateUserInformationPayloadDto: {
-    paymentInformation: string;
-    documentNumber: string;
-    vehicles: string[];
-    parkings: string[];
-    telephoneNumber: string;
-    birthDate: string;
-    placeOfBirth: string;
-    nationality: string;
-  };
+  getUserInformationByIdPayload: IGetUserInformationByIdDto;
+  updateUserInformationPayload: UpdateUserInformationPayload;
 }

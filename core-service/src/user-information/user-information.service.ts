@@ -68,8 +68,8 @@ export class UserInformationService {
     );
 
     const {
-      getUserInformationByIdDto,
-      updateUserInformationPayloadDto,
+      getUserInformationByIdPayload: getUserInformationByIdDto,
+      updateUserInformationPayload: updateUserInformationPayloadDto,
     } = updateUserInformationDto;
 
     const userInformation = await this.getUserInformationById(

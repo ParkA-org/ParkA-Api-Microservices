@@ -43,10 +43,16 @@ export class UpdateUserInformationInput implements IUpdateUserInformationInput {
   birthDate: string;
 
   @Field({ nullable: true })
+  @ValidateIf(
+    (input: UpdateUserInformationInput) => input.placeOfBirth !== undefined,
+  )
   @IsUUID('4')
   placeOfBirth: string;
 
   @Field({ nullable: true })
+  @ValidateIf(
+    (input: UpdateUserInformationInput) => input.nationality !== undefined,
+  )
   @IsUUID('4')
   nationality: string;
 }
