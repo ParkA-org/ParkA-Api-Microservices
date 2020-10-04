@@ -6,6 +6,7 @@ import { UserInformationModule } from './user-information/user-information.modul
 import { UserInformation } from './user-information/entities/user-information.entities';
 import { NationalityModule } from './nationality/nationality.module';
 import { Nationality } from './nationality/entities/nationality.entity';
+import { CountriesModule } from './countries/countries.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { Nationality } from './nationality/entities/nationality.entity';
       entities: [Reservation, UserInformation, Nationality],
     }),
     NationalityModule,
+    CountriesModule,
   ],
   controllers: [],
   providers: [],
