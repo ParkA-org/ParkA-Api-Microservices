@@ -53,6 +53,19 @@ services:
     volumes:
       - ./email-service:/usr/src/app
 
+  core-service:
+    container_name: "core-service"
+    restart: "always"
+    build:
+      context: ./core-service
+      dockerfile: Dockerfile
+    external_links:
+      - redis
+    ports:
+      - "3004:3000"
+    volumes:
+      - ./core-service:/usr/src/app
+
   redis-parka-microservices:
     container_name: "redis-parka-microservices"
     restart: "always"

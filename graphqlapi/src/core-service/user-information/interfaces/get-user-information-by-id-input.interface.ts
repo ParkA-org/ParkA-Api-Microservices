@@ -1,0 +1,3 @@
+interface IGetUserInformationByIdInput {
+  id: string;
+}

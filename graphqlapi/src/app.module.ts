@@ -7,7 +7,11 @@ import { ModelModule } from './vehicle-service/model/model.module';
 import { MakeModule } from './vehicle-service/make/make.module';
 import { ColorModule } from './vehicle-service/color/color.module';
 import { ConfigModule } from '@nestjs/config';
+import { ReservationModule } from './core-service/reservation/reservation.module';
+import { UserInformationModule } from './core-service/user-information/user-information.module';
 import { EmailServiceModule } from './email-service/email-service.module';
+import { NationalityModule } from './core-service/nationality/nationality.module';
+import { CountryModule } from './core-service/country/country.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -23,7 +27,11 @@ import { EmailServiceModule } from './email-service/email-service.module';
     ModelModule,
     MakeModule,
     ColorModule,
+    ReservationModule,
+    UserInformationModule,
     EmailServiceModule,
+    NationalityModule,
+    CountryModule,
   ],
   providers: [],
 })
