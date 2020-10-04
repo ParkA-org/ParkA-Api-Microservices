@@ -8,7 +8,6 @@ import { MakeModule } from './vehicle-service/make/make.module';
 import { ColorModule } from './vehicle-service/color/color.module';
 import { ConfigModule } from '@nestjs/config';
 import { EmailServiceModule } from './email-service/email-service.module';
-import { PaymentServiceController } from './payment-service/payment-service.controller';
 import { PaymentServiceModule } from './payment-service/payment-service.module';
 @Module({
   imports: [
@@ -29,6 +28,5 @@ import { PaymentServiceModule } from './payment-service/payment-service.module';
     PaymentServiceModule,
   ],
   providers: [],
-  controllers: [PaymentServiceController],
 })
 export class AppModule {}
