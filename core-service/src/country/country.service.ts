@@ -8,7 +8,7 @@ import { CreateCountryDto } from './dtos/create-country.dto';
 import { UpdateCountryDto } from './dtos/update-country.dto';
 
 @Injectable()
-export class CountriesService {
+export class CountryService {
   constructor(
     @InjectRepository(Country) private countryRepository: Repository<Country>,
   ) {}
