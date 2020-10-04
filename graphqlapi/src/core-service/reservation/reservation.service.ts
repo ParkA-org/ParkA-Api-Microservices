@@ -1,17 +1,24 @@
 import { Injectable } from '@nestjs/common';
-import { Client, ClientProxy, Transport } from '@nestjs/microservices';
+import {
+  ClientProxy,
+  ClientProxyFactory,
+  Transport,
+} from '@nestjs/microservices';
 import { GetReservationByIdInput } from './inputs/get-reservation-by-id.input';
 import { ReservationType } from './types/reservation.type';
 
 @Injectable()
 export class ReservationService {
-  @Client({
-    transport: Transport.REDIS,
-    options: {
-      url: `redis://redis-parka-microservices:6379`,
-    },
-  })
   private client: ClientProxy;
+
+  constructor() {
+    this.client = ClientProxyFactory.create({
+      transport: Transport.REDIS,
+      options: {
+        url: `${process.env.REDIS_URL}`,
+      },
+    });
+  }
 
   public async getReservationById(
     getReservationByIdInput: GetReservationByIdInput,

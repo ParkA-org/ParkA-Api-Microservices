@@ -1,5 +1,9 @@
-import { Injectable } from '@nestjs/common';
-import { Client, ClientProxy, Transport } from '@nestjs/microservices';
+import { Injectable, Logger } from '@nestjs/common';
+import {
+  ClientProxy,
+  ClientProxyFactory,
+  Transport,
+} from '@nestjs/microservices';
 import { CreateUserInformationInpuType } from './inputs/create-user-information.input';
 import { GetUserInformationByIdInput } from './inputs/get-user-information-by-id.input';
 import { UpdateUserInformationInternalInput } from './inputs/update-user-information-internal-input';
@@ -8,13 +12,17 @@ import { UserInformationType } from './types/user-information.type';
 
 @Injectable()
 export class UserInformationService {
-  @Client({
-    transport: Transport.REDIS,
-    options: {
-      url: `redis://redis-parka-microservices:6379`,
-    },
-  })
+  private logger = new Logger();
   private client: ClientProxy;
+
+  constructor() {
+    this.client = ClientProxyFactory.create({
+      transport: Transport.REDIS,
+      options: {
+        url: `${process.env.REDIS_URL}`,
+      },
+    });
+  }
 
   public async getUserInformationById(
     getUserInformationByIdInput: GetUserInformationByIdInput,
