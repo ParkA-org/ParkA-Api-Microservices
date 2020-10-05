@@ -1,5 +1,5 @@
 import { MaxLength, MinLength } from 'class-validator';
-import { IsUUID } from 'class-validator/types/decorator/string/IsUUID';
+import { IsUUID } from 'class-validator';
 import { ICreatePaymentDto } from '../interfaces/create-payment-dto.interface';
 
 export class CreatePaymentDto implements ICreatePaymentDto {

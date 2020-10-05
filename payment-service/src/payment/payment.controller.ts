@@ -14,6 +14,7 @@ export class PaymentController {
   public async createPayment(
     createPaymentDto: CreatePaymentDto,
   ): Promise<Payment> {
+    console.log('Aqui no llego v:');
     return await this.paymentService.createPayment(createPaymentDto);
   }
 
