@@ -11,7 +11,6 @@ export class Payment implements IPayment, IBaseEntity {
   activate: boolean;
   deleted: boolean;
   typeCard: string;
-  userInformation: string;
   createdAt: string;
   updatedAt: string;
 }

@@ -6,5 +6,4 @@ export interface IPayment {
   activate: boolean;
   deleted: boolean;
   typeCard: string;
-  userInformation: string;
 }
