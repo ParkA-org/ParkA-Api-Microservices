@@ -51,4 +51,13 @@ export class CardService {
         : new RpcException('An undefined error occured');
     }
   }
+
+  public async getAllCards(): Promise<Card[]> {
+    try {
+      const card = this.cardRepository.find();
+      return await card;
+    } catch (error) {
+      this.logger.debug(error);
+    }
+  }
 }
