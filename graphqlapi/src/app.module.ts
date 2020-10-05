@@ -12,7 +12,6 @@ import { PaymentModule } from './payment-service/payment/payment.module';
 import { CardModule } from './payment-service/card/card.module';
 import { ReservationModule } from './core-service/reservation/reservation.module';
 import { UserInformationModule } from './core-service/user-information/user-information.module';
-import { EmailServiceModule } from './email-service/email-service.module';
 import { NationalityModule } from './core-service/nationality/nationality.module';
 import { CountryModule } from './core-service/country/country.module';
 
@@ -36,7 +35,7 @@ import { CountryModule } from './core-service/country/country.module';
     CardModule,
     ReservationModule,
     UserInformationModule,
-    EmailServiceModule,
+    EmailModule,
     NationalityModule,
     CountryModule,
   ],
