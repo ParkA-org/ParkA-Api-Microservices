@@ -12,7 +12,6 @@ export class CardResolver {
   constructor(private cardService: CardService) {}
 
   @Query(returns => CardType)
-  @UseGuards(AuthGuard)
   getPaymentById(@Args('getCardByIdInput') getCardByIdInput: GetCardByIdInput) {
     this.logger.debug(
       `Received get card id data ${JSON.stringify(getCardByIdInput)}`,
@@ -35,8 +34,7 @@ export class CardResolver {
     return card;
   }
 
-  @Mutation(returns => CardType)
-  @UseGuards(AuthGuard)
+  @Mutation(returns => [CardType])
   async getAllCards(): Promise<[CardType]> {
     this.logger.debug(`Received get all cards`);
     return await this.cardService.getAllCards();
