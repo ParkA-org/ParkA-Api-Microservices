@@ -1,0 +1,3 @@
+interface IGetNationalityByIdInput {
+  id: string;
+}

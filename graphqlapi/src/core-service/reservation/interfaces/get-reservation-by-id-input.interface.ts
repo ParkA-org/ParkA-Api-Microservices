@@ -1,0 +1,3 @@
+interface IGetReservationByIdInput {
+  id: string;
+}
