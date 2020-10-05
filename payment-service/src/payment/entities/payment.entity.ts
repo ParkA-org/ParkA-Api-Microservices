@@ -1,8 +1,9 @@
-import { Column, Entity, ObjectIdColumn, PrimaryColumn } from 'typeorm';
+import { Column, Entity, ObjectIdColumn, PrimaryColumn, Unique } from 'typeorm';
 import { IBaseEntity } from '../interfaces/base-entity.interface';
 import { IPayment } from '../interfaces/payment-entity.interface';
 
 @Entity()
+@Unique(['digit'])
 export class Payment implements IPayment, IBaseEntity {
   @PrimaryColumn()
   id: string;
