@@ -10,7 +10,7 @@ export class PaymentService {
   @Client({
     transport: Transport.REDIS,
     options: {
-      url: process.env.REDIS,
+      url: 'redis://redis-parka-microservices:6379',
     },
   })
   private client: ClientProxy;

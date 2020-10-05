@@ -12,7 +12,7 @@ export class CardResolver {
   constructor(private cardService: CardService) {}
 
   @Query(returns => CardType)
-  getPaymentById(@Args('getCardByIdInput') getCardByIdInput: GetCardByIdInput) {
+  getCardById(@Args('getCardByIdInput') getCardByIdInput: GetCardByIdInput) {
     this.logger.debug(
       `Received get card id data ${JSON.stringify(getCardByIdInput)}`,
     );

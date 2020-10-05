@@ -44,7 +44,7 @@ export class PaymentResolver {
     this.logger.debug(
       `Received get payment id data ${JSON.stringify(getPaymentByIdInput)}`,
     );
-    return this.paymentService.deletePayment(getPaymentByIdInput);
+    return this.paymentService.getPaymentById(getPaymentByIdInput);
   }
 
   @Mutation(returns => PaymentType)
