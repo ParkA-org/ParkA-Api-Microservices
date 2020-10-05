@@ -1,8 +1,8 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { IDeletePaymentInput } from '../interfaces/delete-payment-input.interface';
+import { IGetPaymentByIdInput } from '../interfaces/get-payment-input.interface';
 
 @InputType()
-export class GetPaymentByIdInput implements IDeletePaymentInput {
+export class GetPaymentByIdInput implements IGetPaymentByIdInput {
   @Field()
   id: string;
 }
