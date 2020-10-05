@@ -20,7 +20,7 @@ export class CardController {
   }
 
   @MessagePattern({ type: 'get-all-cards' })
-  public async getAllCards(): Promise<[Card]> {
+  public async getAllCards(): Promise<Card[]> {
     return await this.cardService.getAllCards();
   }
 }
