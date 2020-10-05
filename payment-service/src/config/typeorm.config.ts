@@ -1,4 +1,6 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { Card } from 'src/card/entities/card.entity';
+import { Payment } from 'src/payment/entities/payment.entity';
 
 export const typeOrmConfig: TypeOrmModuleOptions = {
   type: 'mongodb',
@@ -7,5 +9,5 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
   useUnifiedTopology: true,
   useNewUrlParser: true,
   synchronize: true,
-  entities: [],
+  entities: [Card, Payment],
 };
