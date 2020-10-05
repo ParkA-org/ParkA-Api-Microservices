@@ -3,6 +3,7 @@ import { Query, Resolver, Mutation, Args } from '@nestjs/graphql';
 import { AuthGuard } from 'src/auth-service/strategy/auth.guard';
 import { CreatePaymentInput } from './inputs/create-payment.input';
 import { DeletePaymentInput } from './inputs/delete-payment.input';
+import { GetPaymentByIdInput } from './inputs/get-payment-by-id.input';
 import { PaymentService } from './payment.service';
 import { PaymentType } from './types/payment.type';
 @Resolver(of => PaymentType)
@@ -20,6 +21,17 @@ export class PaymentResolver {
       `Received delete payment id data ${JSON.stringify(deletePaymentInput)}`,
     );
     return this.paymentService.deletePayment(deletePaymentInput);
+  }
+
+  @Query(returns => PaymentType)
+  @UseGuards(AuthGuard)
+  getPaymentById(
+    @Args('getPaymentByIdInput') getPaymentByIdInput: GetPaymentByIdInput,
+  ) {
+    this.logger.debug(
+      `Received get payment id data ${JSON.stringify(getPaymentByIdInput)}`,
+    );
+    return this.paymentService.deletePayment(getPaymentByIdInput);
   }
 
   @Mutation(returns => PaymentType)

@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Client, ClientProxy, Transport } from '@nestjs/microservices';
 import { CreatePaymentInput } from './inputs/create-payment.input';
 import { DeletePaymentInput } from './inputs/delete-payment.input';
+import { GetPaymentByIdInput } from './inputs/get-payment-by-id.input';
 import { PaymentType } from './types/payment.type';
 
 @Injectable()
