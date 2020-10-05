@@ -5,23 +5,19 @@ import {
 } from '@nestjs/common';
 import { Query, Resolver, Mutation, Args, Context } from '@nestjs/graphql';
 import { AuthGuard } from 'src/auth-service/strategy/auth.guard';
-@Resolver(of => )
-export class AuthResolver {
-  constructor(private authService: AuthService) {}
+import { PaymentService } from './payment.service';
+import { PaymentType } from './types/payment.type';
+@Resolver(of => PaymentType)
+export class PaymentResolver {
+  constructor(private paymentService: PaymentService) {}
 
-  @Query(returns => UserType)
+  @Query(returns => PaymentType)
   @UseGuards(AuthGuard)
   getUserById(@Args('id') id: string) {
-    return this.authService.getUserById(id);
+    return this.paymentService.getUserById(id);
   }
 
-  @Query(returns => [UserType])
-  @UseGuards(AuthGuard)
-  getAllUsers() {
-    return this.authService.getAllUsers();
-  }
-
-  @Mutation(returns => UserType)
+  @Mutation(returns => PaymentType)
   @UseGuards(AuthGuard)
   async updateUserPassword(
     @Args('updateUserPasswordInput')
@@ -35,20 +31,15 @@ export class AuthResolver {
     return updateUser;
   }
 
-  @Mutation(returns => UserType)
-  async createUser(
-    @Args('createUserInput') createUserInput: CreateUserInput,
+  @Mutation(returns => PaymentType)
+  async createPayment(
+    @Args('createPaymentInput') createPaymentInput: CreatePaymentInput,
   ): Promise<UserType> {
-    const user = await this.authService.createUser(createUserInput);
-    if (!user) {
-      throw new BadRequestException('This user already exists');
+    const payment = await this.paymentService.createPayment(createPaymentInput);
+    if (!payment) {
+      throw new BadRequestException('This payment already exists');
     }
-
-    const confirmEmail = new ConfirmEmailInput();
-    confirmEmail.email = user.email;
-    confirmEmail.origin = user.origin;
-    await this.authService.confirmUser(confirmEmail);
-    return user;
+    return payment;
   }
 
   @Mutation(returns => LoginType)
