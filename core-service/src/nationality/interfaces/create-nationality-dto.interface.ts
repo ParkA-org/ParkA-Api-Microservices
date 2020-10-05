@@ -1,0 +1,3 @@
+interface ICreateNationalityDto {
+  name: string;
+}
