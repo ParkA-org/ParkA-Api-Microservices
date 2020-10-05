@@ -5,6 +5,7 @@ import { CreateVehicleDto } from './dto/create-vehicle.dto';
 import { GetVehicleByIdDto } from './dto/get-vehicle-by-id.dto';
 import { VehicleService } from './vehicle.service';
 import { UpdateVehicleDto } from './dto/update-vehicle.dto';
+import { GetAllUserVehiclesDto } from './dto/get-all-user-vehicle.dto';
 
 @Controller('vehicle')
 export class VehicleController {
@@ -18,8 +19,10 @@ export class VehicleController {
   }
 
   @MessagePattern({ type: 'get-all-vehicles' })
-  public async getAllVehicles(): Promise<Vehicle[]> {
-    return await this.vehicleService.getAllVehicles();
+  public async getAllUserVehicles(
+    getAllUserVehiclesDto: GetAllUserVehiclesDto,
+  ): Promise<Vehicle[]> {
+    return await this.vehicleService.getAllUserVehicles(getAllUserVehiclesDto);
   }
 
   @MessagePattern({ type: 'create-vehicle' })

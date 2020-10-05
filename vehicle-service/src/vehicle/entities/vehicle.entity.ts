@@ -11,6 +11,9 @@ export class Vehicle implements IVehicle, IBaseEntity {
   id: string;
 
   @Column()
+  userInformation: string;
+
+  @Column()
   model: string;
 
   @Column()

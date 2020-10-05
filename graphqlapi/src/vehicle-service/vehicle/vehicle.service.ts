@@ -8,6 +8,8 @@ import { VehicleType } from './types/vehicle.type';
 import { CreateVehicleInput } from './inputs/create-vehicle.input';
 import { GetVehicleByIdInput } from './inputs/get-vehicle-by-id.input';
 import { UpdateVehicleInput } from './inputs/update-vehicle.input';
+import { CreateVehicleInternalInput } from './inputs/create-vehicle-internal.input';
+import { GetAllUserVehiclesInternalInput } from './inputs/get-all-user-vehicles.input';
 
 @Injectable()
 export class VehicleService {
@@ -40,27 +42,31 @@ export class VehicleService {
     return response.toPromise();
   }
 
-  public async getAllVehicles(): Promise<VehicleType[]> {
+  public async getAllUserVehicles(
+    getAllUserVehicles: GetAllUserVehiclesInternalInput,
+  ): Promise<VehicleType[]> {
     this.logger.debug(`Received get all vehicles`);
 
     const response = await this.client.send<VehicleType[]>(
       { type: 'get-all-vehicles' },
-      {},
+      getAllUserVehicles,
     );
 
     return response.toPromise();
   }
 
   public async createVehicle(
-    createVehicleInput: CreateVehicleInput,
+    createVehicleInternalInput: CreateVehicleInternalInput,
   ): Promise<VehicleType> {
     this.logger.debug(
-      `Received create vehicle with data ${JSON.stringify(createVehicleInput)}`,
+      `Received create vehicle with data ${JSON.stringify(
+        createVehicleInternalInput,
+      )}`,
     );
 
     const response = await this.client.send<VehicleType>(
       { type: 'create-vehicle' },
-      createVehicleInput,
+      createVehicleInternalInput,
     );
 
     return response.toPromise();

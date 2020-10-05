@@ -1,0 +1,3 @@
+interface IUserInformationPayload {
+  userInformationId: string;
+}

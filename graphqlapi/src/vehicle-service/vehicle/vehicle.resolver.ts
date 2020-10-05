@@ -1,5 +1,6 @@
 import {
   Args,
+  Context,
   Mutation,
   Parent,
   Query,
@@ -10,7 +11,7 @@ import { CreateVehicleInput } from './inputs/create-vehicle.input';
 import { VehicleType } from './types/vehicle.type';
 import { VehicleService } from './vehicle.service';
 import { GetVehicleByIdInput } from './inputs/get-vehicle-by-id.input';
-import { Logger } from '@nestjs/common';
+import { Logger, UseGuards } from '@nestjs/common';
 import { ModelService } from '../model/model.service';
 import { ColorService } from '../color/color.service';
 import { BodyStyleService } from '../body-style/body-style.service';
@@ -21,6 +22,11 @@ import { GetColorByIdInput } from '../color/inputs/get-color-by-id.input';
 import { BodyStyleType } from '../body-style/types/body-style.type';
 import { GetBodyStyleByIdInput } from '../body-style/inputs/get-body-style-by-id.input';
 import { UpdateVehicleInput } from './inputs/update-vehicle.input';
+import { AuthGuard } from 'src/auth-service/strategy/auth.guard';
+import { JWTpayload } from 'src/auth-service/types/jwt.type';
+import { UserInformationIdPayload } from './inputs/user-information-id.payload';
+import { CreateVehicleInternalInput } from './inputs/create-vehicle-internal.input';
+import { GetAllUserVehiclesInternalInput } from './inputs/get-all-user-vehicles.input';
 
 @Resolver(of => VehicleType)
 export class VehicleResolver {
@@ -34,6 +40,7 @@ export class VehicleResolver {
   ) {}
 
   @Query(returns => VehicleType)
+  @UseGuards(AuthGuard)
   public async getVehicleById(
     @Args('getVehicleByIdInput')
     getVehicleByIdInput: GetVehicleByIdInput,
@@ -48,24 +55,45 @@ export class VehicleResolver {
   }
 
   @Query(returns => [VehicleType])
-  public async getAllVehicles(): Promise<VehicleType[]> {
-    this.logger.debug(`Received get all vehicles`);
+  @UseGuards(AuthGuard)
+  public async getAllUserVehicles(
+    @Context('user') user: JWTpayload,
+  ): Promise<VehicleType[]> {
+    this.logger.debug(`Received get all user vehicles`);
 
-    return this.vehicleService.getAllVehicles();
+    const getAllUserVehiclesInternalInput: GetAllUserVehiclesInternalInput = {
+      userInformationId: user.userInformation,
+    };
+
+    return this.vehicleService.getAllUserVehicles(
+      getAllUserVehiclesInternalInput,
+    );
   }
 
   @Mutation(of => VehicleType)
+  @UseGuards(AuthGuard)
   public async createVehicle(
     @Args('createVehicleInput') createVehicleInput: CreateVehicleInput,
+    @Context('user') user: JWTpayload,
   ): Promise<VehicleType> {
     this.logger.debug(
       `Received create vehicle with data ${JSON.stringify(createVehicleInput)}`,
     );
 
-    return this.vehicleService.createVehicle(createVehicleInput);
+    const userInformationIdPayload: UserInformationIdPayload = {
+      userInformationId: user.userInformation,
+    };
+
+    const createVehicleInternalInput: CreateVehicleInternalInput = {
+      createVehiclePayload: createVehicleInput,
+      userInformationIdPayload,
+    };
+
+    return this.vehicleService.createVehicle(createVehicleInternalInput);
   }
 
   @Mutation(of => VehicleType)
+  @UseGuards(AuthGuard)
   public async updateVehicle(
     @Args('updateVehicleInput') updateVehicleInput: UpdateVehicleInput,
   ): Promise<VehicleType> {
