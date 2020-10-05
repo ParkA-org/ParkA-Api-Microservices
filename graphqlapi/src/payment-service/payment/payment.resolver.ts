@@ -1,7 +1,16 @@
 import { BadRequestException, Logger, UseGuards } from '@nestjs/common';
-import { Query, Resolver, Mutation, Args } from '@nestjs/graphql';
+import {
+  Query,
+  Resolver,
+  Mutation,
+  Args,
+  Parent,
+  ResolveField,
+} from '@nestjs/graphql';
 import { AuthGuard } from 'src/auth-service/strategy/auth.guard';
 import { CardService } from '../card/card.service';
+import { GetCardByIdInput } from '../card/inputs/get-card-by-id.input';
+import { CardType } from '../card/types/card.type';
 import { CreatePaymentInput } from './inputs/create-payment.input';
 import { DeletePaymentInput } from './inputs/delete-payment.input';
 import { GetPaymentByIdInput } from './inputs/get-payment-by-id.input';
@@ -13,7 +22,7 @@ export class PaymentResolver {
 
   constructor(
     private paymentService: PaymentService,
-    private cardService: CardService,
+    private paymentCardService: CardService,
   ) {}
 
   @Query(returns => PaymentType)
@@ -51,5 +60,18 @@ export class PaymentResolver {
       throw new BadRequestException('This payment already exists');
     }
     return payment;
+  }
+
+  @ResolveField(returns => CardType)
+  public async model(@Parent() payment: PaymentType): Promise<CardType> {
+    this.logger.debug(
+      `Received resolve field with payload ${JSON.stringify(payment)}`,
+    );
+
+    const getPaymentCardByIdInput: GetCardByIdInput = {
+      id: payment.card,
+    };
+
+    return this.paymentCardService.getCardById(getPaymentCardByIdInput);
   }
 }
