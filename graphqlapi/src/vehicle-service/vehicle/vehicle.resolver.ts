@@ -8,7 +8,7 @@ import {
 } from '@nestjs/graphql';
 import { CreateVehicleInput } from './inputs/create-vehicle.input';
 import { VehicleType } from './types/vehicle.type';
-import { VehicleServiceService } from './vehicle-service.service';
+import { VehicleService } from './vehicle.service';
 import { GetVehicleByIdInput } from './inputs/get-vehicle-by-id.input';
 import { Logger } from '@nestjs/common';
 import { ModelService } from '../model/model.service';
@@ -23,11 +23,11 @@ import { GetBodyStyleByIdInput } from '../body-style/inputs/get-body-style-by-id
 import { UpdateVehicleInput } from './inputs/update-vehicle.input';
 
 @Resolver(of => VehicleType)
-export class VehicleServiceResolver {
+export class VehicleResolver {
   private logger = new Logger();
 
   constructor(
-    private vehicleService: VehicleServiceService,
+    private vehicleService: VehicleService,
     private vehicleModelService: ModelService,
     private vehicleColorService: ColorService,
     private vehicleTypeService: BodyStyleService,
@@ -43,7 +43,8 @@ export class VehicleServiceResolver {
         getVehicleByIdInput,
       )}`,
     );
-    return this.vehicleService.getVehicle(getVehicleByIdInput);
+
+    return this.vehicleService.getVehicleById(getVehicleByIdInput);
   }
 
   @Query(returns => [VehicleType])
