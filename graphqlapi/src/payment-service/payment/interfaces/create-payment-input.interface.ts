@@ -3,4 +3,5 @@ export interface ICreatePaymentInput {
   expirationDate: string;
   digit: string;
   card: string;
+  cvv: string;
 }
