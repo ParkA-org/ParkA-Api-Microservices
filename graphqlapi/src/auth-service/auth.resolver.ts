@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { Query, Resolver, Mutation, Args, Context } from '@nestjs/graphql';
 import { AuthGuard } from './strategy/auth.guard';
-import { AuthServiceService } from './auth-service.service';
+import { AuthService } from './auth.service';
 import { UpdateUserInput } from './inputs/update-user.input';
 import { CreateUserInput } from './inputs/user.input';
 import { LoginUserInput } from './inputs/login-user.input';
@@ -14,22 +14,21 @@ import { UserType } from './types/user.type';
 import { UpdateUserPasswordInput } from './inputs/update-user-password.input';
 import { ConfirmEmailInput } from 'src/email-service/inputs/confirm-email.input';
 import { JWTpayload } from './types/jwt.type';
-import { AdvancedConsoleLogger } from 'typeorm';
 
 @Resolver(of => UserType)
-export class AuthServiceResolver {
-  constructor(private authServiceService: AuthServiceService) {}
+export class AuthResolver {
+  constructor(private authService: AuthService) {}
 
   @Query(returns => UserType)
   @UseGuards(AuthGuard)
   getUserById(@Args('id') id: string) {
-    return this.authServiceService.getUserById(id);
+    return this.authService.getUserById(id);
   }
 
   @Query(returns => [UserType])
   @UseGuards(AuthGuard)
   getAllUsers() {
-    return this.authServiceService.getAllUsers();
+    return this.authService.getAllUsers();
   }
 
   @Mutation(returns => UserType)
@@ -39,7 +38,7 @@ export class AuthServiceResolver {
     updateUserPasswordInput: UpdateUserPasswordInput,
     @Context('user') user: JWTpayload,
   ): Promise<UserType> {
-    const updateUser = await this.authServiceService.updateUserPassword(
+    const updateUser = await this.authService.updateUserPassword(
       updateUserPasswordInput,
       user,
     );
@@ -50,7 +49,7 @@ export class AuthServiceResolver {
   async createUser(
     @Args('createUserInput') createUserInput: CreateUserInput,
   ): Promise<UserType> {
-    const user = await this.authServiceService.createUser(createUserInput);
+    const user = await this.authService.createUser(createUserInput);
     if (!user) {
       throw new BadRequestException('This user already exists');
     }
@@ -58,7 +57,7 @@ export class AuthServiceResolver {
     const confirmEmail = new ConfirmEmailInput();
     confirmEmail.email = user.email;
     confirmEmail.origin = user.origin;
-    await this.authServiceService.confirmUser(confirmEmail);
+    await this.authService.confirmUser(confirmEmail);
     return user;
   }
 
@@ -66,7 +65,7 @@ export class AuthServiceResolver {
   async login(
     @Args('loginUserInput') loginUserInput: LoginUserInput,
   ): Promise<LoginType> {
-    const login = await this.authServiceService.login(loginUserInput);
+    const login = await this.authService.login(loginUserInput);
     if (!login) {
       throw new UnauthorizedException('Invalid Credentials');
     }
@@ -84,6 +83,6 @@ export class AuthServiceResolver {
     @Args('updateUserInput') updateUserInput: UpdateUserInput,
     @Context('user') user: JWTpayload,
   ): Promise<UserType> {
-    return await this.authServiceService.updateUser(updateUserInput, user);
+    return await this.authService.updateUser(updateUserInput, user);
   }
 }

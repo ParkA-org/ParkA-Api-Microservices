@@ -1,24 +1,18 @@
 import { Column, Entity, ObjectIdColumn, PrimaryColumn, Unique } from 'typeorm';
 import { IBaseEntity } from '../interfaces/base-entity.interface';
-import { ICredential } from '../interfaces/credential-entity.interface';
+import { ICard } from '../interfaces/card-entity.interface';
 
 @Entity()
-@Unique(['email'])
-export class Credential implements ICredential, IBaseEntity {
-  @ObjectIdColumn()
-  _id: string;
-
+@Unique(['name'])
+export class Card implements IBaseEntity, ICard {
   @PrimaryColumn()
   id: string;
 
-  @Column()
-  password: string;
+  @ObjectIdColumn()
+  _id: string;
 
   @Column()
-  salt: string;
-
-  @Column()
-  email: string;
+  name: string;
 
   @Column()
   createdAt: string;

@@ -14,7 +14,7 @@ import { InternUpdateUser } from './inputs/intern-update-user';
 import { InternUpdatePassword } from './inputs/intern-update-password';
 
 @Injectable()
-export class AuthServiceService {
+export class AuthService {
   private logger = new Logger('AuthServiceService');
 
   @Client({

@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { AuthServiceModule } from './auth-service/auth-service.module';
+import { AuthModule } from './auth-service/auth.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { VehicleServiceModule } from './vehicle-service/vehicle/vehicle-service.module';
 import { BodyStyleModule } from './vehicle-service/body-style/body-style.module';
@@ -7,11 +7,14 @@ import { ModelModule } from './vehicle-service/model/model.module';
 import { MakeModule } from './vehicle-service/make/make.module';
 import { ColorModule } from './vehicle-service/color/color.module';
 import { ConfigModule } from '@nestjs/config';
+import { EmailModule } from './email-service/email.module';
+import { PaymentModule } from './payment-service/payment/payment.module';
+import { CardModule } from './payment-service/card/card.module';
 import { ReservationModule } from './core-service/reservation/reservation.module';
 import { UserInformationModule } from './core-service/user-information/user-information.module';
-import { EmailServiceModule } from './email-service/email-service.module';
 import { NationalityModule } from './core-service/nationality/nationality.module';
 import { CountryModule } from './core-service/country/country.module';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -22,14 +25,17 @@ import { CountryModule } from './core-service/country/country.module';
       context: ({ req }) => ({ headers: req.headers }),
     }),
     VehicleServiceModule,
-    AuthServiceModule,
+    AuthModule,
     BodyStyleModule,
     ModelModule,
     MakeModule,
     ColorModule,
+    EmailModule,
+    PaymentModule,
+    CardModule,
     ReservationModule,
     UserInformationModule,
-    EmailServiceModule,
+    EmailModule,
     NationalityModule,
     CountryModule,
   ],

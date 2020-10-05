@@ -1,5 +1,5 @@
 import { Resolver, Mutation, Args } from '@nestjs/graphql';
-import { EmailServiceService } from './email-service.service';
+import { EmailService } from './email.service';
 import { ConfirmEmailInput } from './inputs/confirm-email.input';
 import { ResetPasswordInput } from './inputs/reset-password.input';
 import { ValidateEmailCodeInput } from './inputs/validate-email-code.input';
@@ -8,13 +8,13 @@ import { ConfirmEmailType } from './types/confirm-email.type';
 import { ResetPasswordType } from './types/reset-password.type';
 
 @Resolver(of => ConfirmEmailType)
-export class EmailServiceResolver {
-  constructor(private emailServiceService: EmailServiceService) {}
+export class EmailResolver {
+  constructor(private emailService: EmailService) {}
   @Mutation(returns => ConfirmEmailType)
   async confirmEmail(
     @Args('confirmEmailInput') confirmEmailInput: ConfirmEmailInput,
   ): Promise<ConfirmEmailType> {
-    return await this.emailServiceService.confirmEmail(confirmEmailInput);
+    return await this.emailService.confirmEmail(confirmEmailInput);
   }
 
   @Mutation(returns => ConfirmEmailType)
@@ -22,9 +22,7 @@ export class EmailServiceResolver {
     @Args('validateEmailCodeInput')
     validateEmailCodeInput: ValidateEmailCodeInput,
   ): Promise<ConfirmEmailType> {
-    return await this.emailServiceService.validateEmailCode(
-      validateEmailCodeInput,
-    );
+    return await this.emailService.validateEmailCode(validateEmailCodeInput);
   }
 
   @Mutation(returns => ResetPasswordType)
@@ -32,7 +30,7 @@ export class EmailServiceResolver {
     @Args('validateResetPasswordCodeInput')
     validateResetPasswordCodeInput: ValidateResetPasswordCodeInput,
   ): Promise<ResetPasswordType> {
-    return await this.emailServiceService.validateResetPasswordCode(
+    return await this.emailService.validateResetPasswordCode(
       validateResetPasswordCodeInput,
     );
   }
@@ -42,6 +40,6 @@ export class EmailServiceResolver {
     @Args('resetPasswordInput')
     resetPasswordInput: ResetPasswordInput,
   ): Promise<ResetPasswordType> {
-    return await this.emailServiceService.resetPassword(resetPasswordInput);
+    return await this.emailService.resetPassword(resetPasswordInput);
   }
 }

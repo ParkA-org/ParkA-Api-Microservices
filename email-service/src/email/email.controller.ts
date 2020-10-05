@@ -1,11 +1,11 @@
 import { Controller, Logger } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
 import { EmailService } from './email.service';
-import { CreateConfirmEmailDto } from './dto/create-confirm-email.dto';
+import { CreateConfirmEmailDto } from './dtos/create-confirm-email.dto';
 import { ConfirmEmail } from './entities/confirm-email.entity';
-import { ValidateEmailCodeDto } from './dto/validate-email-code.dto';
-import { CreateResetPasswordDto } from './dto/create-reset-password.dto';
-import { ValidateResetPasswordCodeDto } from './dto/validate-reset-password-code.dto';
+import { ValidateEmailCodeDto } from './dtos/validate-email-code.dto';
+import { CreateResetPasswordDto } from './dtos/create-reset-password.dto';
+import { ValidateResetPasswordCodeDto } from './dtos/validate-reset-password-code.dto';
 import { ResetPassword } from './entities/reset-password.entity';
 
 @Controller('email')
