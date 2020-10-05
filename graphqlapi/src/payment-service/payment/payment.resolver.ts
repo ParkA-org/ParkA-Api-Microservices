@@ -48,7 +48,6 @@ export class PaymentResolver {
   }
 
   @Mutation(returns => PaymentType)
-  @UseGuards(AuthGuard)
   async createPayment(
     @Args('createPaymentInput') createPaymentInput: CreatePaymentInput,
   ): Promise<PaymentType> {
