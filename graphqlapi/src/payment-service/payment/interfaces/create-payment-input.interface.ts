@@ -1,4 +1,4 @@
-export interface IPaymentInput {
+export interface ICreatePaymentInput {
   cardHolder: string;
   expirationDate: string;
   digit: string;

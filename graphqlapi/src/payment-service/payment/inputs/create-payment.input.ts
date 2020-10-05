@@ -1,9 +1,9 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { MaxLength, MinLength } from 'class-validator';
-import { IPaymentInput } from '../interfaces/payment-input.interface';
+import { ICreatePaymentInput } from '../interfaces/create-payment-input.interface';
 
 @InputType()
-export class PaymentInput implements IPaymentInput {
+export class CreatePaymentInput implements ICreatePaymentInput {
   @MinLength(2)
   @MaxLength(50)
   @Field()
