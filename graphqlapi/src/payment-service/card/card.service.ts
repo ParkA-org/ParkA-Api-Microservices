@@ -26,8 +26,16 @@ export class CardService {
     getCardByIdInput: GetCardByIdInput,
   ): Promise<CardType> {
     const response = await this.client.send<CardType>(
-      { type: 'get-payment' },
+      { type: 'get-card' },
       getCardByIdInput,
+    );
+    return response.toPromise();
+  }
+
+  public async getAllCards(): Promise<[CardType]> {
+    const response = await this.client.send<[CardType]>(
+      { type: 'get-all-cards' },
+      {},
     );
     return response.toPromise();
   }

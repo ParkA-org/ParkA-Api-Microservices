@@ -34,4 +34,11 @@ export class CardResolver {
     }
     return card;
   }
+
+  @Mutation(returns => CardType)
+  @UseGuards(AuthGuard)
+  async getAllCards(): Promise<[CardType]> {
+    this.logger.debug(`Received get all cards`);
+    return await this.cardService.getAllCards();
+  }
 }
