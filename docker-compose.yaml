@@ -60,7 +60,7 @@ services:
     ports:
       - "6379:6379"
 
-  email-service:
+  payment-service:
     container_name: "payment-service"
     restart: "always"
     build:
