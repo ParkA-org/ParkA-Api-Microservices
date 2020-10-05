@@ -3,7 +3,8 @@ export interface IPayment {
   digit: string;
   expirationDate: string;
   cvv: string;
-  activate: boolean;
+  activated: boolean;
   deleted: boolean;
-  typeCard: string;
+  card: string;
+  salt: string;
 }

@@ -28,6 +28,6 @@ export class PaymentController {
   public async getPaymentById(
     getPaymentByIdDto: GetPaymentByIdDto,
   ): Promise<Payment> {
-    return await this.paymentService.getPaymentById(deletePaymentDto);
+    return await this.paymentService.getPaymentById(getPaymentByIdDto);
   }
 }
