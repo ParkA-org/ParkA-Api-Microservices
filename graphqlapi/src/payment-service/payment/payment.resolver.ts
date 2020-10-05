@@ -1,6 +1,7 @@
 import { BadRequestException, Logger, UseGuards } from '@nestjs/common';
 import { Query, Resolver, Mutation, Args } from '@nestjs/graphql';
 import { AuthGuard } from 'src/auth-service/strategy/auth.guard';
+import { CardService } from '../card/card.service';
 import { CreatePaymentInput } from './inputs/create-payment.input';
 import { DeletePaymentInput } from './inputs/delete-payment.input';
 import { GetPaymentByIdInput } from './inputs/get-payment-by-id.input';
@@ -10,7 +11,10 @@ import { PaymentType } from './types/payment.type';
 export class PaymentResolver {
   private logger = new Logger('PaymentResolver');
 
-  constructor(private paymentService: PaymentService) {}
+  constructor(
+    private paymentService: PaymentService,
+    private cardService: CardService,
+  ) {}
 
   @Query(returns => PaymentType)
   @UseGuards(AuthGuard)
