@@ -20,7 +20,9 @@ export class CardService {
       `Received get card by id with payload ${JSON.stringify(getCardDto)}`,
     );
 
-    const result = await this.cardRepository.findOne(getCardDto);
+    const { id } = getCardDto;
+
+    const result = await this.cardRepository.findOne({ id: id });
 
     if (!result) {
       throw new RpcException('Entry not found');

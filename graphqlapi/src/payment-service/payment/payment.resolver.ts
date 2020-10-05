@@ -47,7 +47,7 @@ export class PaymentResolver {
     return this.paymentService.getPaymentById(getPaymentByIdInput);
   }
 
-  @Mutation(returns => PaymentType)
+  @Mutation(of => PaymentType)
   async createPayment(
     @Args('createPaymentInput') createPaymentInput: CreatePaymentInput,
   ): Promise<PaymentType> {
@@ -62,7 +62,7 @@ export class PaymentResolver {
   }
 
   @ResolveField(returns => CardType)
-  public async model(@Parent() payment: PaymentType): Promise<CardType> {
+  public async card(@Parent() payment: PaymentType): Promise<CardType> {
     this.logger.debug(
       `Received resolve field with payload ${JSON.stringify(payment)}`,
     );
