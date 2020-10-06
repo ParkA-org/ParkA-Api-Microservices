@@ -1,4 +1,4 @@
 interface ICreateVehicleDto {
-  userInformationIdPayload: IUserInformationPayload;
+  userInformationIdPayload: IUserInformationIdPayload;
   createVehiclePayload: ICreateVehiclePayload;
 }

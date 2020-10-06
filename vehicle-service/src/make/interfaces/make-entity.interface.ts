@@ -1,4 +1,4 @@
-export interface IMake {
+interface IMake {
   _id: string;
   id: string;
   name: string;

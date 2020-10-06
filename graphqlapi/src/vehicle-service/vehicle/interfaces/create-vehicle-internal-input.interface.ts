@@ -1,4 +1,4 @@
 interface ICreateVehicleInternalInput {
-  userInformationIdPayload: IUserInformationPayload;
+  userInformationIdPayload: IUserInformationIdPayload;
   createVehiclePayload: ICreateVehicleInput;
 }

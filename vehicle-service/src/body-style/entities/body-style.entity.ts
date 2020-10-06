@@ -1,6 +1,4 @@
-import { IBaseEntity } from 'src/make/interfaces/base-entity.interface';
 import { Column, Entity, ObjectIdColumn, PrimaryColumn } from 'typeorm';
-import { IBodyStyle } from '../interfaces/body-style-entity.interface';
 
 @Entity()
 export class BodyStyle implements IBodyStyle, IBaseEntity {

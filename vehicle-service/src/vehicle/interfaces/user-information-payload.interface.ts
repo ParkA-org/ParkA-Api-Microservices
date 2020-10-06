@@ -1,3 +1,3 @@
-interface IUserInformationPayload {
+interface IUserInformationIdPayload {
   userInformationId: string;
 }

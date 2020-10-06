@@ -1,4 +1,4 @@
-export interface ICreateModelDto {
+interface ICreateModelDto {
   make: string;
   name: string;
 }

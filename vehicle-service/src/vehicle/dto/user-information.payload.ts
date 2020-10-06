@@ -1,6 +1,6 @@
 import { IsUUID } from 'class-validator';
 
-export class UserInformationPayload implements IUserInformationPayload {
+export class UserInformationIdPayload implements IUserInformationIdPayload {
   @IsUUID('4')
   userInformationId: string;
 }

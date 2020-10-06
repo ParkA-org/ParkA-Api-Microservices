@@ -5,11 +5,10 @@ import {
   Transport,
 } from '@nestjs/microservices';
 import { VehicleType } from './types/vehicle.type';
-import { CreateVehicleInput } from './inputs/create-vehicle.input';
 import { GetVehicleByIdInput } from './inputs/get-vehicle-by-id.input';
-import { UpdateVehicleInput } from './inputs/update-vehicle.input';
 import { CreateVehicleInternalInput } from './inputs/create-vehicle-internal.input';
 import { GetAllUserVehiclesInternalInput } from './inputs/get-all-user-vehicles.input';
+import { UpdateVehicleInternalInput } from './inputs/update-vehicle-internal.input';
 
 @Injectable()
 export class VehicleService {
@@ -73,15 +72,17 @@ export class VehicleService {
   }
 
   public async updateVehicle(
-    updateVehicleInput: UpdateVehicleInput,
+    updateVehicleInternalInput: UpdateVehicleInternalInput,
   ): Promise<VehicleType> {
     this.logger.debug(
-      `Received update vehicle with data ${JSON.stringify(updateVehicleInput)}`,
+      `Received update vehicle with data ${JSON.stringify(
+        updateVehicleInternalInput,
+      )}`,
     );
 
     const response = await this.client.send<VehicleType>(
       { type: 'update-vehicle' },
-      updateVehicleInput,
+      updateVehicleInternalInput,
     );
 
     return response.toPromise();

@@ -100,16 +100,24 @@ export class VehicleService {
       )}`,
     );
 
-    const { id } = updateVehicleDto;
+    const {
+      getVehicleByIdPayload,
+      updateVehiclePayload,
+      userInformationIdPayload,
+    } = updateVehicleDto;
 
-    const vehicle = await this.getVehicleById({ id });
+    const { id } = getVehicleByIdPayload;
+    const { userInformationId } = userInformationIdPayload;
 
-    const updateFieldList = Object.keys(updateVehicleDto);
+    const vehicle = await this.vehicleRepository.findOne({
+      userInformation: userInformationId,
+      id: id,
+    });
+
+    const updateFieldList = Object.keys(updateVehiclePayload);
 
     for (const field of updateFieldList) {
-      if (vehicle.id != updateVehicleDto[field]) {
-        vehicle[field] = updateVehicleDto[field];
-      }
+      vehicle[field] = updateVehiclePayload[field];
     }
 
     vehicle.updatedAt = new Date().toISOString();

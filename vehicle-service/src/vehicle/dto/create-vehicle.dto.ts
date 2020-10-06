@@ -1,7 +1,7 @@
 import { CreateVehiclePayload } from './create-vehicle.payload';
-import { UserInformationPayload } from './user-information.payload';
+import { UserInformationIdPayload } from './user-information.payload';
 
 export class CreateVehicleDto implements ICreateVehicleDto {
-  userInformationIdPayload: UserInformationPayload;
+  userInformationIdPayload: UserInformationIdPayload;
   createVehiclePayload: CreateVehiclePayload;
 }

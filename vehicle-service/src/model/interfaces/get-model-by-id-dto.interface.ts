@@ -1,3 +1,3 @@
-export interface IGetModelByIdDto {
+interface IGetModelByIdDto {
   id: string;
 }

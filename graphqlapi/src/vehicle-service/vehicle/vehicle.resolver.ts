@@ -27,6 +27,7 @@ import { JWTpayload } from 'src/auth-service/types/jwt.type';
 import { UserInformationIdPayload } from './inputs/user-information-id.payload';
 import { CreateVehicleInternalInput } from './inputs/create-vehicle-internal.input';
 import { GetAllUserVehiclesInternalInput } from './inputs/get-all-user-vehicles.input';
+import { UpdateVehicleInternalInput } from './inputs/update-vehicle-internal.input';
 
 @Resolver(of => VehicleType)
 export class VehicleResolver {
@@ -96,12 +97,23 @@ export class VehicleResolver {
   @UseGuards(AuthGuard)
   public async updateVehicle(
     @Args('updateVehicleInput') updateVehicleInput: UpdateVehicleInput,
+    @Context('user') user: JWTpayload,
   ): Promise<VehicleType> {
     this.logger.debug(
       `Received update vehicle with data ${JSON.stringify(updateVehicleInput)}`,
     );
 
-    return this.vehicleService.updateVehicle(updateVehicleInput);
+    const { getVehicleByIdPayload, updateVehiclePayload } = updateVehicleInput;
+
+    const updateVehicleInternalInput: UpdateVehicleInternalInput = {
+      getVehicleByIdPayload,
+      updateVehiclePayload,
+      userInformationIdPayload: {
+        userInformationId: user.userInformation,
+      },
+    };
+
+    return this.vehicleService.updateVehicle(updateVehicleInternalInput);
   }
 
   //Field Resolvers
