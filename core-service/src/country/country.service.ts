@@ -6,6 +6,7 @@ import { Country } from './entities/country.entity';
 import { v4 as uuid } from 'uuid';
 import { CreateCountryDto } from './dtos/create-country.dto';
 import { UpdateCountryDto } from './dtos/update-country.dto';
+import { RpcException } from '@nestjs/microservices';
 
 @Injectable()
 export class CountryService {
@@ -22,7 +23,13 @@ export class CountryService {
       `Received get country by id ${JSON.stringify(getCountryByIdDto)}`,
     );
 
-    return this.countryRepository.findOne(getCountryByIdDto);
+    const result = await this.countryRepository.findOne(getCountryByIdDto);
+
+    if (!result) {
+      throw new RpcException('Entry not found');
+    }
+
+    return result;
   }
 
   public async getAllCountries(): Promise<Country[]> {

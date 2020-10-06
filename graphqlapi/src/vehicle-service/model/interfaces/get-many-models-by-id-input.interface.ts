@@ -1,3 +1,3 @@
-export interface IGetManyModelsByIdInput {
+interface IGetManyModelsByIdInput {
   ids: string[];
 }

@@ -1,3 +1,3 @@
-export interface IGetBodyStyleByIdInput {
+interface IGetBodyStyleByIdInput {
   id: string;
 }

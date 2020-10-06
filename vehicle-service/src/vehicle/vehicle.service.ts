@@ -114,6 +114,10 @@ export class VehicleService {
       id: id,
     });
 
+    if (!vehicle) {
+      throw new RpcException('Entry not found');
+    }
+
     const updateFieldList = Object.keys(updateVehiclePayload);
 
     for (const field of updateFieldList) {
