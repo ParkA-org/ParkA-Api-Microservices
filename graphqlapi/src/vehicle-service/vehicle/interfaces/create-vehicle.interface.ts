@@ -1,4 +1,4 @@
-export interface ICreateVehicleInput {
+interface ICreateVehicleInput {
   model: string;
   licensePlate: string;
   detail: string;

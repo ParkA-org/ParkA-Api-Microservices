@@ -1,5 +1,9 @@
-import { Injectable } from '@nestjs/common';
-import { Client, ClientProxy, Transport } from '@nestjs/microservices';
+import { Injectable, Logger } from '@nestjs/common';
+import {
+  ClientProxy,
+  ClientProxyFactory,
+  Transport,
+} from '@nestjs/microservices';
 import { ModelType } from './types/model.type';
 import { CreateModelInput } from './inputs/create-model.input';
 import { GetManyModelsByIdInput } from './inputs/get-many-models-by-id.input';
@@ -9,17 +13,25 @@ import { UpdateMakeModelListInput } from './inputs/update-make-model-list.input'
 
 @Injectable()
 export class ModelService {
-  @Client({
-    transport: Transport.REDIS,
-    options: {
-      url: `redis://redis-parka-microservices:6379`,
-    },
-  })
   private client: ClientProxy;
+  private logger = new Logger('ModelService');
 
-  constructor(private makeService: MakeService) {}
+  constructor(private makeService: MakeService) {
+    this.client = ClientProxyFactory.create({
+      transport: Transport.REDIS,
+      options: {
+        url: `${process.env.REDIS_URL}`,
+      },
+    });
+  }
 
   public async getModelById(getModelByIdInput: GetModelByIdInput) {
+    this.logger.debug(
+      `Received get model by id with payload ${JSON.stringify(
+        getModelByIdInput,
+      )}`,
+    );
+
     const response = await this.client.send<ModelType>(
       {
         type: 'get-model-by-id',
@@ -46,6 +58,10 @@ export class ModelService {
   public async createModel(
     createModelInput: CreateModelInput,
   ): Promise<ModelType> {
+    this.logger.debug(
+      `Received create model with payload ${JSON.stringify(createModelInput)}`,
+    );
+
     const response = await this.client.send<ModelType>(
       {
         type: 'create-model',

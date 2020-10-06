@@ -7,6 +7,7 @@ import { v4 as uuid } from 'uuid';
 import { GetVehicleByIdDto } from './dto/get-vehicle-by-id.dto';
 import { UpdateVehicleDto } from './dto/update-vehicle.dto';
 import { RpcException } from '@nestjs/microservices';
+import { GetAllUserVehiclesDto } from './dto/get-all-user-vehicle.dto';
 
 @Injectable()
 export class VehicleService {
@@ -34,10 +35,14 @@ export class VehicleService {
     return result;
   }
 
-  public async getAllVehicles(): Promise<Vehicle[]> {
+  public async getAllUserVehicles(
+    getAllUserVehiclesDto: GetAllUserVehiclesDto,
+  ): Promise<Vehicle[]> {
     this.logger.debug(`Received get all vehicles`);
 
-    return this.vehicleRepository.find();
+    const { userInformationId } = getAllUserVehiclesDto;
+
+    return this.vehicleRepository.find({ userInformation: userInformationId });
   }
 
   public async createVehicle(
@@ -49,6 +54,10 @@ export class VehicleService {
       )}`,
     );
 
+    const { createVehiclePayload, userInformationIdPayload } = createVehicleDto;
+
+    const { userInformationId } = userInformationIdPayload;
+
     const {
       alias,
       colorExterior,
@@ -59,10 +68,11 @@ export class VehicleService {
       pictures,
       bodyStyle,
       year,
-    } = createVehicleDto;
+    } = createVehiclePayload;
 
     const vehicle = this.vehicleRepository.create({
       id: uuid(),
+      userInformation: userInformationId,
       alias,
       colorExterior,
       detail,
@@ -90,16 +100,28 @@ export class VehicleService {
       )}`,
     );
 
-    const { id } = updateVehicleDto;
+    const {
+      getVehicleByIdPayload,
+      updateVehiclePayload,
+      userInformationIdPayload,
+    } = updateVehicleDto;
 
-    const vehicle = await this.getVehicleById({ id });
+    const { id } = getVehicleByIdPayload;
+    const { userInformationId } = userInformationIdPayload;
 
-    const updateFieldList = Object.keys(updateVehicleDto);
+    const vehicle = await this.vehicleRepository.findOne({
+      userInformation: userInformationId,
+      id: id,
+    });
+
+    if (!vehicle) {
+      throw new RpcException('Entry not found');
+    }
+
+    const updateFieldList = Object.keys(updateVehiclePayload);
 
     for (const field of updateFieldList) {
-      if (vehicle.id != updateVehicleDto[field]) {
-        vehicle[field] = updateVehicleDto[field];
-      }
+      vehicle[field] = updateVehiclePayload[field];
     }
 
     vehicle.updatedAt = new Date().toISOString();

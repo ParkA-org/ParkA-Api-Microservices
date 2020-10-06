@@ -1,4 +1,4 @@
-export interface ICreateModelInput {
+interface ICreateModelInput {
   make: string;
   name: string;
 }

@@ -1,3 +1,3 @@
-export interface ICreateColorDto {
+interface ICreateColorDto {
   name: string;
 }

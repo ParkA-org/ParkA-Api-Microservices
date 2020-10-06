@@ -1,3 +1,3 @@
-export interface ICreateBodyStyleInput {
+interface ICreateBodyStyleInput {
   name: string;
 }

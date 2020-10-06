@@ -1,7 +1,9 @@
-export interface IVehicle {
+interface IVehicle {
   _id: string;
 
   id: string;
+
+  userInformation: string;
 
   model: string;
 
