@@ -1,3 +1,3 @@
-export interface ICreateBodyStyleDto {
+interface ICreateBodyStyleDto {
   name: string;
 }

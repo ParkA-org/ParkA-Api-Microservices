@@ -1,3 +1,3 @@
-export interface IGetMakeByIdInput {
+interface IGetMakeByIdInput {
   id: string;
 }

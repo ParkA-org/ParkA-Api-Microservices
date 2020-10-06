@@ -1,3 +1,3 @@
-export interface ICreateColorInput {
+interface ICreateColorInput {
   name: string;
 }

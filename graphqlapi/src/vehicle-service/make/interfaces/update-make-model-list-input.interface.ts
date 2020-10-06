@@ -1,4 +1,4 @@
-export interface IUpdateMakeModelListInput {
+interface IUpdateMakeModelListInput {
   makeId: string;
   modelId: string;
 }

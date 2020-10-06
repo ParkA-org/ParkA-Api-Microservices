@@ -1,22 +1,36 @@
-import { Injectable } from '@nestjs/common';
-import { Client, ClientProxy, Transport } from '@nestjs/microservices';
+import { Injectable, Logger } from '@nestjs/common';
+import {
+  ClientProxy,
+  ClientProxyFactory,
+  Transport,
+} from '@nestjs/microservices';
 import { CreateColorInput } from './inputs/create-color.input';
 import { GetColorByIdInput } from './inputs/get-color-by-id.input';
 import { ColorType } from './types/color.type';
 
 @Injectable()
 export class ColorService {
-  @Client({
-    transport: Transport.REDIS,
-    options: {
-      url: `redis://redis-parka-microservices:6379`,
-    },
-  })
   private client: ClientProxy;
+  private logger = new Logger('ColorService');
+
+  constructor() {
+    this.client = ClientProxyFactory.create({
+      transport: Transport.REDIS,
+      options: {
+        url: `${process.env.REDIS_URL}`,
+      },
+    });
+  }
 
   public async getColorById(
     getColorByIdInput: GetColorByIdInput,
   ): Promise<ColorType> {
+    this.logger.debug(
+      `Received get color by id with payload ${JSON.stringify(
+        getColorByIdInput,
+      )}`,
+    );
+
     const response = this.client.send<ColorType>(
       {
         type: 'get-color-by-id',
@@ -28,6 +42,8 @@ export class ColorService {
   }
 
   public async getAllColors(): Promise<ColorType[]> {
+    this.logger.debug(`Received get all colors`);
+
     const response = this.client.send<ColorType[]>(
       {
         type: 'get-all-colors',
@@ -41,6 +57,10 @@ export class ColorService {
   public async createColor(
     createColorInput: CreateColorInput,
   ): Promise<ColorType> {
+    this.logger.debug(
+      `Received create color input ${JSON.stringify(createColorInput)}`,
+    );
+
     const response = this.client.send<ColorType>(
       {
         type: 'create-color',

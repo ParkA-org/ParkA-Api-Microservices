@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AuthModule } from './auth-service/auth.module';
 import { GraphQLModule } from '@nestjs/graphql';
-import { VehicleServiceModule } from './vehicle-service/vehicle/vehicle-service.module';
+import { VehicleModule } from './vehicle-service/vehicle/vehicle.module';
 import { BodyStyleModule } from './vehicle-service/body-style/body-style.module';
 import { ModelModule } from './vehicle-service/model/model.module';
 import { MakeModule } from './vehicle-service/make/make.module';
@@ -24,7 +24,7 @@ import { CountryModule } from './core-service/country/country.module';
       autoSchemaFile: true,
       context: ({ req }) => ({ headers: req.headers }),
     }),
-    VehicleServiceModule,
+    VehicleModule,
     AuthModule,
     BodyStyleModule,
     ModelModule,

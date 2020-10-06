@@ -6,6 +6,7 @@ import { Nationality } from './entities/nationality.entity';
 import { v4 as uuid } from 'uuid';
 import { GetReservationByIdDto } from 'src/reservation/dtos/get-reservation-by-id.dto';
 import { UpdateNationalityDto } from './dtos/update-nationality.dto';
+import { RpcException } from '@nestjs/microservices';
 
 @Injectable()
 export class NationalityService {
@@ -25,7 +26,15 @@ export class NationalityService {
       )}`,
     );
 
-    return this.nationalityRepository.findOne(getNationalityByIdDto);
+    const result = await this.nationalityRepository.findOne(
+      getNationalityByIdDto,
+    );
+
+    if (!result) {
+      throw new RpcException('Entry not found');
+    }
+
+    return result;
   }
 
   public async getAllNationalities(): Promise<Nationality[]> {

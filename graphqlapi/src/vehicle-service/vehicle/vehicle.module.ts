@@ -3,11 +3,11 @@ import { ColorModule } from '../color/color.module';
 import { MakeModule } from '../make/make.module';
 import { ModelModule } from '../model/model.module';
 import { BodyStyleModule } from '../body-style/body-style.module';
-import { VehicleServiceResolver } from './vehicle-service.resolver';
-import { VehicleServiceService } from './vehicle-service.service';
+import { VehicleResolver } from './vehicle.resolver';
+import { VehicleService } from './vehicle.service';
 
 @Module({
   imports: [BodyStyleModule, ModelModule, MakeModule, ColorModule],
-  providers: [VehicleServiceResolver, VehicleServiceService],
+  providers: [VehicleResolver, VehicleService],
 })
-export class VehicleServiceModule {}
+export class VehicleModule {}

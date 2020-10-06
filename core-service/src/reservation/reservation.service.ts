@@ -1,4 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
+import { RpcException } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GetReservationByIdDto } from './dtos/get-reservation-by-id.dto';
@@ -22,7 +23,15 @@ export class ReservationService {
       )}`,
     );
 
-    return this.reservationRepository.findOne(getReservationByIdDto);
+    const result = await this.reservationRepository.findOne(
+      getReservationByIdDto,
+    );
+
+    if (!result) {
+      throw new RpcException('Entry not found');
+    }
+
+    return result;
   }
 
   public async getAllReservations(): Promise<Reservation[]> {

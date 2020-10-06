@@ -6,6 +6,7 @@ import { GetUserInformationByIdDto } from './dtos/get-user-information-by-id.dto
 import { UserInformation } from './entities/user-information.entities';
 import { v4 as uuid } from 'uuid';
 import { UpdateUserInformationDto } from './dtos/update-user-information.dto';
+import { RpcException } from '@nestjs/microservices';
 @Injectable()
 export class UserInformationService {
   private logger = new Logger('UserInformationService');
@@ -24,7 +25,15 @@ export class UserInformationService {
       )}`,
     );
 
-    return this.userInformationRepository.findOne(getUserInformationByIdDto);
+    const result = await this.userInformationRepository.findOne(
+      getUserInformationByIdDto,
+    );
+
+    if (!result) {
+      throw new RpcException('Entry not found');
+    }
+
+    return result;
   }
 
   public async createUserInformation(

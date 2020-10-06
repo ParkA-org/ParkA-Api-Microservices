@@ -1,3 +1,3 @@
-export interface IGetColorByIdInput {
+interface IGetColorByIdInput {
   id: string;
 }

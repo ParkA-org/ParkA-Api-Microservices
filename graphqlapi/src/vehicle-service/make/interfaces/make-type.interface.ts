@@ -1,4 +1,4 @@
-export interface IMakeType {
+interface IMakeType {
   id: string;
   name: string;
   icon: string;

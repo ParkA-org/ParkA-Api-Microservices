@@ -1,3 +1,3 @@
-export interface IGetVehicleByIdDto {
+interface IGetVehicleByIdDto {
   id: string;
 }
