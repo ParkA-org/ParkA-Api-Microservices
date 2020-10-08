@@ -8,7 +8,7 @@ async function bootstrap() {
     options: {
       retryAttempts: 5,
       retryDelay: 1000,
-      url: `redis://redis-parka-microservices:6379`,
+      url: `${process.env.REDIS_URL}`,
     },
   });
   await app.listenAsync();
