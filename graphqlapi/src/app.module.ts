@@ -14,6 +14,7 @@ import { ReservationModule } from './core-service/reservation/reservation.module
 import { UserInformationModule } from './core-service/user-information/user-information.module';
 import { NationalityModule } from './core-service/nationality/nationality.module';
 import { CountryModule } from './core-service/country/country.module';
+import { ParkingServiceModule } from './parking-service/parking-service.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { CountryModule } from './core-service/country/country.module';
     EmailModule,
     NationalityModule,
     CountryModule,
+    ParkingServiceModule,
   ],
   providers: [],
 })
