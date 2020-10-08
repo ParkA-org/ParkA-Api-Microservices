@@ -1,18 +1,25 @@
 import { Injectable } from '@nestjs/common';
-import { Client, ClientProxy, Transport } from '@nestjs/microservices';
+import {
+  ClientProxy,
+  ClientProxyFactory,
+  Transport,
+} from '@nestjs/microservices';
 import { CreateCardInput } from './inputs/create-card.input';
 import { GetCardByIdInput } from './inputs/get-card-by-id.input';
 import { CardType } from './types/card.type';
 
 @Injectable()
 export class CardService {
-  @Client({
-    transport: Transport.REDIS,
-    options: {
-      url: 'redis://redis-parka-microservices:6379',
-    },
-  })
   private client: ClientProxy;
+
+  constructor() {
+    this.client = ClientProxyFactory.create({
+      transport: Transport.REDIS,
+      options: {
+        url: `${process.env.REDIS_URL}`,
+      },
+    });
+  }
 
   public async createCard(createCardInput: CreateCardInput): Promise<CardType> {
     const response = await this.client.send<CardType>(

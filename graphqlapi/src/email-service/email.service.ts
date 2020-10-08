@@ -1,5 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Client, ClientProxy, Transport } from '@nestjs/microservices';
+import {
+  ClientProxy,
+  ClientProxyFactory,
+  Transport,
+} from '@nestjs/microservices';
 import { ConfirmEmailInput } from './inputs/confirm-email.input';
 import { ResetPasswordInput } from './inputs/reset-password.input';
 import { ValidateEmailCodeInput } from './inputs/validate-email-code.input';
@@ -9,13 +13,15 @@ import { ResetPasswordType } from './types/reset-password.type';
 
 @Injectable()
 export class EmailService {
-  private logger = new Logger('EmailServiceService');
+  private client: ClientProxy;
+  private logger = new Logger('EmailService');
 
-  @Client({
-    transport: Transport.REDIS,
-    options: { url: `redis://redis-parka-microservices:6379` },
-  })
-  client: ClientProxy;
+  constructor() {
+    this.client = ClientProxyFactory.create({
+      transport: Transport.REDIS,
+      options: { url: `${process.env.REDIS_URL}` },
+    });
+  }
 
   public async confirmEmail(
     confirmEmailInput: ConfirmEmailInput,
