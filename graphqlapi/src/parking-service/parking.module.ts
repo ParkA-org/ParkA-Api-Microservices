@@ -1,9 +1,7 @@
 import { Module } from '@nestjs/common';
-import { ParkingServiceController } from './parking.controller';
-import { ParkingServiceService } from './parking.service';
+import { ParkingService } from './parking.service';
 
 @Module({
-  controllers: [ParkingServiceController],
-  providers: [ParkingServiceService],
+  providers: [ParkingService],
 })
-export class ParkingServiceModule {}
+export class ParkingModule {}
