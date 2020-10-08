@@ -1,5 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { Client, ClientProxy, Transport } from '@nestjs/microservices';
+import {
+  ClientProxy,
+  ClientProxyFactory,
+  Transport,
+} from '@nestjs/microservices';
 import { CreatePaymentInput } from './inputs/create-payment.input';
 import { DeletePaymentInput } from './inputs/delete-payment.input';
 import { GetPaymentByIdInput } from './inputs/get-payment-by-id.input';
@@ -7,13 +11,16 @@ import { PaymentType } from './types/payment.type';
 
 @Injectable()
 export class PaymentService {
-  @Client({
-    transport: Transport.REDIS,
-    options: {
-      url: 'redis://redis-parka-microservices:6379',
-    },
-  })
   private client: ClientProxy;
+
+  constructor() {
+    this.client = ClientProxyFactory.create({
+      transport: Transport.REDIS,
+      options: {
+        url: `${process.env.REDIS_URL}`,
+      },
+    });
+  }
 
   public async createPayment(
     createPaymentInput: CreatePaymentInput,

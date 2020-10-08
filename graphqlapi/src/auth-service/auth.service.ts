@@ -1,6 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { Client, ClientProxy, Transport } from '@nestjs/microservices';
+import {
+  ClientProxy,
+  ClientProxyFactory,
+  Transport,
+} from '@nestjs/microservices';
 import { UpdateUserInput } from './inputs/update-user.input';
 import { CreateUserInput } from './inputs/user.input';
 import { LoginUserInput } from './inputs/login-user.input';
@@ -15,13 +18,15 @@ import { InternUpdatePassword } from './inputs/intern-update-password';
 
 @Injectable()
 export class AuthService {
-  private logger = new Logger('AuthServiceService');
+  private logger = new Logger('AuthService');
+  private client: ClientProxy;
 
-  @Client({
-    transport: Transport.REDIS,
-    options: { url: `redis://redis-parka-microservices:6379` },
-  })
-  client: ClientProxy;
+  constructor() {
+    this.client = ClientProxyFactory.create({
+      transport: Transport.REDIS,
+      options: { url: `${process.env.REDIS_URL}` },
+    });
+  }
 
   public async getUserById(id: string): Promise<UserType> {
     this.logger.log(`Getting user`);
