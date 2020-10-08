@@ -58,12 +58,6 @@ export class AuthService {
   public async updateUserPassword(
     updateUserPasswordDto: UpdateUserPasswordDto,
   ): Promise<User> {
-    this.logger.debug(
-      `Received update user password payload ${JSON.stringify(
-        updateUserPasswordDto,
-      )}`,
-    );
-
     const { oldPassword, newPassword, email } = updateUserPasswordDto;
     email.toLowerCase();
 
@@ -114,9 +108,6 @@ export class AuthService {
   }
   // Is Inprogress
   public async createUser(createUserDto: CreateUserDto): Promise<User> {
-    this.logger.debug(
-      `Received create user payload ${JSON.stringify(createUserDto)}`,
-    );
     const {
       name,
       email,
@@ -201,10 +192,6 @@ export class AuthService {
   public async signIn(
     authCredentialDto: AuthCredentialsDto,
   ): Promise<LoginType> {
-    this.logger.debug(
-      `Received Login user payload ${JSON.stringify(authCredentialDto)}`,
-    );
-
     try {
       const { email, password } = authCredentialDto;
 
