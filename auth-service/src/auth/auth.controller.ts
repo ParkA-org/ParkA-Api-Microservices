@@ -28,9 +28,6 @@ export class AuthController {
 
   @MessagePattern({ type: 'create-user' })
   public async createUser(createUserDto: CreateUserDto): Promise<User> {
-    this.logger.debug(
-      `Received create user message with data ${JSON.stringify(createUserDto)}`,
-    );
     return await this.authService.createUser(createUserDto);
   }
 
@@ -38,11 +35,6 @@ export class AuthController {
   public async signIn(
     authCredentialsDto: AuthCredentialsDto,
   ): Promise<LoginType> {
-    this.logger.debug(
-      `Received login user message with data ${JSON.stringify(
-        authCredentialsDto,
-      )}`,
-    );
     return await this.authService.signIn(authCredentialsDto);
   }
 
@@ -58,11 +50,6 @@ export class AuthController {
   public async updateUserPassword(
     updateUserPasswordDto: UpdateUserPasswordDto,
   ): Promise<User> {
-    this.logger.debug(
-      `Received Update User Password message with data ${JSON.stringify(
-        updateUserPasswordDto,
-      )}`,
-    );
     return await this.authService.updateUserPassword(updateUserPasswordDto);
   }
 }

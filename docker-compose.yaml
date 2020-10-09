@@ -85,3 +85,16 @@ services:
       - "3005:3000"
     volumes:
       - ./payment-service:/usr/src/app
+
+  parking-service:
+    container_name: "parking-service"
+    restart: "always"
+    build:
+      context: ./parking-service
+      dockerfile: Dockerfile
+    external_links:
+      - redis
+    ports:
+      - "3007:3000"
+    volumes:
+      - ./parking-service:/usr/src/app

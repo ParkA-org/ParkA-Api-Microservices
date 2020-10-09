@@ -89,11 +89,6 @@ export class AuthService {
     updateUserPasswordInput: UpdateUserPasswordInput,
     user: JWTpayload,
   ): Promise<UserType> {
-    this.logger.log(
-      `Got updateUserPasswordInput data ${JSON.stringify(
-        updateUserPasswordInput,
-      )}`,
-    );
     const internUpdatePassword = new InternUpdatePassword();
     internUpdatePassword.newPassword = updateUserPasswordInput.newPassword;
     internUpdatePassword.oldPassword = updateUserPasswordInput.oldPassword;
