@@ -1,5 +1,4 @@
 import { IsEmail, IsOptional, MaxLength, MinLength } from 'class-validator';
-import { ICreateUserDto } from '../interfaces/create-user-dto.interface';
 
 export class CreateUserDto implements ICreateUserDto {
   @MinLength(2)

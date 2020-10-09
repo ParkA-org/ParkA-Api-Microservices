@@ -25,24 +25,24 @@ export class ParkingResolver {
   ) {}
 
   @Query(returns => ParkingType)
-  getParkingById(@Args('id') id: string) {
+  public async getParkingById(@Args('id') id: string): Promise<ParkingType> {
     return this.parkingService.getParkingById(id);
   }
 
   @Query(returns => [ParkingType])
   @UseGuards(AuthGuard)
-  getAllMyParkings(@Context('user') user: JWTpayload) {
+  public async getAllMyParkings(@Context('user') user: JWTpayload) {
     return this.parkingService.getAllMyParkings(user);
   }
 
   @Query(returns => [ParkingType])
-  getAllParkings() {
+  public async getAllParkings() {
     return this.parkingService.getAllParkings();
   }
 
   @Mutation(returns => ParkingType)
   @UseGuards(AuthGuard)
-  async updateParking(
+  public async updateParking(
     @Args('updateParkingInput')
     updateParkingInput: UpdateParkingInput,
     @Context('user') user: JWTpayload,
@@ -56,7 +56,7 @@ export class ParkingResolver {
 
   @Mutation(returns => ParkingType)
   @UseGuards(AuthGuard)
-  async createParking(
+  public async createParking(
     @Args('createParkingInput')
     createParkingInput: CreateParkingInput,
     @Context('user') user: JWTpayload,

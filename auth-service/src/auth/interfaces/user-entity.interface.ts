@@ -1,4 +1,4 @@
-export interface IUser {
+interface IUser {
   _id: string;
 
   id: string;

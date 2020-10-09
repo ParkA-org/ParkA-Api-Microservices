@@ -1,4 +1,4 @@
-export interface IUpdateUserPasswordDto {
+interface IUpdateUserPasswordDto {
   email: string;
 
   newPassword: string;
