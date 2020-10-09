@@ -2,10 +2,12 @@ import { UseGuards } from '@nestjs/common';
 import { Query, Resolver, Mutation, Args, Context } from '@nestjs/graphql';
 import { AuthGuard } from 'src/auth-service/strategy/auth.guard';
 import { JWTpayload } from 'src/auth-service/types/jwt.type';
+import { CreateParkingInput } from './inputs/create-parking.input';
+import { UpdateParkingInput } from './inputs/update-parking.input';
 import { ParkingService } from './parking.service';
 import { ParkingType } from './types/parking.type';
 
-@Resolver(of => 'UserType')
+@Resolver(of => 'ParkingType')
 export class ParkingResolver {
   constructor(private parkingService: ParkingService) {}
 
