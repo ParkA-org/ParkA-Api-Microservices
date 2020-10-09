@@ -87,4 +87,26 @@ export class ParkingService {
 
     return response.toPromise();
   }
+
+  public async getAllParkings(): Promise<ParkingType[]> {
+    this.logger.debug(`Received get all parkings`);
+
+    const response = await this.client.send<ParkingType[]>(
+      { type: 'get-all-parkings' },
+      {},
+    );
+
+    return response.toPromise();
+  }
+
+  public async getAllMyParkings(user: JWTpayload): Promise<ParkingType[]> {
+    this.logger.debug(`Received get my all parkings`);
+
+    const response = await this.client.send<ParkingType[]>(
+      { type: 'get-all-my-parkings' },
+      user.userInformation,
+    );
+
+    return response.toPromise();
+  }
 }
