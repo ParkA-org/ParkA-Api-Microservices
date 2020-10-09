@@ -1,5 +1,6 @@
-import { Logger } from '@nestjs/common';
+import { Logger, UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { AuthGuard } from 'src/auth-service/strategy/auth.guard';
 import { FeatureService } from './feature.service';
 import { CreateFeatureInput } from './inputs/create-feature.input';
 import { FeatureType } from './types/feature.type';
@@ -26,7 +27,7 @@ export class FeatureResolver {
   public async getFeaturesByIds(
     @Args('ids')
     ids: string[],
-  ): Promise<FeatureType> {
+  ): Promise<FeatureType[]> {
     this.logger.debug(
       `Received get features by ids with payload ${JSON.stringify(ids)}`,
     );
@@ -42,6 +43,7 @@ export class FeatureResolver {
   }
 
   @Mutation(of => FeatureType)
+  @UseGuards(AuthGuard)
   public async createFeature(
     @Args('createFeatureInput')
     createFeatureInput: CreateFeatureInput,
