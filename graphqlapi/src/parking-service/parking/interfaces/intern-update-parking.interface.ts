@@ -3,23 +3,23 @@ export interface IInternUpdateParking {
 
   userInformation: string;
 
-  countParking: number;
+  countParking?: number;
 
-  published: boolean;
+  published?: boolean;
 
-  parkingName: string;
+  parkingName?: string;
 
-  calendar: string;
+  calendar?: string;
 
-  priceHours: string;
+  priceHours?: string;
 
-  pictures: string[];
+  pictures?: string[];
 
-  mainPicture: string;
+  mainPicture?: string;
 
-  isAvailable: boolean;
+  isAvailable?: boolean;
 
-  information: string;
+  information?: string;
 
-  features: string[];
+  features?: string[];
 }
