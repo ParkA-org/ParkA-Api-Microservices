@@ -88,14 +88,13 @@ export class ParkingService {
       return await this.parkingRepository.save(parking);
   }
 
-  public async getParkingById(id: string){
+  public async getParkingById(id: string): Promise<Parking>{
     this.logger.debug(`Received get parking by ID`);
-    const parking = await this.parkingRepository.find({id: id});
+    const parking = await this.parkingRepository.findOne({id: id});
     if (!parking) {
         throw new RpcException('Entry not found');
     }
     return parking;
-  
   }
 
   public async getAllParkings(): Promise<Parking[]> {

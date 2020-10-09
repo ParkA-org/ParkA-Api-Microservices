@@ -11,11 +11,11 @@ export class ParkingController {
     constructor(private parkingService: ParkingService) {}
   
     @MessagePattern({ type: 'get-parking' })
-    public async getParking(id: string): Promise<Parking> {
+    public async getParkingById(id: string): Promise<Parking> {
       this.logger.debug(
         `Received id parking message with data ${JSON.stringify(id)}`,
       );
-      return await this.parkingService.getParking(id);
+      return await this.parkingService.getParkingById(id);
     }
   
     @MessagePattern({ type: 'get-parkings' })
