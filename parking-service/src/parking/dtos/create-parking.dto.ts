@@ -1,6 +1,4 @@
-import { MaxLength } from 'class-validator';
-import { MinLength } from 'class-validator';
-import { ICreateParkingDto } from '../interfaces/create-parking-dto.interface';
+import { MaxLength, MinLength } from 'class-validator';
 
 export class CreateParkingDto implements ICreateParkingDto {
   countParking: number;

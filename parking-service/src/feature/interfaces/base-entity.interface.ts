@@ -1,6 +1,6 @@
-export interface IBaseEntity {
-    _id: string;
-    id: string;
-    updatedAt: string;
-    createdAt: string;
+interface IBaseEntity {
+  _id: string;
+  id: string;
+  updatedAt: string;
+  createdAt: string;
 }
