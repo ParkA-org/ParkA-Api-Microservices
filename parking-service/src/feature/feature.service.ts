@@ -33,7 +33,7 @@ export class FeatureService {
       }
   }
   
-  public async getFeature(id: string): Promise<Feature> {
+  public async getFeatureById(id: string): Promise<Feature> {
     try {
         const feature = this.featureRepository.findOne({ id });
         return await feature;

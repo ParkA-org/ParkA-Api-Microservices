@@ -10,11 +10,11 @@ export class FeatureController {
   constructor(private featureService: FeatureService) {}
 
   @MessagePattern({ type: 'get-feature' })
-  public async getFeature(id: string): Promise<Feature> {
+  public async getFeatureById(id: string): Promise<Feature> {
     this.logger.debug(
       `Received id feature message with data ${JSON.stringify(id)}`,
     );
-    return await this.featureService.getFeature(id);
+    return await this.featureService.getFeatureById(id);
   }
 
   @MessagePattern({ type: 'get-features' })
