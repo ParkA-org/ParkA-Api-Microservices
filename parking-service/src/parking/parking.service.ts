@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { CreateParkingDto } from './dtos/create-parking.dto';
 import { Parking } from './entities/parking.entity';
 import { v4 as uuid } from 'uuid';
+import { UpdateParkingDto } from './dtos/update-parking.dto';
 
 @Injectable()
 export class ParkingService {
@@ -15,6 +16,12 @@ export class ParkingService {
   ) {}
 
   public async createParking(createParkingDto: CreateParkingDto): Promise<Parking> {
+      this.logger.debug(
+            `Received create vehicle with payload ${JSON.stringify(
+                createParkingDto,
+            )}`,
+      );
+
       try{
         const {calendar, countParking, direction, features, information, 
             latitude, longitude, mainPicture, parkingName, 
@@ -51,4 +58,35 @@ export class ParkingService {
       }
   }
 
+  public async updateParking(updateParkingDto:UpdateParkingDto): Promise<Parking>{
+    this.logger.debug(
+        `Received update parking with payload ${JSON.stringify(
+            updateParkingDto,
+        )}`,
+      );
+
+      const { id } = updateParkingDto;
+      const { userInformation } = updateParkingDto;
+  
+      const parking = await this.parkingRepository.findOne({
+        userInformation: userInformation,
+        id: id,
+      });
+  
+      if (!parking) {
+        throw new RpcException('Entry not found');
+      }
+  
+      const updateFieldList = Object.keys(updateParkingDto);
+  
+      for (const field of updateFieldList) {
+        parking[field] = updateParkingDto[field];
+      }
+  
+      parking.updatedAt = new Date().toISOString();
+  
+      return await this.parkingRepository.save(parking);
+  }
+  
 }
+
