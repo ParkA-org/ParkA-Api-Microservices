@@ -4,7 +4,7 @@ import { UserInformationType } from 'src/core-service/user-information/types/use
 import { FeatureType } from 'src/parking-service/feature/types/feature.type';
 import { IParkingType } from '../interfaces/parking-type.interface';
 
-@ObjectType()
+@ObjectType('Parking')
 export class ParkingType implements IParkingType {
   @Field(type => ID)
   @IsUUID('4')

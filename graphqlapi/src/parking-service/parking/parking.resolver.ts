@@ -17,7 +17,7 @@ import { UpdateParkingInput } from './inputs/update-parking.input';
 import { ParkingService } from './parking.service';
 import { ParkingType } from './types/parking.type';
 
-@Resolver(of => 'ParkingType')
+@Resolver(of => ParkingType)
 export class ParkingResolver {
   constructor(
     private parkingService: ParkingService,
