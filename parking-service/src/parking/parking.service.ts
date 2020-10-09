@@ -16,84 +16,99 @@ export class ParkingService {
     @InjectRepository(Parking) private parkingRepository: Repository<Parking>,
   ) {}
 
-  public async createParking(createParkingDto: CreateParkingDto): Promise<Parking> {
-      this.logger.debug(
-            `Received create vehicle with payload ${JSON.stringify(
-                createParkingDto,
-            )}`,
-      );
+  public async createParking(
+    createParkingDto: CreateParkingDto,
+  ): Promise<Parking> {
+    this.logger.debug(
+      `Received create vehicle with payload ${JSON.stringify(
+        createParkingDto,
+      )}`,
+    );
 
-      try{
-        const {calendar, countParking, direction, features, information, 
-            latitude, longitude, mainPicture, parkingName, 
-            pictures, priceHours, sector, userInformation} = createParkingDto;
+    try {
+      const {
+        calendar,
+        countParking,
+        direction,
+        features,
+        information,
+        latitude,
+        longitude,
+        mainPicture,
+        parkingName,
+        pictures,
+        priceHours,
+        sector,
+        userInformation,
+      } = createParkingDto;
 
-        const parking = this.parkingRepository.save({
-            id: uuid(),
-            isAvailable: false,
-            calendar,
-            countParking,
-            features,
-            direction,
-            information,
-            latitude, 
-            longitude,
-            mainPicture,
-            parkingName,
-            pictures, 
-            priceHours,
-            sector,
-            userInformation,
-            verified: false,
-            published: false,
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-          });
-    
-        return await parking;
+      const parking = this.parkingRepository.save({
+        id: uuid(),
+        isAvailable: false,
+        calendar,
+        countParking,
+        features,
+        direction,
+        information,
+        latitude,
+        longitude,
+        mainPicture,
+        parkingName,
+        pictures,
+        priceHours,
+        sector,
+        userInformation,
+        verified: false,
+        published: false,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      });
 
-      }catch(error){
-        throw error.code === 11000
+      return await parking;
+    } catch (error) {
+      throw error.code === 11000
         ? new RpcException('Duplicate field')
         : new RpcException('An undefined error occured');
-      }
+    }
   }
 
-  public async updateParking(updateParkingDto:UpdateParkingDto): Promise<Parking>{
+  public async updateParking(
+    updateParkingDto: UpdateParkingDto,
+  ): Promise<Parking> {
     this.logger.debug(
-        `Received update parking with payload ${JSON.stringify(
-            updateParkingDto,
-        )}`,
-      );
+      `Received update parking with payload ${JSON.stringify(
+        updateParkingDto,
+      )}`,
+    );
 
-      const { id } = updateParkingDto;
-      const { userInformation } = updateParkingDto;
-  
-      const parking = await this.parkingRepository.findOne({
-        userInformation: userInformation,
-        id: id,
-      });
-  
-      if (!parking) {
-        throw new RpcException('Entry not found');
-      }
-  
-      const updateFieldList = Object.keys(updateParkingDto);
-  
-      for (const field of updateFieldList) {
-        parking[field] = updateParkingDto[field];
-      }
-  
-      parking.updatedAt = new Date().toISOString();
-  
-      return await this.parkingRepository.save(parking);
+    const { id } = updateParkingDto;
+    const { userInformation } = updateParkingDto;
+
+    const parking = await this.parkingRepository.findOne({
+      userInformation: userInformation,
+      id: id,
+    });
+
+    if (!parking) {
+      throw new RpcException('Entry not found');
+    }
+
+    const updateFieldList = Object.keys(updateParkingDto);
+
+    for (const field of updateFieldList) {
+      parking[field] = updateParkingDto[field];
+    }
+
+    parking.updatedAt = new Date().toISOString();
+
+    return await this.parkingRepository.save(parking);
   }
 
-  public async getParkingById(id: string): Promise<Parking>{
+  public async getParkingById(id: string): Promise<Parking> {
     this.logger.debug(`Received get parking by ID`);
-    const parking = await this.parkingRepository.findOne({id: id});
+    const parking = await this.parkingRepository.findOne({ id: id });
     if (!parking) {
-        throw new RpcException('Entry not found');
+      throw new RpcException('Entry not found');
     }
     return parking;
   }
@@ -103,12 +118,13 @@ export class ParkingService {
     return await this.parkingRepository.find();
   }
 
-  public async getAllMyParkings(getAllMyParkingsDto: GetAllMyParkingsDto): Promise<Parking[]>{
-    const {userInformation} = getAllMyParkingsDto;
+  public async getAllMyParkings(
+    getAllMyParkingsDto: GetAllMyParkingsDto,
+  ): Promise<Parking[]> {
+    const { userInformation } = getAllMyParkingsDto;
     this.logger.debug(`Received get all my parkings`);
-    return await this.parkingRepository.find({ userInformation: userInformation });
+    return await this.parkingRepository.find({
+      userInformation: userInformation,
+    });
   }
-
-
 }
-
