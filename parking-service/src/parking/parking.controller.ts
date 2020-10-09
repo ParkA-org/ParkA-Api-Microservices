@@ -22,6 +22,11 @@ export class ParkingController {
     public async getAllParkings(): Promise<Parking[]> {
       return await this.parkingService.getAllParkings();
     }
+
+    @MessagePattern({ type: 'get-all-my-parkings' })
+    public async getAllMyParkings(:): Promise<Parking[]> {
+      return await this.parkingService.getAllMyParkings();
+    }
   
     @MessagePattern({ type: 'create-parking' })
     public async createParking(createParkingDto: CreateParkingDto): Promise<Parking> {
