@@ -1,12 +1,12 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { IsUUID, MaxLength, MinLength } from 'class-validator';
 import { UserInformationType } from 'src/core-service/user-information/types/user-information.type';
 import { FeatureType } from 'src/parking-service/feature/types/feature.type';
 import { IParkingType } from '../interfaces/parking-type.interface';
 
-@ObjectType('Parking')
+@ObjectType()
 export class ParkingType implements IParkingType {
-  @Field()
+  @Field(type => ID)
   @IsUUID('4')
   id: string;
 

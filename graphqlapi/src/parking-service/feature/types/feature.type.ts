@@ -2,7 +2,7 @@ import { Field, ObjectType } from '@nestjs/graphql';
 import { IsUUID, MaxLength, MinLength } from 'class-validator';
 import { IFeatureType } from '../interfaces/feature-type.interface';
 
-@ObjectType('Feature')
+@ObjectType()
 export class FeatureType implements IFeatureType {
   @Field()
   @MinLength(2)

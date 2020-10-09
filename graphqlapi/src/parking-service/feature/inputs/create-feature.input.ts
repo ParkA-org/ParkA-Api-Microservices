@@ -2,7 +2,7 @@ import { Field, InputType } from '@nestjs/graphql';
 import { MaxLength, MinLength } from 'class-validator';
 import { ICreateFeatureInput } from '../interfaces/create-feature-input.interface';
 
-@InputType()
+@InputType('CreateFeatureInput')
 export class CreateFeatureInput implements ICreateFeatureInput {
   @Field()
   @MinLength(2)
