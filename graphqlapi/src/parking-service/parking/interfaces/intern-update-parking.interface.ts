@@ -1,1 +1,1 @@
-export class InternUpdateParking implements IInternUpdateParking {}
+export interface IInternUpdateParking {}
