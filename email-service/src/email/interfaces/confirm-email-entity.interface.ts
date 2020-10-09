@@ -1,4 +1,4 @@
-export interface IConfirmEmail {
+interface IConfirmEmail {
   email: string;
 
   origin: string;

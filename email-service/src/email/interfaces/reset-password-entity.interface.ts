@@ -1,4 +1,4 @@
-export interface IResetPassword {
+interface IResetPassword {
   email: string;
 
   origin: string;
