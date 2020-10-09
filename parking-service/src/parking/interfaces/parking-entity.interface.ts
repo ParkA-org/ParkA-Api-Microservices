@@ -1,8 +1,4 @@
-import { Entity } from "typeorm";
-import { IParking } from "../interfaces/parking-entity.interface";
-
-@Entity()
-export class Parking implements IParking {
+export interface IParking {
     countParking: number;
     latitude: string;
     longitude: string;
@@ -18,5 +14,4 @@ export class Parking implements IParking {
     information: string;
     features: string[];
     verified: boolean;
-
 }
