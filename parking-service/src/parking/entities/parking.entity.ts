@@ -4,7 +4,6 @@ import { IParking } from "../interfaces/parking-entity.interface";
 
 @Entity()
 export class Parking implements IParking, IBaseEntity {
-
     @ObjectIdColumn()
     _id: string;
 
@@ -61,4 +60,8 @@ export class Parking implements IParking, IBaseEntity {
 
     @Column()
     verified: boolean;
+
+    @Column()
+    userInformation: string;
+
 }

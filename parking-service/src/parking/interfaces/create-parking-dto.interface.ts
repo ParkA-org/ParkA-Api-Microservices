@@ -11,4 +11,5 @@ export interface ICreateParkingDto {
     direction: string;
     information: string;
     features: string[];
+    userInformation: string;
 }
