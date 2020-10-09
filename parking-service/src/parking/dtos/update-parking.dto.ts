@@ -1,39 +1,38 @@
-import { IsOptional } from "class-validator/types/decorator/common/IsOptional";
-import { IUpdateParkingDto } from "../interfaces/update-parking-dto.interface";
+import { IsOptional } from 'class-validator';
+import { IUpdateParkingDto } from '../interfaces/update-parking-dto.interface';
 
-export class UpdateParkingDto implements IUpdateParkingDto{
-    id: string;
-    
-    userInformation: string;
+export class UpdateParkingDto implements IUpdateParkingDto {
+  id: string;
 
-    @IsOptional()
-    countParking: number;
+  userInformation: string;
 
-    @IsOptional()
-    published: boolean;
+  @IsOptional()
+  countParking: number;
 
-    @IsOptional()
-    parkingName: string;
+  @IsOptional()
+  published: boolean;
 
-    @IsOptional()
-    calendar: string;
+  @IsOptional()
+  parkingName: string;
 
-    @IsOptional()
-    priceHours: string;
+  @IsOptional()
+  calendar: string;
 
-    @IsOptional()
-    pictures: string[];
+  @IsOptional()
+  priceHours: string;
 
-    @IsOptional()
-    mainPicture: string;
+  @IsOptional()
+  pictures: string[];
 
-    @IsOptional()
-    isAvailable: boolean;
+  @IsOptional()
+  mainPicture: string;
 
-    @IsOptional()
-    information: string;
+  @IsOptional()
+  isAvailable: boolean;
 
-    @IsOptional()
-    features: string[];
+  @IsOptional()
+  information: string;
 
+  @IsOptional()
+  features: string[];
 }

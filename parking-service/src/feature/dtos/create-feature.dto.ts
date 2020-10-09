@@ -1,5 +1,5 @@
-import { MaxLength } from 'class-validator/types/decorator/string/MaxLength';
-import { MinLength } from 'class-validator/types/decorator/string/MinLength';
+import { MaxLength } from 'class-validator';
+import { MinLength } from 'class-validator';
 import { ICreatureFeatureDto } from '../interfaces/create-feature-dto.interface';
 
 export class CreateFeatureDto implements ICreatureFeatureDto {

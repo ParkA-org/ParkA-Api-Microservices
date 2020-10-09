@@ -26,7 +26,7 @@ export class FeatureResolver {
   @Query(returns => [FeatureType])
   public async getFeaturesByIds(
     @Args('ids')
-    ids: string[],
+    ids: [string],
   ): Promise<FeatureType[]> {
     this.logger.debug(
       `Received get features by ids with payload ${JSON.stringify(ids)}`,
