@@ -1,8 +1,9 @@
-import { Column, Entity, ObjectIdColumn, PrimaryColumn } from "typeorm";
+import { Column, Entity, ObjectIdColumn, PrimaryColumn, Unique } from "typeorm";
 import { IBaseEntity } from "../interfaces/base-entity.interface";
 import { IFeature } from "../interfaces/feature-entity.interface";
 
 @Entity()
+@Unique(['name'])
 export class Feature implements IFeature, IBaseEntity{
 
     @ObjectIdColumn()
