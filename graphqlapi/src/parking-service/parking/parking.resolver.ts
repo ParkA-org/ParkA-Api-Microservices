@@ -11,6 +11,7 @@ import {
 import { AuthGuard } from 'src/auth-service/strategy/auth.guard';
 import { JWTpayload } from 'src/auth-service/types/jwt.type';
 import { FeatureService } from '../feature/feature.service';
+import { FeatureType } from '../feature/types/feature.type';
 import { CreateParkingInput } from './inputs/create-parking.input';
 import { UpdateParkingInput } from './inputs/update-parking.input';
 import { ParkingService } from './parking.service';
@@ -71,6 +72,6 @@ export class ParkingResolver {
   public async features(
     @Parent() parking: ParkingType,
   ): Promise<FeatureType[]> {
-    return this.featureService.getFeaturesById(parking.features);
+    return this.featureService.getFeaturesByIds(parking.features);
   }
 }
