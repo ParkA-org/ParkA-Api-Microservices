@@ -6,6 +6,7 @@ import { CreateParkingDto } from './dtos/create-parking.dto';
 import { Parking } from './entities/parking.entity';
 import { v4 as uuid } from 'uuid';
 import { UpdateParkingDto } from './dtos/update-parking.dto';
+import { GetAllMyParkingsDto } from './dtos/get-all-my-parkings.dto';
 
 @Injectable()
 export class ParkingService {
@@ -102,7 +103,8 @@ export class ParkingService {
     return await this.parkingRepository.find();
   }
 
-  public async getAllMyParkings(userInformation: string): Promise<Parking[]>{
+  public async getAllMyParkings(getAllMyParkingsDto: GetAllMyParkingsDto): Promise<Parking[]>{
+    const {userInformation} = getAllMyParkingsDto;
     this.logger.debug(`Received get all my parkings`);
     return await this.parkingRepository.find({ userInformation: userInformation });
   }

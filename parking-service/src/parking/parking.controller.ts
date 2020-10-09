@@ -1,6 +1,7 @@
 import { Controller, Logger } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
 import { CreateParkingDto } from './dtos/create-parking.dto';
+import { GetAllMyParkingsDto } from './dtos/get-all-my-parkings.dto';
 import { UpdateParkingDto } from './dtos/update-parking.dto';
 import { Parking } from './entities/parking.entity';
 import { ParkingService } from './parking.service';
@@ -24,8 +25,8 @@ export class ParkingController {
     }
 
     @MessagePattern({ type: 'get-all-my-parkings' })
-    public async getAllMyParkings(:): Promise<Parking[]> {
-      return await this.parkingService.getAllMyParkings();
+    public async getAllMyParkings(getAllMyParkingsDto: GetAllMyParkingsDto): Promise<Parking[]> {
+      return await this.parkingService.getAllMyParkings(getAllMyParkingsDto);
     }
   
     @MessagePattern({ type: 'create-parking' })
