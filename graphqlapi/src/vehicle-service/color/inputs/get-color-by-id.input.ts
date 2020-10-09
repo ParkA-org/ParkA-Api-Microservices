@@ -3,7 +3,7 @@ import { IsUUID } from 'class-validator';
 
 @InputType('getColorByIdInput')
 export class GetColorByIdInput implements IGetColorByIdInput {
-  @IsUUID('4')
   @Field()
+  @IsUUID('4')
   id: string;
 }

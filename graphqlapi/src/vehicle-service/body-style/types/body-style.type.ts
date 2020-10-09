@@ -1,6 +1,6 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 
-@ObjectType()
+@ObjectType('BodyStyle')
 export class BodyStyleType implements IBodyStyleType {
   @Field(type => ID)
   id: string;

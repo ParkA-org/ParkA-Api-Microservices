@@ -1,4 +1,4 @@
-import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Credential } from './entities/credential.entity';
@@ -13,7 +13,6 @@ import { LoginType } from './login-class/login';
 import { exception } from 'console';
 import * as jwt from 'jsonwebtoken';
 import { ConfigService } from '@nestjs/config';
-import { verify } from 'crypto';
 import { UpdateUserPasswordDto } from './dtos/update-user-password.dto';
 @Injectable()
 export class AuthService {

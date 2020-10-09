@@ -8,7 +8,7 @@ export class LoginUserInput implements ILoginUserInput {
   @IsEmail()
   email: string;
 
-  @MinLength(8)
   @Field()
+  @MinLength(8)
   password: string;
 }

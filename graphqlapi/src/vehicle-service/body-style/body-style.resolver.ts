@@ -1,6 +1,6 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { BodyStyleType } from './types/body-style.type';
-import { CreateBodyStyleInput } from './inputs/body-style-type.input';
+import { CreateBodyStyleInput } from './inputs/create-body-style-type.input';
 import { GetBodyStyleByIdInput } from './inputs/get-body-style-by-id.input';
 import { BodyStyleService } from './body-style.service';
 import { Logger } from '@nestjs/common';

@@ -1,5 +1,11 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { IsEmail, MaxLength, MinLength } from 'class-validator';
+import {
+  IsEmail,
+  IsUrl,
+  MaxLength,
+  MinLength,
+  ValidateIf,
+} from 'class-validator';
 import { IUserInput } from '../interfaces/user-input.interface';
 @InputType()
 export class CreateUserInput implements IUserInput {
@@ -21,9 +27,11 @@ export class CreateUserInput implements IUserInput {
   email: string;
 
   @Field({ nullable: true })
-  profilePicture?: string;
+  @ValidateIf((input: CreateUserInput) => input.profilePicture !== undefined)
+  @IsUrl()
+  profilePicture: string;
 
-  @MinLength(8)
   @Field()
+  @MinLength(8)
   password: string;
 }

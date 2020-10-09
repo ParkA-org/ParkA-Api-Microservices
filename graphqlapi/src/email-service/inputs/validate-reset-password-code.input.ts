@@ -18,7 +18,7 @@ export class ValidateResetPasswordCodeInput
   @Field()
   code: string;
 
-  @MinLength(8)
   @Field()
+  @MinLength(8)
   newPassword: string;
 }
