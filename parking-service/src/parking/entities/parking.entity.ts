@@ -1,22 +1,64 @@
-import { Entity } from "typeorm";
+import { IBaseEntity } from "src/feature/interfaces/base-entity.interface";
+import { Column, Entity, ObjectIdColumn, PrimaryColumn } from "typeorm";
 import { IParking } from "../interfaces/parking-entity.interface";
 
 @Entity()
-export class Parking implements IParking {
-    countParking: number;
-    latitude: string;
-    longitude: string;
-    published: boolean;
-    parkingName: string;
-    calendar: string[];
-    priceHours: string;
-    pictures: string[];
-    mainPicture: string;
-    isAvailable: boolean;
-    sector: string;
-    direction: string;
-    information: string;
-    features: string[];
-    verified: boolean;
+export class Parking implements IParking, IBaseEntity {
 
+    @ObjectIdColumn()
+    _id: string;
+
+    @PrimaryColumn()
+    id: string;
+
+    @Column()
+    updatedAt: string;
+
+    @Column()
+    createdAt: string;
+
+    @Column()
+    countParking: number;
+
+    @Column()
+    latitude: string;
+
+    @Column()
+    longitude: string;
+
+    @Column()
+    published: boolean;
+
+    @Column()
+    parkingName: string;
+
+    @Column()
+    calendar: string[];
+
+    @Column()
+    priceHours: string;
+
+    @Column()
+    pictures: string[];
+
+    @Column()
+    mainPicture: string;
+
+    @Column()
+    isAvailable: boolean;
+
+    @Column()
+    sector: string;
+    
+    @Column()
+    direction: string;
+
+    @Column()
+    information: string;
+
+    @Column()
+    features: string[];
+
+    @Column()
+    verified: boolean;
 }
