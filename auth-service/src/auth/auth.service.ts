@@ -166,7 +166,7 @@ export class AuthService {
       const user = this.authRepository.find();
       return await user;
     } catch (error) {
-      this.logger.debug(error);
+      new RpcException('Users not found');
     }
   }
 
