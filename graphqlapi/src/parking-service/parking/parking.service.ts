@@ -7,6 +7,8 @@ import {
 import { JWTpayload } from 'src/auth-service/types/jwt.type';
 import { CreateParkingInput } from './inputs/create-parking.input';
 import { InternCreateParking } from './inputs/intern-create-parking';
+import { InternUpdateParking } from './inputs/intern-update-parking';
+import { UpdateParkingInput } from './inputs/update-parking.input';
 import { ParkingType } from './types/parking.type';
 
 @Injectable()
@@ -61,26 +63,26 @@ export class ParkingService {
   }
 
   public async updateParking(
-    createParkingInput: CreateParkingInput,
+    updateParkingInput: UpdateParkingInput,
     user: JWTpayload,
   ): Promise<ParkingType> {
     this.logger.debug(
-      `Received create parking with payload ${JSON.stringify(
-        createParkingInput,
+      `Received update parking with payload ${JSON.stringify(
+        updateParkingInput,
       )}`,
     );
-    const internCreateParking = new InternCreateParking();
+    const internUpdateParking = new InternUpdateParking();
 
-    const internFieldList = Object.keys(createParkingInput);
+    const internFieldList = Object.keys(updateParkingInput);
 
     for (const field of internFieldList) {
-      internCreateParking[field] = createParkingInput[field];
+      internUpdateParking[field] = updateParkingInput[field];
     }
-    internCreateParking.userInformation = user.userInformation;
+    internUpdateParking.userInformation = user.userInformation;
 
     const response = await this.client.send<ParkingType>(
       { type: 'update-parking' },
-      internCreateParking,
+      internUpdateParking,
     );
 
     return response.toPromise();
