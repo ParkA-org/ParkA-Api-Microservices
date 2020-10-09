@@ -60,4 +60,18 @@ export class FeatureService {
       new RpcException('Features not found');
     }
   }
+
+  public async getFeaturesByIds(ids: string[]): Promise<Feature[]> {
+    this.logger.debug(`Received get features by IDs`);
+    try {
+      const features = [];
+      ids.forEach(id => {
+        const feature = this.getFeatureById(id);
+        features.push(feature);
+      });
+      return await features;
+    } catch (error) {
+      throw new RpcException('Features not Found');
+    }
+  }
 }
