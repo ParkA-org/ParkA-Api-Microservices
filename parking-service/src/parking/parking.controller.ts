@@ -11,7 +11,7 @@ export class ParkingController {
   private logger = new Logger('Parking Controller');
   constructor(private parkingService: ParkingService) {}
 
-  @MessagePattern({ type: 'get-parking' })
+  @MessagePattern({ type: 'get-parking-by-id' })
   public async getParkingById(id: string): Promise<Parking> {
     this.logger.debug(
       `Received id parking message with data ${JSON.stringify(id)}`,
@@ -19,7 +19,7 @@ export class ParkingController {
     return await this.parkingService.getParkingById(id);
   }
 
-  @MessagePattern({ type: 'get-parkings' })
+  @MessagePattern({ type: 'get-all-parkings' })
   public async getAllParkings(): Promise<Parking[]> {
     return await this.parkingService.getAllParkings();
   }
