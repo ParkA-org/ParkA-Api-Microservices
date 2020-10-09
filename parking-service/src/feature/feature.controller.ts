@@ -9,7 +9,7 @@ export class FeatureController {
   private logger = new Logger('Feature Controller');
   constructor(private featureService: FeatureService) {}
 
-  @MessagePattern({ type: 'get-feature' })
+  @MessagePattern({ type: 'get-feature-by-id' })
   public async getFeatureById(id: string): Promise<Feature> {
     this.logger.debug(
       `Received id feature message with data ${JSON.stringify(id)}`,
@@ -17,15 +17,15 @@ export class FeatureController {
     return await this.featureService.getFeatureById(id);
   }
 
-  @MessagePattern({ type: 'get-features' })
-  public async getFeatures(): Promise<Feature[]> {
-    return await this.featureService.getFeatures();
+  @MessagePattern({ type: 'get-all-features' })
+  public async getAllFeatures(): Promise<Feature[]> {
+    return await this.featureService.getAllFeatures();
   }
 
   @MessagePattern({ type: 'create-feature' })
-  public async createFeature(createFeatureDto: CreateFeatureDto): Promise<Feature> {
+  public async createFeature(
+    createFeatureDto: CreateFeatureDto,
+  ): Promise<Feature> {
     return await this.featureService.createFeature(createFeatureDto);
   }
-
-
 }
