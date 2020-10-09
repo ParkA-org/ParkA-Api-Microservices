@@ -1,4 +1,4 @@
-export interface CreateParkingInput {
+export interface ICreateParkingInput {
   countParking: number;
   latitude: string;
   longitude: string;
