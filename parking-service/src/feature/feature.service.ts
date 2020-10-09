@@ -20,7 +20,7 @@ export class FeatureService {
     try {
         const feature = this.featureRepository.save({
           id: uuid(),
-          name: name,
+          name,
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
         });
