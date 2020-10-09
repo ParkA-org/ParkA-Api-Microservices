@@ -24,18 +24,6 @@ export class FeatureResolver {
   }
 
   @Query(returns => [FeatureType])
-  public async getFeaturesByIds(
-    @Args('ids')
-    ids: [string],
-  ): Promise<FeatureType[]> {
-    this.logger.debug(
-      `Received get features by ids with payload ${JSON.stringify(ids)}`,
-    );
-
-    return this.featureService.getFeaturesByIds(ids);
-  }
-
-  @Query(returns => [FeatureType])
   public async getAllFeatures(): Promise<FeatureType[]> {
     this.logger.debug(`Received get all features`);
 
