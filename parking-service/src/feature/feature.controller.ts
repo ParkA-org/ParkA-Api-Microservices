@@ -22,6 +22,11 @@ export class FeatureController {
     return await this.featureService.getAllFeatures();
   }
 
+  @MessagePattern({ type: 'get-features-by-ids' })
+  public async getFeaturesByIds(ids: string[]): Promise<Feature[]> {
+    return await this.featureService.getFeaturesByIds(ids);
+  }
+
   @MessagePattern({ type: 'create-feature' })
   public async createFeature(
     createFeatureDto: CreateFeatureDto,
