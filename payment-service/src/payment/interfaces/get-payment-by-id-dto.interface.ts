@@ -1,3 +1,3 @@
-export interface IGetPaymentByIdDto {
+interface IGetPaymentByIdDto {
   id: string;
 }

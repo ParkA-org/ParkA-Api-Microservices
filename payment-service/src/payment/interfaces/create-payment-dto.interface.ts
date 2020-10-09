@@ -1,4 +1,4 @@
-export interface ICreatePaymentDto {
+interface ICreatePaymentDto {
   cardHolder: string;
   expirationDate: string;
   card: string;

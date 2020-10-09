@@ -1,6 +1,4 @@
 import { Column, Entity, ObjectIdColumn, PrimaryColumn, Unique } from 'typeorm';
-import { IBaseEntity } from '../interfaces/base-entity.interface';
-import { IPayment } from '../interfaces/payment-entity.interface';
 
 @Entity()
 @Unique(['digit'])
