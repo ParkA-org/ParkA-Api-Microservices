@@ -49,7 +49,7 @@ export class ParkingService {
             updatedAt: new Date().toISOString(),
           });
     
-        return parking;
+        return await parking;
 
       }catch(error){
         throw error.code === 11000
@@ -88,7 +88,26 @@ export class ParkingService {
       return await this.parkingRepository.save(parking);
   }
 
+  public async getParkingById(id: string){
+    this.logger.debug(`Received get parking by ID`);
+    const parking = await this.parkingRepository.find({id: id});
+    if (!parking) {
+        throw new RpcException('Entry not found');
+    }
+    return parking;
   
+  }
+
+  public async getAllParkings(): Promise<Parking[]> {
+    this.logger.debug(`Received get all parkings`);
+    return await this.parkingRepository.find();
+  }
+
+  public async getAllMyParkings(userInformation: string): Promise<Parking[]>{
+    this.logger.debug(`Received get all my parkings`);
+    return await this.parkingRepository.find({ userInformation: userInformation });
+  }
+
 
 }
 

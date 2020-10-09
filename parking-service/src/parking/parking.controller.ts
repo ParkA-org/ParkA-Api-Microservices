@@ -19,8 +19,8 @@ export class ParkingController {
     }
   
     @MessagePattern({ type: 'get-parkings' })
-    public async getParkings(): Promise<Parking[]> {
-      return await this.parkingService.getParkings();
+    public async getAllParkings(): Promise<Parking[]> {
+      return await this.parkingService.getAllParkings();
     }
   
     @MessagePattern({ type: 'create-parking' })
