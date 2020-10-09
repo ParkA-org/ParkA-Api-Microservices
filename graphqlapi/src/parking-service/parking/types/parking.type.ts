@@ -27,13 +27,13 @@ export class ParkingType implements IParkingType {
   @MaxLength(50)
   parkingName: string;
 
-  @Field()
+  @Field(type => [String])
   calendar: string[];
 
   @Field()
   priceHours: string;
 
-  @Field()
+  @Field(type => [String])
   pictures: string[];
 
   @Field()

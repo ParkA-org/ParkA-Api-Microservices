@@ -2,7 +2,7 @@ import { Field, InputType } from '@nestjs/graphql';
 import { MaxLength, MinLength, ValidateIf } from 'class-validator';
 import { IUpdateParkingInput } from '../interfaces/update-parking-input.interface';
 
-@InputType()
+@InputType('UpdateParkingInput')
 export class UpdateParkingInput implements IUpdateParkingInput {
   @Field({ nullable: true })
   id: string;
@@ -19,13 +19,13 @@ export class UpdateParkingInput implements IUpdateParkingInput {
   @MaxLength(50)
   parkingName: string;
 
-  @Field({ nullable: true })
-  calendar: string;
+  @Field(type => [String], { nullable: true, defaultValue: [] })
+  calendar: string[];
 
   @Field({ nullable: true })
   priceHours: string;
 
-  @Field({ nullable: true })
+  @Field(type => [String], { nullable: true, defaultValue: [] })
   pictures: string[];
 
   @Field({ nullable: true })
@@ -37,6 +37,6 @@ export class UpdateParkingInput implements IUpdateParkingInput {
   @Field({ nullable: true })
   information: string;
 
-  @Field({ nullable: true })
+  @Field(type => [String], { nullable: true, defaultValue: [] })
   features: string[];
 }
