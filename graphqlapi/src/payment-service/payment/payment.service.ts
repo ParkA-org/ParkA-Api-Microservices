@@ -5,7 +5,6 @@ import {
   Transport,
 } from '@nestjs/microservices';
 import { CreatePaymentInternalInput } from './inputs/create-payment-internal.input';
-import { CreatePaymentInput } from './inputs/create-payment.input';
 import { DeletePaymentInput } from './inputs/delete-payment.input';
 import { GetAllUserPaymentInternalIpunt } from './inputs/get-all-user-payments-internal.input';
 import { GetPaymentByIdInput } from './inputs/get-payment-by-id.input';
