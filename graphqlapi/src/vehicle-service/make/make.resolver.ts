@@ -12,7 +12,8 @@ import { CreateMakeInput } from './inputs/create-make.input';
 import { GetMakeByIdInput } from './inputs/get-make-by-id.inputs';
 import { MakeType } from './types/make.type';
 import { MakeService } from './make.service';
-import { Logger } from '@nestjs/common';
+import { Logger, UseGuards } from '@nestjs/common';
+import { AuthGuard } from 'src/auth-service/strategy/auth.guard';
 
 @Resolver(of => MakeType)
 export class MakeResolver {
@@ -44,6 +45,7 @@ export class MakeResolver {
     return this.makeService.getAllMakes();
   }
 
+  @UseGuards(AuthGuard)
   @Mutation(of => MakeType)
   public async createMake(
     @Args('createMakeInput')
@@ -56,6 +58,7 @@ export class MakeResolver {
     return this.makeService.createMake(createMakeInput);
   }
 
+  //Field Resolvers
   @ResolveField()
   public async models(@Parent() make: MakeType) {
     this.logger.debug(

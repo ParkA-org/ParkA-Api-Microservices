@@ -3,7 +3,8 @@ import { CreateColorInput } from './inputs/create-color.input';
 import { GetColorByIdInput } from './inputs/get-color-by-id.input';
 import { ColorType } from './types/color.type';
 import { ColorService } from './color.service';
-import { Logger } from '@nestjs/common';
+import { Logger, UseGuards } from '@nestjs/common';
+import { AuthGuard } from 'src/auth-service/strategy/auth.guard';
 
 @Resolver(of => ColorType)
 export class ColorResolver {
@@ -32,6 +33,7 @@ export class ColorResolver {
     return this.colorService.getAllColors();
   }
 
+  @UseGuards(AuthGuard)
   @Mutation(of => ColorType)
   public async createColor(
     @Args('createColorInput')

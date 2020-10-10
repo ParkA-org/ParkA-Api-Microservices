@@ -27,17 +27,6 @@ export class PaymentResolver {
 
   @Query(returns => PaymentType)
   @UseGuards(AuthGuard)
-  deletePayment(
-    @Args('deletePaymentInput') deletePaymentInput: DeletePaymentInput,
-  ) {
-    this.logger.debug(
-      `Received delete payment id data ${JSON.stringify(deletePaymentInput)}`,
-    );
-    return this.paymentService.deletePayment(deletePaymentInput);
-  }
-
-  @Query(returns => PaymentType)
-  @UseGuards(AuthGuard)
   getPaymentById(
     @Args('getPaymentByIdInput') getPaymentByIdInput: GetPaymentByIdInput,
   ) {
@@ -61,6 +50,18 @@ export class PaymentResolver {
     return payment;
   }
 
+  @Query(returns => PaymentType)
+  @UseGuards(AuthGuard)
+  deletePayment(
+    @Args('deletePaymentInput') deletePaymentInput: DeletePaymentInput,
+  ) {
+    this.logger.debug(
+      `Received delete payment id data ${JSON.stringify(deletePaymentInput)}`,
+    );
+    return this.paymentService.deletePayment(deletePaymentInput);
+  }
+
+  //Field Resolvers
   @ResolveField(returns => CardType)
   public async card(@Parent() payment: PaymentType): Promise<CardType> {
     this.logger.debug(

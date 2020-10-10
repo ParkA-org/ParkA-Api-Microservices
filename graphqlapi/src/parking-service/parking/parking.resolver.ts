@@ -31,7 +31,7 @@ export class ParkingResolver {
 
   @Query(returns => [ParkingType])
   @UseGuards(AuthGuard)
-  public async getAllMyParkings(@Context('user') user: JWTpayload) {
+  public async getAllUserParkings(@Context('user') user: JWTpayload) {
     return this.parkingService.getAllMyParkings(user);
   }
 
@@ -68,6 +68,7 @@ export class ParkingResolver {
     return createParking;
   }
 
+  //Resolvers
   @ResolveField(returns => [FeatureType])
   public async features(
     @Parent() parking: ParkingType,

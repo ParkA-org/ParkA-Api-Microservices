@@ -3,7 +3,8 @@ import { ModelType } from './types/model.type';
 import { CreateModelInput } from './inputs/create-model.input';
 import { GetModelByIdInput } from './inputs/get-model-by-id.input';
 import { ModelService } from './model.service';
-import { Logger } from '@nestjs/common';
+import { Logger, UseGuards } from '@nestjs/common';
+import { AuthGuard } from 'src/auth-service/strategy/auth.guard';
 
 @Resolver(of => ModelType)
 export class ModelResolver {
@@ -25,6 +26,7 @@ export class ModelResolver {
     return await this.modelService.getModelById(getModelByIdInput);
   }
 
+  @UseGuards(AuthGuard)
   @Mutation(of => ModelType)
   public async createModel(
     @Args('createModelInput')

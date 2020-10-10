@@ -12,16 +12,24 @@ export class CardResolver {
   constructor(private cardService: CardService) {}
 
   @Query(returns => CardType)
-  getCardById(@Args('getCardByIdInput') getCardByIdInput: GetCardByIdInput) {
+  public async getCardById(
+    @Args('getCardByIdInput') getCardByIdInput: GetCardByIdInput,
+  ) {
     this.logger.debug(
       `Received get card id data ${JSON.stringify(getCardByIdInput)}`,
     );
     return this.cardService.getCardById(getCardByIdInput);
   }
 
+  @Query(returns => [CardType])
+  public async getAllCards(): Promise<[CardType]> {
+    this.logger.debug(`Received get all cards`);
+    return await this.cardService.getAllCards();
+  }
+
   @Mutation(returns => CardType)
   @UseGuards(AuthGuard)
-  async createCard(
+  public async createCard(
     @Args('createCardInput') createCardInput: CreateCardInput,
   ): Promise<CardType> {
     this.logger.debug(
@@ -32,11 +40,5 @@ export class CardResolver {
       throw new BadRequestException('This card already exists');
     }
     return card;
-  }
-
-  @Query(returns => [CardType])
-  async getAllCards(): Promise<[CardType]> {
-    this.logger.debug(`Received get all cards`);
-    return await this.cardService.getAllCards();
   }
 }
