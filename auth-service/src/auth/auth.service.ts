@@ -201,22 +201,26 @@ export class AuthService {
         email: email,
       });
 
-      const result = new LoginType();
-
-      if (await user) {
+      if (user) {
         const hash = await this.hashPassword(password, credential.salt);
+
         if (hash === credential.password) {
-          result.user = user;
-          result.JWT = await this.createToken(
+          const JWT = await this.createToken(
             user.id,
             user.email,
             user.userInformation,
           );
+
+          const result = {
+            user,
+            JWT,
+          };
+
           return result;
         }
       }
     } catch {
-      throw new exception('Invalid Credentials');
+      throw new RpcException('Invalid Credentials');
     }
   }
 }
