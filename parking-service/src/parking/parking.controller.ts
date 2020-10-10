@@ -25,7 +25,7 @@ export class ParkingController {
   }
 
   @MessagePattern({ type: 'get-all-my-parkings' })
-  public async getAllMyParkings(
+  public async getAllUserParkings(
     getAllMyParkingsDto: GetAllMyParkingsDto,
   ): Promise<Parking[]> {
     return await this.parkingService.getAllMyParkings(getAllMyParkingsDto);

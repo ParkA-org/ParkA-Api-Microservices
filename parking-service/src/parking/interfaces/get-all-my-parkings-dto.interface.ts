@@ -1,3 +1,3 @@
 interface IGetAllMyParkingsDto {
-  userInformation: string;
+  userInformationId: string;
 }

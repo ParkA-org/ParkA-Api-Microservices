@@ -32,7 +32,13 @@ export class ParkingResolver {
   @Query(returns => [ParkingType])
   @UseGuards(AuthGuard)
   public async getAllUserParkings(@Context('user') user: JWTpayload) {
-    return this.parkingService.getAllMyParkings(user);
+    const getAllUserParkingsInternalInput = {
+      userInformationId: user.userInformation,
+    };
+
+    return this.parkingService.getAllUserParkings(
+      getAllUserParkingsInternalInput,
+    );
   }
 
   @Query(returns => [ParkingType])

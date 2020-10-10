@@ -27,7 +27,7 @@ export class PaymentResolver {
 
   @Query(returns => PaymentType)
   @UseGuards(AuthGuard)
-  getPaymentById(
+  public async getPaymentById(
     @Args('getPaymentByIdInput') getPaymentByIdInput: GetPaymentByIdInput,
   ) {
     this.logger.debug(
@@ -37,7 +37,7 @@ export class PaymentResolver {
   }
 
   @Mutation(of => PaymentType)
-  async createPayment(
+  public async createPayment(
     @Args('createPaymentInput') createPaymentInput: CreatePaymentInput,
   ): Promise<PaymentType> {
     this.logger.debug(
@@ -52,7 +52,7 @@ export class PaymentResolver {
 
   @Query(returns => PaymentType)
   @UseGuards(AuthGuard)
-  deletePayment(
+  public async deletePayment(
     @Args('deletePaymentInput') deletePaymentInput: DeletePaymentInput,
   ) {
     this.logger.debug(

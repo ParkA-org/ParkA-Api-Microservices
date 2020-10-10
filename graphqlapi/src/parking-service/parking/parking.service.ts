@@ -99,12 +99,14 @@ export class ParkingService {
     return response.toPromise();
   }
 
-  public async getAllMyParkings(user: JWTpayload): Promise<ParkingType[]> {
+  public async getAllUserParkings(getAllUserParkingsInternalInput: {
+    userInformationId: string;
+  }): Promise<ParkingType[]> {
     this.logger.debug(`Received get my all parkings`);
 
     const response = await this.client.send<ParkingType[]>(
       { type: 'get-all-my-parkings' },
-      user.userInformation,
+      getAllUserParkingsInternalInput,
     );
 
     return response.toPromise();
