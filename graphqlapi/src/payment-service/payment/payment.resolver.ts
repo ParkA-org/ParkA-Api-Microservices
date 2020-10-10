@@ -6,11 +6,14 @@ import {
   Args,
   Parent,
   ResolveField,
+  Context,
 } from '@nestjs/graphql';
 import { AuthGuard } from 'src/auth-service/strategy/auth.guard';
+import { JWTpayload } from 'src/auth-service/types/jwt.type';
 import { CardService } from '../card/card.service';
 import { GetCardByIdInput } from '../card/inputs/get-card-by-id.input';
 import { CardType } from '../card/types/card.type';
+import { CreatePaymentInternalInput } from './inputs/create-payment-internal.input';
 import { CreatePaymentInput } from './inputs/create-payment.input';
 import { DeletePaymentInput } from './inputs/delete-payment.input';
 import { GetPaymentByIdInput } from './inputs/get-payment-by-id.input';
@@ -36,14 +39,26 @@ export class PaymentResolver {
     return this.paymentService.getPaymentById(getPaymentByIdInput);
   }
 
+  @UseGuards(AuthGuard)
   @Mutation(of => PaymentType)
   public async createPayment(
+    @Context('user') user: JWTpayload,
     @Args('createPaymentInput') createPaymentInput: CreatePaymentInput,
   ): Promise<PaymentType> {
     this.logger.debug(
       `Received create payment data ${JSON.stringify(createPaymentInput)}`,
     );
-    const payment = await this.paymentService.createPayment(createPaymentInput);
+
+    const createPaymentInternalInput: CreatePaymentInternalInput = {
+      createPaymentPayload: createPaymentInput,
+      userInformationPayload: {
+        userInformation: user.userInformation,
+      },
+    };
+
+    const payment = await this.paymentService.createPayment(
+      createPaymentInternalInput,
+    );
     if (!payment) {
       throw new BadRequestException('This payment already exists');
     }

@@ -37,8 +37,6 @@ export class PaymentController {
   public async getAllUserPayments(
     getAllUserPaymentsDto: GetAllUserPaymentsDto,
   ): Promise<Payment[]> {
-    console.log(getAllUserPaymentsDto);
-
     return await this.paymentService.getAllUserPayments(getAllUserPaymentsDto);
   }
 }

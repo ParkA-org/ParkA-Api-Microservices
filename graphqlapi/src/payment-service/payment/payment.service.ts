@@ -4,6 +4,7 @@ import {
   ClientProxyFactory,
   Transport,
 } from '@nestjs/microservices';
+import { CreatePaymentInternalInput } from './inputs/create-payment-internal.input';
 import { CreatePaymentInput } from './inputs/create-payment.input';
 import { DeletePaymentInput } from './inputs/delete-payment.input';
 import { GetAllUserPaymentInternalIpunt } from './inputs/get-all-user-payments-internal.input';
@@ -24,11 +25,11 @@ export class PaymentService {
   }
 
   public async createPayment(
-    createPaymentInput: CreatePaymentInput,
+    createPaymentInternalInput: CreatePaymentInternalInput,
   ): Promise<PaymentType> {
     const response = await this.client.send<PaymentType>(
       { type: 'create-payment' },
-      createPaymentInput,
+      createPaymentInternalInput,
     );
     return response.toPromise();
   }

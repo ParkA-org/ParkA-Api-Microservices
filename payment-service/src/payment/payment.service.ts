@@ -50,7 +50,15 @@ export class PaymentService {
       )}`,
     );
 
-    const { card, cardHolder, cvv, digit, expirationDate } = createPaymentDto;
+    const { createPaymentPayload, userInformationPayload } = createPaymentDto;
+    const {
+      card,
+      cardHolder,
+      cvv,
+      digit,
+      expirationDate,
+    } = createPaymentPayload;
+    const { userInformation } = userInformationPayload;
 
     const salt = await bcrypt.genSalt();
     const result = await this.hashCVV(cvv, salt);
@@ -59,6 +67,7 @@ export class PaymentService {
       const payment = this.paymentRepository.create({
         id: uuid(),
         cardHolder,
+        userInformation,
         expirationDate,
         digit,
         card,
