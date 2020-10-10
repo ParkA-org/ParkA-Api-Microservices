@@ -7,7 +7,7 @@ import { Query, Resolver, Mutation, Args, Context } from '@nestjs/graphql';
 import { AuthGuard } from './strategy/auth.guard';
 import { AuthService } from './auth.service';
 import { UpdateUserInput } from './inputs/update-user.input';
-import { CreateUserInput } from './inputs/user.input';
+import { CreateUserInput } from './inputs/create-user.input';
 import { LoginUserInput } from './inputs/login-user.input';
 import { LoginType } from './types/login.type';
 import { UserType } from './types/user.type';

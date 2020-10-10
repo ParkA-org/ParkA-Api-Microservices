@@ -2,6 +2,7 @@ import { Controller } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
 import { CreatePaymentDto } from './dtos/create-payment.dto';
 import { DeletePaymentDto } from './dtos/delete-payment.dto';
+import { GetAllUserPaymentsDto } from './dtos/get-all-user-payments.dto';
 import { GetPaymentByIdDto } from './dtos/get-payment-by-id.dto';
 import { Payment } from './entities/payment.entity';
 import { PaymentService } from './payment.service';
@@ -30,5 +31,12 @@ export class PaymentController {
     getPaymentByIdDto: GetPaymentByIdDto,
   ): Promise<Payment> {
     return await this.paymentService.getPaymentById(getPaymentByIdDto);
+  }
+
+  @MessagePattern({ type: 'get-all-user-payments' })
+  public async getAllUserPayments(
+    getAllUserPaymentsDto: GetAllUserPaymentsDto,
+  ): Promise<Payment[]> {
+    return await this.paymentService.getAllUserPayments(getAllUserPaymentsDto);
   }
 }

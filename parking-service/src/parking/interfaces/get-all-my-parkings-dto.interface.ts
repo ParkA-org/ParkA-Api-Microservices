@@ -1,3 +1,3 @@
-export interface IGetAllMyParkingsDto {
-    userInformation: string;
+interface IGetAllMyParkingsDto {
+  userInformationId: string;
 }

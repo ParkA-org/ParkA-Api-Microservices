@@ -5,7 +5,7 @@ import {
   Transport,
 } from '@nestjs/microservices';
 import { BodyStyleType } from './types/body-style.type';
-import { CreateBodyStyleInput } from './inputs/body-style-type.input';
+import { CreateBodyStyleInput } from './inputs/create-body-style-type.input';
 import { GetBodyStyleByIdInput } from './inputs/get-body-style-by-id.input';
 
 @Injectable()

@@ -1,6 +1,4 @@
 import { Column, Entity, ObjectIdColumn, PrimaryColumn, Unique } from 'typeorm';
-import { IBaseEntity } from '../interfaces/base-entity.interface';
-import { IPayment } from '../interfaces/payment-entity.interface';
 
 @Entity()
 @Unique(['digit'])
@@ -10,6 +8,9 @@ export class Payment implements IPayment, IBaseEntity {
 
   @ObjectIdColumn()
   _id: string;
+
+  @Column()
+  userInformation: string;
 
   @Column()
   cardHolder: string;

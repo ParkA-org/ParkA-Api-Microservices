@@ -1,5 +1,6 @@
-import { Logger } from '@nestjs/common';
+import { Logger, UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { AuthGuard } from 'src/auth-service/strategy/auth.guard';
 import { CreateNationalityInput } from './inputs/create-nationality.input';
 import { GetNationalityByIdInput } from './inputs/get-nationality-by-id.input';
 import { UpdateNationalityInput } from './inputs/update-nationality.input';
@@ -34,6 +35,7 @@ export class NationalityResolver {
   }
 
   @Mutation(of => NationalityType)
+  @UseGuards(AuthGuard)
   public async createNationality(
     @Args('createNationalityInput')
     createNationalityInput: CreateNationalityInput,
@@ -48,6 +50,7 @@ export class NationalityResolver {
   }
 
   @Mutation(of => NationalityType)
+  @UseGuards(AuthGuard)
   public async updateNationality(
     @Args('updateNationalityInput')
     updateNationalityInput: UpdateNationalityInput,

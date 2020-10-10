@@ -1,67 +1,64 @@
-import { IBaseEntity } from "src/feature/interfaces/base-entity.interface";
-import { Column, Entity, ObjectIdColumn, PrimaryColumn } from "typeorm";
-import { IParking } from "../interfaces/parking-entity.interface";
+import { Column, Entity, ObjectIdColumn, PrimaryColumn } from 'typeorm';
 
 @Entity()
 export class Parking implements IParking, IBaseEntity {
-    @ObjectIdColumn()
-    _id: string;
+  @ObjectIdColumn()
+  _id: string;
 
-    @PrimaryColumn()
-    id: string;
+  @PrimaryColumn()
+  id: string;
 
-    @Column()
-    updatedAt: string;
+  @Column()
+  updatedAt: string;
 
-    @Column()
-    createdAt: string;
+  @Column()
+  createdAt: string;
 
-    @Column()
-    countParking: number;
+  @Column()
+  countParking: number;
 
-    @Column()
-    latitude: string;
+  @Column()
+  latitude: string;
 
-    @Column()
-    longitude: string;
+  @Column()
+  longitude: string;
 
-    @Column()
-    published: boolean;
+  @Column()
+  published: boolean;
 
-    @Column()
-    parkingName: string;
+  @Column()
+  parkingName: string;
 
-    @Column()
-    calendar: string[];
+  @Column()
+  calendar: string[];
 
-    @Column()
-    priceHours: string;
+  @Column()
+  priceHours: string;
 
-    @Column()
-    pictures: string[];
+  @Column()
+  pictures: string[];
 
-    @Column()
-    mainPicture: string;
+  @Column()
+  mainPicture: string;
 
-    @Column()
-    isAvailable: boolean;
+  @Column()
+  isAvailable: boolean;
 
-    @Column()
-    sector: string;
-    
-    @Column()
-    direction: string;
+  @Column()
+  sector: string;
 
-    @Column()
-    information: string;
+  @Column()
+  direction: string;
 
-    @Column()
-    features: string[];
+  @Column()
+  information: string;
 
-    @Column()
-    verified: boolean;
+  @Column()
+  features: string[];
 
-    @Column()
-    userInformation: string;
+  @Column()
+  verified: boolean;
 
+  @Column()
+  userInformation: string;
 }

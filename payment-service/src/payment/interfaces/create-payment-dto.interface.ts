@@ -1,7 +1,4 @@
-export interface ICreatePaymentDto {
-  cardHolder: string;
-  expirationDate: string;
-  card: string;
-  digit: string;
-  cvv: string;
+interface ICreatePaymentDto {
+  userInformationPayload: IUserInformationPayload;
+  createPaymentPayload: ICreatePaymentPayload;
 }

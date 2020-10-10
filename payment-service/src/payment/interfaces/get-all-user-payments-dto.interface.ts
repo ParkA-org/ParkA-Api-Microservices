@@ -1,0 +1,3 @@
+interface IGetAllUserPaymentsDto {
+  userInformation: string;
+}

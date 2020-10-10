@@ -4,6 +4,7 @@ import { ParkingResolver } from './parking.resolver';
 import { ParkingService } from './parking.service';
 
 @Module({
+  exports: [ParkingService],
   imports: [FeatureModule],
   providers: [ParkingService, ParkingResolver],
 })

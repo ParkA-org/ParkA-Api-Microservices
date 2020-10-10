@@ -1,3 +1,3 @@
-export interface IGetCardDto {
+interface IGetCardDto {
   id: string;
 }

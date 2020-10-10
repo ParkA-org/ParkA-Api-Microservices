@@ -1,4 +1,4 @@
-export interface IValidateEmailCodeDto {
+interface IValidateEmailCodeDto {
   email?: string;
   code: string;
   origin: string;

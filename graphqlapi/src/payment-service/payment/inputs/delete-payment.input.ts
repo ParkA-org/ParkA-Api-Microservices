@@ -1,8 +1,9 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { IDeletePaymentInput } from '../interfaces/delete-payment-input.interface';
+import { IsUUID } from 'class-validator';
 
 @InputType()
 export class DeletePaymentInput implements IDeletePaymentInput {
   @Field()
+  @IsUUID('4')
   id: string;
 }

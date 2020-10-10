@@ -1,13 +1,11 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { IsUUID, MaxLength, MinLength } from 'class-validator';
 import { UserInformationType } from 'src/core-service/user-information/types/user-information.type';
 import { FeatureType } from 'src/parking-service/feature/types/feature.type';
 import { IParkingType } from '../interfaces/parking-type.interface';
 
-@ObjectType()
+@ObjectType('Parking')
 export class ParkingType implements IParkingType {
   @Field(type => ID)
-  @IsUUID('4')
   id: string;
 
   @Field()
@@ -23,8 +21,6 @@ export class ParkingType implements IParkingType {
   published: boolean;
 
   @Field()
-  @MinLength(2)
-  @MaxLength(50)
   parkingName: string;
 
   @Field(type => [String])
@@ -58,6 +54,5 @@ export class ParkingType implements IParkingType {
   verified: boolean;
 
   @Field(type => UserInformationType)
-  @IsUUID('4')
   userInformation: string;
 }

@@ -1,3 +1,3 @@
-export interface ICreatureFeatureDto {
-    name: string;
+interface ICreatureFeatureDto {
+  name: string;
 }

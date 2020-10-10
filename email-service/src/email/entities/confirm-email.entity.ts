@@ -1,6 +1,4 @@
 import { Column, Entity, ObjectIdColumn, PrimaryColumn, Unique } from 'typeorm';
-import { IBaseEntity } from '../interfaces/base-entity.interface';
-import { IConfirmEmail } from '../interfaces/confirm-email-entity.interface';
 
 @Entity()
 @Unique(['email'])

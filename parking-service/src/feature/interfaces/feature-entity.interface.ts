@@ -1,3 +1,3 @@
-export interface IFeature {
-    name: string;
+interface IFeature {
+  name: string;
 }

@@ -8,6 +8,7 @@ import { Payment } from './entities/payment.entity';
 import { v4 as uuid } from 'uuid';
 import * as bcrypt from 'bcryptjs';
 import { DeletePaymentDto } from './dtos/delete-payment.dto';
+import { GetAllUserPaymentsDto } from './dtos/get-all-user-payments.dto';
 @Injectable()
 export class PaymentService {
   private logger = new Logger('PaymentService');
@@ -34,6 +35,12 @@ export class PaymentService {
     return result;
   }
 
+  public async getAllUserPayments(
+    getAllUserPaymentsDto: GetAllUserPaymentsDto,
+  ): Promise<Payment[]> {
+    return this.paymentRepository.find(getAllUserPaymentsDto);
+  }
+
   public async createPayment(
     createPaymentDto: CreatePaymentDto,
   ): Promise<Payment> {
@@ -43,7 +50,15 @@ export class PaymentService {
       )}`,
     );
 
-    const { card, cardHolder, cvv, digit, expirationDate } = createPaymentDto;
+    const { createPaymentPayload, userInformationPayload } = createPaymentDto;
+    const {
+      card,
+      cardHolder,
+      cvv,
+      digit,
+      expirationDate,
+    } = createPaymentPayload;
+    const { userInformation } = userInformationPayload;
 
     const salt = await bcrypt.genSalt();
     const result = await this.hashCVV(cvv, salt);
@@ -52,6 +67,7 @@ export class PaymentService {
       const payment = this.paymentRepository.create({
         id: uuid(),
         cardHolder,
+        userInformation,
         expirationDate,
         digit,
         card,

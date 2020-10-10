@@ -1,6 +1,6 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 
-@ObjectType()
+@ObjectType('Color')
 export class ColorType implements IColorType {
   @Field(type => ID)
   id: string;

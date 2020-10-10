@@ -3,7 +3,7 @@ import { IsUUID } from 'class-validator';
 
 @InputType('getMakeByIdInput')
 export class GetMakeByIdInput implements IGetMakeByIdInput {
-  @IsUUID('4')
   @Field()
+  @IsUUID('4')
   id: string;
 }

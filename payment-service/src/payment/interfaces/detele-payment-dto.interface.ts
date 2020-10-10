@@ -1,5 +1,3 @@
-import { IsUUID } from 'class-validator';
-
-export interface IDeletePaymentDto {
+interface IDeletePaymentDto {
   id: string;
 }

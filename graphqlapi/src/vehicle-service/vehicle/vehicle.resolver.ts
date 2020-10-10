@@ -40,8 +40,8 @@ export class VehicleResolver {
     private vehicleTypeService: BodyStyleService,
   ) {}
 
-  @Query(returns => VehicleType)
   @UseGuards(AuthGuard)
+  @Query(returns => VehicleType)
   public async getVehicleById(
     @Args('getVehicleByIdInput')
     getVehicleByIdInput: GetVehicleByIdInput,
@@ -55,8 +55,8 @@ export class VehicleResolver {
     return this.vehicleService.getVehicleById(getVehicleByIdInput);
   }
 
-  @Query(returns => [VehicleType])
   @UseGuards(AuthGuard)
+  @Query(returns => [VehicleType])
   public async getAllUserVehicles(
     @Context('user') user: JWTpayload,
   ): Promise<VehicleType[]> {
@@ -71,8 +71,8 @@ export class VehicleResolver {
     );
   }
 
-  @Mutation(of => VehicleType)
   @UseGuards(AuthGuard)
+  @Mutation(of => VehicleType)
   public async createVehicle(
     @Args('createVehicleInput') createVehicleInput: CreateVehicleInput,
     @Context('user') user: JWTpayload,
@@ -93,8 +93,8 @@ export class VehicleResolver {
     return this.vehicleService.createVehicle(createVehicleInternalInput);
   }
 
-  @Mutation(of => VehicleType)
   @UseGuards(AuthGuard)
+  @Mutation(of => VehicleType)
   public async updateVehicle(
     @Args('updateVehicleInput') updateVehicleInput: UpdateVehicleInput,
     @Context('user') user: JWTpayload,

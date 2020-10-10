@@ -1,4 +1,4 @@
-import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Credential } from './entities/credential.entity';
@@ -13,7 +13,6 @@ import { LoginType } from './login-class/login';
 import { exception } from 'console';
 import * as jwt from 'jsonwebtoken';
 import { ConfigService } from '@nestjs/config';
-import { verify } from 'crypto';
 import { UpdateUserPasswordDto } from './dtos/update-user-password.dto';
 @Injectable()
 export class AuthService {
@@ -115,6 +114,7 @@ export class AuthService {
       profilePicture,
       password,
       origin,
+      userInformation,
     } = createUserDto;
 
     const date = new Date();
@@ -142,6 +142,7 @@ export class AuthService {
         lastName,
         email,
         profilePicture,
+        userInformation,
         createdAt: date.toISOString(),
         updatedAt: date.toISOString(),
         confirmed: false,
@@ -202,22 +203,26 @@ export class AuthService {
         email: email,
       });
 
-      const result = new LoginType();
-
-      if (await user) {
+      if (user) {
         const hash = await this.hashPassword(password, credential.salt);
+
         if (hash === credential.password) {
-          result.user = user;
-          result.JWT = await this.createToken(
+          const JWT = await this.createToken(
             user.id,
             user.email,
             user.userInformation,
           );
+
+          const result = {
+            user,
+            JWT,
+          };
+
           return result;
         }
       }
     } catch {
-      throw new exception('Invalid Credentials');
+      throw new RpcException('Invalid Credentials');
     }
   }
 }

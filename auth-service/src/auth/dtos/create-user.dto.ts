@@ -1,5 +1,11 @@
-import { IsEmail, IsOptional, MaxLength, MinLength } from 'class-validator';
-import { ICreateUserDto } from '../interfaces/create-user-dto.interface';
+import {
+  IsEmail,
+  IsUrl,
+  IsUUID,
+  MaxLength,
+  MinLength,
+  ValidateIf,
+} from 'class-validator';
 
 export class CreateUserDto implements ICreateUserDto {
   @MinLength(2)
@@ -13,8 +19,12 @@ export class CreateUserDto implements ICreateUserDto {
   @IsEmail()
   email: string;
 
-  @IsOptional()
+  @ValidateIf((input: CreateUserDto) => input.profilePicture !== undefined)
+  @IsUrl()
   profilePicture: string;
+
+  @IsUUID('4')
+  userInformation: string;
 
   @MinLength(8)
   password: string;

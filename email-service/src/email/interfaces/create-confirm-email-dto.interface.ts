@@ -1,4 +1,4 @@
-export interface ICreateConfirmEmailDto {
+interface ICreateConfirmEmailDto {
   email: string;
 
   origin: string;

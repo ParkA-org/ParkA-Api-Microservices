@@ -17,7 +17,7 @@ import { UpdateParkingInput } from './inputs/update-parking.input';
 import { ParkingService } from './parking.service';
 import { ParkingType } from './types/parking.type';
 
-@Resolver(of => 'ParkingType')
+@Resolver(of => ParkingType)
 export class ParkingResolver {
   constructor(
     private parkingService: ParkingService,
@@ -25,24 +25,30 @@ export class ParkingResolver {
   ) {}
 
   @Query(returns => ParkingType)
-  getParkingById(@Args('id') id: string) {
+  public async getParkingById(@Args('id') id: string): Promise<ParkingType> {
     return this.parkingService.getParkingById(id);
   }
 
   @Query(returns => [ParkingType])
   @UseGuards(AuthGuard)
-  getAllMyParkings(@Context('user') user: JWTpayload) {
-    return this.parkingService.getAllMyParkings(user);
+  public async getAllUserParkings(@Context('user') user: JWTpayload) {
+    const getAllUserParkingsInternalInput = {
+      userInformationId: user.userInformation,
+    };
+
+    return this.parkingService.getAllUserParkings(
+      getAllUserParkingsInternalInput,
+    );
   }
 
   @Query(returns => [ParkingType])
-  getAllParkings() {
+  public async getAllParkings() {
     return this.parkingService.getAllParkings();
   }
 
   @Mutation(returns => ParkingType)
   @UseGuards(AuthGuard)
-  async updateParking(
+  public async updateParking(
     @Args('updateParkingInput')
     updateParkingInput: UpdateParkingInput,
     @Context('user') user: JWTpayload,
@@ -56,7 +62,7 @@ export class ParkingResolver {
 
   @Mutation(returns => ParkingType)
   @UseGuards(AuthGuard)
-  async createParking(
+  public async createParking(
     @Args('createParkingInput')
     createParkingInput: CreateParkingInput,
     @Context('user') user: JWTpayload,
@@ -68,6 +74,7 @@ export class ParkingResolver {
     return createParking;
   }
 
+  //Resolvers
   @ResolveField(returns => [FeatureType])
   public async features(
     @Parent() parking: ParkingType,

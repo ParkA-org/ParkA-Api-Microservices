@@ -7,6 +7,7 @@ import { VehicleResolver } from './vehicle.resolver';
 import { VehicleService } from './vehicle.service';
 
 @Module({
+  exports: [VehicleService],
   imports: [BodyStyleModule, ModelModule, MakeModule, ColorModule],
   providers: [VehicleResolver, VehicleService],
 })

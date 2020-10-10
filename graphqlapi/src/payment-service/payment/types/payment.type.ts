@@ -1,7 +1,5 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { CardType } from 'src/payment-service/card/types/card.type';
-import { IBaseType } from '../interfaces/base-type.interface';
-import { IPaymentType } from '../interfaces/payment-type.interface';
 
 @ObjectType('Payment')
 export class PaymentType implements IPaymentType, IBaseType {

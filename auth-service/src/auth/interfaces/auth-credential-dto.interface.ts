@@ -1,4 +1,4 @@
-export interface ICreateAuthCredentialDto {
+interface ICreateAuthCredentialDto {
   email: string;
   password: string;
 }

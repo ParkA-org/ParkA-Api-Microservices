@@ -1,3 +1,3 @@
-export interface ICard {
+interface ICard {
   name: string;
 }

@@ -5,7 +5,7 @@ import {
   Transport,
 } from '@nestjs/microservices';
 import { UpdateUserInput } from './inputs/update-user.input';
-import { CreateUserInput } from './inputs/user.input';
+import { CreateUserInput } from './inputs/create-user.input';
 import { LoginUserInput } from './inputs/login-user.input';
 import { LoginType } from './types/login.type';
 import { UserType } from './types/user.type';

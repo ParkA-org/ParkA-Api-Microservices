@@ -1,5 +1,6 @@
-import { Logger } from '@nestjs/common';
+import { Logger, UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { AuthGuard } from 'src/auth-service/strategy/auth.guard';
 import { CountryService } from './country.service';
 import { CreateCountryInput } from './inputs/create-country.input';
 import { GetCountryByIdInput } from './inputs/get-country-by-id.input';
@@ -34,6 +35,7 @@ export class CountryResolver {
   }
 
   @Mutation(of => CountryType)
+  @UseGuards(AuthGuard)
   public async createCountry(
     @Args('createCountryInput')
     createCountryInput: CreateCountryInput,
@@ -48,6 +50,7 @@ export class CountryResolver {
   }
 
   @Mutation(of => CountryType)
+  @UseGuards(AuthGuard)
   public async updateCountry(
     @Args('updateCountryInput')
     updateCountryInput: UpdateCountryInput,

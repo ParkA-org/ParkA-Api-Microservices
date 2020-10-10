@@ -121,10 +121,12 @@ export class ParkingService {
   public async getAllMyParkings(
     getAllMyParkingsDto: GetAllMyParkingsDto,
   ): Promise<Parking[]> {
-    const { userInformation } = getAllMyParkingsDto;
+    const { userInformationId } = getAllMyParkingsDto;
+
     this.logger.debug(`Received get all my parkings`);
+
     return await this.parkingRepository.find({
-      userInformation: userInformation,
+      userInformation: userInformationId,
     });
   }
 }
