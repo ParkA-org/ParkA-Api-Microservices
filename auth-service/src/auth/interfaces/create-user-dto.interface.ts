@@ -5,7 +5,9 @@ interface ICreateUserDto {
 
   email: string;
 
-  profilePicture?: string;
+  profilePicture: string;
+
+  userInformation: string;
 
   password: string;
 

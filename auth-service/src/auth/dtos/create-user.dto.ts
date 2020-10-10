@@ -1,6 +1,7 @@
 import {
   IsEmail,
   IsUrl,
+  IsUUID,
   MaxLength,
   MinLength,
   ValidateIf,
@@ -21,6 +22,9 @@ export class CreateUserDto implements ICreateUserDto {
   @ValidateIf((input: CreateUserDto) => input.profilePicture !== undefined)
   @IsUrl()
   profilePicture: string;
+
+  @IsUUID('4')
+  userInformation: string;
 
   @MinLength(8)
   password: string;

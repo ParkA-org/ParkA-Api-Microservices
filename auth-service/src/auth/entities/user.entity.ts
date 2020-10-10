@@ -28,7 +28,7 @@ export class User implements IUser, IBaseEntity {
   createdAt: string;
 
   @Column()
-  userInformation?: string;
+  userInformation: string;
 
   @Column()
   credential: string;

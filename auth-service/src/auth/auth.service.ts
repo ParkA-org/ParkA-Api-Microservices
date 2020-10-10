@@ -114,6 +114,7 @@ export class AuthService {
       profilePicture,
       password,
       origin,
+      userInformation,
     } = createUserDto;
 
     const date = new Date();
@@ -141,6 +142,7 @@ export class AuthService {
         lastName,
         email,
         profilePicture,
+        userInformation,
         createdAt: date.toISOString(),
         updatedAt: date.toISOString(),
         confirmed: false,

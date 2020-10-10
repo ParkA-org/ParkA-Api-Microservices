@@ -7,7 +7,9 @@ export interface IUserInput {
 
   origin: string;
 
-  profilePicture?: string;
+  userInformation: string;
+
+  profilePicture: string;
 
   password: string;
 }
