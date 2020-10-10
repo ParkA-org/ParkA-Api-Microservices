@@ -1,4 +1,4 @@
-export interface IPaymentType {
+interface IPaymentType {
   cardHolder: string;
   expirationDate: string;
   digit: string;

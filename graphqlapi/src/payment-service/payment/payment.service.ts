@@ -6,6 +6,7 @@ import {
 } from '@nestjs/microservices';
 import { CreatePaymentInput } from './inputs/create-payment.input';
 import { DeletePaymentInput } from './inputs/delete-payment.input';
+import { GetAllUserPaymentInternalIpunt } from './inputs/get-all-user-payments-internal.input';
 import { GetPaymentByIdInput } from './inputs/get-payment-by-id.input';
 import { PaymentType } from './types/payment.type';
 
@@ -48,6 +49,16 @@ export class PaymentService {
     const response = await this.client.send<PaymentType>(
       { type: 'get-payment' },
       getPaymentByIdInput,
+    );
+    return response.toPromise();
+  }
+
+  public async getAllUserPayments(
+    getAllUserPaymentInternalIpunt: GetAllUserPaymentInternalIpunt,
+  ): Promise<PaymentType[]> {
+    const response = await this.client.send<PaymentType[]>(
+      { type: 'get-all-user-payments' },
+      getAllUserPaymentInternalIpunt,
     );
     return response.toPromise();
   }

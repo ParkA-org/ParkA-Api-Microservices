@@ -10,6 +10,9 @@ export class Payment implements IPayment, IBaseEntity {
   _id: string;
 
   @Column()
+  userInformation: string;
+
+  @Column()
   cardHolder: string;
 
   @Column()

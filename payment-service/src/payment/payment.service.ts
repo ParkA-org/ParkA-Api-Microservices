@@ -8,6 +8,7 @@ import { Payment } from './entities/payment.entity';
 import { v4 as uuid } from 'uuid';
 import * as bcrypt from 'bcryptjs';
 import { DeletePaymentDto } from './dtos/delete-payment.dto';
+import { GetAllUserPaymentsDto } from './dtos/get-all-user-payments.dto';
 @Injectable()
 export class PaymentService {
   private logger = new Logger('PaymentService');
@@ -32,6 +33,12 @@ export class PaymentService {
     }
 
     return result;
+  }
+
+  public async getAllUserPayments(
+    getAllUserPaymentsDto: GetAllUserPaymentsDto,
+  ): Promise<Payment[]> {
+    return this.paymentRepository.find(getAllUserPaymentsDto);
   }
 
   public async createPayment(

@@ -10,8 +10,8 @@ export class UserInformationType implements IUserInformationType {
   @Field()
   id: string;
 
-  @Field(type => PaymentType)
-  paymentInformation: string;
+  @Field(type => [PaymentType])
+  paymentInformation: string[];
 
   @Field()
   documentNumber: string;

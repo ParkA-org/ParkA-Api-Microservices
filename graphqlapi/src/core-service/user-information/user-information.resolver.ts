@@ -98,12 +98,12 @@ export class UserInformationResolver {
   }
 
   //Field resolvers
-  @ResolveField(returns => PaymentType)
+  @ResolveField(returns => [PaymentType])
   public async paymentInformation(
     @Parent() userInformation: UserInformationType,
-  ): Promise<PaymentType> {
-    return this.paymentService.getPaymentById({
-      id: userInformation.paymentInformation,
+  ): Promise<PaymentType[]> {
+    return this.paymentService.getAllUserPayments({
+      userInformation: userInformation.id,
     });
   }
 

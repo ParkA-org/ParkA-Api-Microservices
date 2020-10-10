@@ -1,7 +1,7 @@
 interface IUserInformationType {
   id: string;
 
-  paymentInformation: string;
+  paymentInformation: string[];
 
   documentNumber: string;
 
