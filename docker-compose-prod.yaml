@@ -84,3 +84,21 @@ services:
     image: redis
     ports:
       - "6379:6379"
+
+  nginx-parka-microservices-proxy-server:
+    container_name: "nginx-parka-microservices-proxy-server"
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    restart: "always"
+    depends_on:
+      - graphql-api
+      - auth-service
+      - vehicle-service
+      - email-service
+      - core-service
+      - payment-service
+      - parking-service
+    ports:
+      - "80:80"
+      - "443:443"
