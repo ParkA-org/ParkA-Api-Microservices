@@ -1,0 +1,104 @@
+version: "3"
+
+services:
+  graphql-api:
+    container_name: "api-gateway"
+    restart: "always"
+    build:
+      context: ./graphqlapi
+      dockerfile: Dockerfile.prod
+    external_links:
+      - redis
+    ports:
+      - "3000:3000"
+
+  auth-service:
+    container_name: "auth-service"
+    restart: "always"
+    build:
+      context: ./auth-service
+      dockerfile: Dockerfile.prod
+    external_links:
+      - redis
+    ports:
+      - "3001:3000"
+
+  vehicle-service:
+    container_name: "vehicle-service"
+    restart: "always"
+    build:
+      context: ./vehicle-service
+      dockerfile: Dockerfile.prod
+    external_links:
+      - redis
+    ports:
+      - "3002:3000"
+
+  email-service:
+    container_name: "email-service"
+    restart: "always"
+    build:
+      context: ./email-service
+      dockerfile: Dockerfile.prod
+    external_links:
+      - redis
+    ports:
+      - "3003:3000"
+
+  core-service:
+    container_name: "core-service"
+    restart: "always"
+    build:
+      context: ./core-service
+      dockerfile: Dockerfile.prod
+    external_links:
+      - redis
+    ports:
+      - "3004:3000"
+
+  payment-service:
+    container_name: "payment-service"
+    restart: "always"
+    build:
+      context: ./payment-service
+      dockerfile: Dockerfile.prod
+    external_links:
+      - redis
+    ports:
+      - "3005:3000"
+
+  parking-service:
+    container_name: "parking-service"
+    restart: "always"
+    build:
+      context: ./parking-service
+      dockerfile: Dockerfile.prod
+    external_links:
+      - redis
+    ports:
+      - "3007:3000"
+
+  redis-parka-microservices:
+    container_name: "redis-parka-microservices"
+    restart: "always"
+    image: redis
+    ports:
+      - "6379:6379"
+
+  nginx-parka-microservices-proxy-server:
+    container_name: "nginx-parka-microservices-proxy-server"
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    restart: "always"
+    depends_on:
+      - graphql-api
+      - auth-service
+      - vehicle-service
+      - email-service
+      - core-service
+      - payment-service
+      - parking-service
+    ports:
+      - "80:80"
+      - "443:443"
