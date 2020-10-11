@@ -1,4 +1,4 @@
-export interface IUser {
+interface IUser {
   _id: string;
 
   id: string;
@@ -11,7 +11,7 @@ export interface IUser {
 
   profilePicture?: string;
 
-  accountData?: string;
+  userInformation?: string;
 
   credential: string;
 

@@ -1,4 +1,4 @@
-export interface IBodyStyleType {
+interface IBodyStyleType {
   id: string;
   name: string;
 }

@@ -1,0 +1,104 @@
+import { Injectable, Logger } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { CreateUserInformationDto } from './dtos/create-user-information.dto';
+import { GetUserInformationByIdDto } from './dtos/get-user-information-by-id.dto';
+import { UserInformation } from './entities/user-information.entities';
+import { v4 as uuid } from 'uuid';
+import { UpdateUserInformationDto } from './dtos/update-user-information.dto';
+import { RpcException } from '@nestjs/microservices';
+@Injectable()
+export class UserInformationService {
+  private logger = new Logger('UserInformationService');
+
+  constructor(
+    @InjectRepository(UserInformation)
+    private userInformationRepository: Repository<UserInformation>,
+  ) {}
+
+  public async getUserInformationById(
+    getUserInformationByIdDto: GetUserInformationByIdDto,
+  ): Promise<UserInformation> {
+    this.logger.debug(
+      `Received get user information by id with payload ${JSON.stringify(
+        getUserInformationByIdDto,
+      )}`,
+    );
+
+    const result = await this.userInformationRepository.findOne(
+      getUserInformationByIdDto,
+    );
+
+    if (!result) {
+      throw new RpcException('Entry not found');
+    }
+
+    return result;
+  }
+
+  public async createUserInformation(
+    createUserInformationDto: CreateUserInformationDto,
+  ): Promise<UserInformation> {
+    this.logger.debug(
+      `Received create user information with payload ${JSON.stringify(
+        createUserInformationDto,
+      )}`,
+    );
+
+    const {
+      birthDate,
+      documentNumber,
+      nationality,
+      parkings,
+      paymentInformation,
+      placeOfBirth,
+      telephoneNumber,
+      vehicles,
+    } = createUserInformationDto;
+
+    const userInformation = this.userInformationRepository.create({
+      id: uuid(),
+      birthDate,
+      documentNumber,
+      nationality,
+      parkings,
+      paymentInformation,
+      placeOfBirth,
+      telephoneNumber,
+      vehicles,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    });
+
+    return await this.userInformationRepository.save(userInformation);
+  }
+
+  public async updateUserInformation(
+    updateUserInformationDto: UpdateUserInformationDto,
+  ): Promise<UserInformation> {
+    this.logger.debug(
+      `Received update user information with payload ${JSON.stringify(
+        updateUserInformationDto,
+      )}`,
+    );
+
+    const {
+      getUserInformationByIdPayload: getUserInformationByIdDto,
+      updateUserInformationPayload: updateUserInformationPayloadDto,
+    } = updateUserInformationDto;
+
+    const userInformation = await this.getUserInformationById(
+      getUserInformationByIdDto,
+    );
+
+    const updateFieldList = Object.keys(updateUserInformationPayloadDto);
+
+    for (const field of updateFieldList) {
+      userInformation[field] = updateUserInformationPayloadDto[field];
+    }
+
+    userInformation.updatedAt = new Date().toISOString();
+
+    return await this.userInformationRepository.save(userInformation);
+  }
+}

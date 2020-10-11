@@ -1,11 +1,13 @@
-export interface ICreateUserDto {
+interface ICreateUserDto {
   name: string;
 
   lastName: string;
 
   email: string;
 
-  profilePicture?: string;
+  profilePicture: string;
+
+  userInformation: string;
 
   password: string;
 

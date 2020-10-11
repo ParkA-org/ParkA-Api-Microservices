@@ -1,4 +1,4 @@
-export interface IUpdateCarMakeModelListDto {
+interface IUpdateCarMakeModelListDto {
   makeId: string;
   modelId: string;
 }

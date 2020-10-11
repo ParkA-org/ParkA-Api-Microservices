@@ -1,0 +1,3 @@
+interface IGetPaymentByIdInput {
+  id: string;
+}

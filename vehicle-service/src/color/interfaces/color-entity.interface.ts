@@ -1,4 +1,4 @@
-export interface IColor {
+interface IColor {
   _id: string;
   id: string;
   name: string;

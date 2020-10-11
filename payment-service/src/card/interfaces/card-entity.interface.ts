@@ -1,0 +1,3 @@
+interface ICard {
+  name: string;
+}

@@ -1,0 +1,3 @@
+interface IGetAllMyParkingsDto {
+  userInformationId: string;
+}

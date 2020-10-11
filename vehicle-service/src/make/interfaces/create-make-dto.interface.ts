@@ -1,4 +1,4 @@
-export interface ICreateMakeDto {
+interface ICreateMakeDto {
   name: string;
   icon: string;
   models: string[];

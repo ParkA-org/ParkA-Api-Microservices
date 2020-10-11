@@ -53,9 +53,48 @@ services:
     volumes:
       - ./email-service:/usr/src/app
 
+  core-service:
+    container_name: "core-service"
+    restart: "always"
+    build:
+      context: ./core-service
+      dockerfile: Dockerfile
+    external_links:
+      - redis
+    ports:
+      - "3004:3000"
+    volumes:
+      - ./core-service:/usr/src/app
+
   redis-parka-microservices:
     container_name: "redis-parka-microservices"
     restart: "always"
     image: redis
     ports:
       - "6379:6379"
+
+  payment-service:
+    container_name: "payment-service"
+    restart: "always"
+    build:
+      context: ./payment-service
+      dockerfile: Dockerfile
+    external_links:
+      - redis
+    ports:
+      - "3005:3000"
+    volumes:
+      - ./payment-service:/usr/src/app
+
+  parking-service:
+    container_name: "parking-service"
+    restart: "always"
+    build:
+      context: ./parking-service
+      dockerfile: Dockerfile
+    external_links:
+      - redis
+    ports:
+      - "3007:3000"
+    volumes:
+      - ./parking-service:/usr/src/app

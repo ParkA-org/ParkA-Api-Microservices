@@ -1,20 +1,19 @@
-import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Credential } from './entities/credential.entity';
-import { CreateUserDto } from './auth-dto/create-user.dto';
+import { CreateUserDto } from './dtos/create-user.dto';
 import { User } from './entities/user.entity';
 import { v4 as uuid } from 'uuid';
 import { RpcException } from '@nestjs/microservices';
-import { UpdateUserDto } from './auth-dto/update-user.dto';
-import { AuthCredentialsDto } from './auth-dto/auth-credential.dto';
+import { UpdateUserDto } from './dtos/update-user.dto';
+import { AuthCredentialsDto } from './dtos/auth-credential.dto';
 import * as bcrypt from 'bcryptjs';
 import { LoginType } from './login-class/login';
 import { exception } from 'console';
 import * as jwt from 'jsonwebtoken';
 import { ConfigService } from '@nestjs/config';
-import { verify } from 'crypto';
-import { UpdateUserPasswordDto } from './auth-dto/update-user-password.dto';
+import { UpdateUserPasswordDto } from './dtos/update-user-password.dto';
 @Injectable()
 export class AuthService {
   private logger = new Logger('AuthService');
@@ -58,18 +57,14 @@ export class AuthService {
   public async updateUserPassword(
     updateUserPasswordDto: UpdateUserPasswordDto,
   ): Promise<User> {
-    this.logger.debug(
-      `Received update user password payload ${JSON.stringify(
-        updateUserPasswordDto,
-      )}`,
-    );
-
     const { oldPassword, newPassword, email } = updateUserPasswordDto;
     email.toLowerCase();
 
     try {
-      const credential = await this.credentialRepository.findOne({ email });
-      const user = await this.authRepository.findOne({ email });
+      const credential = await this.credentialRepository.findOne({
+        email: email,
+      });
+      const user = await this.authRepository.findOne({ email: email });
 
       if (await this.verifyPassword(oldPassword, credential)) {
         const credential_tmp = await this.updateCredential(
@@ -112,9 +107,6 @@ export class AuthService {
   }
   // Is Inprogress
   public async createUser(createUserDto: CreateUserDto): Promise<User> {
-    this.logger.debug(
-      `Received create user payload ${JSON.stringify(createUserDto)}`,
-    );
     const {
       name,
       email,
@@ -122,6 +114,7 @@ export class AuthService {
       profilePicture,
       password,
       origin,
+      userInformation,
     } = createUserDto;
 
     const date = new Date();
@@ -149,6 +142,7 @@ export class AuthService {
         lastName,
         email,
         profilePicture,
+        userInformation,
         createdAt: date.toISOString(),
         updatedAt: date.toISOString(),
         confirmed: false,
@@ -173,13 +167,13 @@ export class AuthService {
       const user = this.authRepository.find();
       return await user;
     } catch (error) {
-      this.logger.debug(error);
+      new RpcException('Users not found');
     }
   }
 
-  private createToken(email: string, id: string) {
+  private createToken(id: string, email: string, userInformation: string) {
     return jwt.sign(
-      { email: email, id: id },
+      { id: id, email: email, userInformation: userInformation },
       this.configService.get('JWT_SECRET'),
       {
         expiresIn: '100d',
@@ -199,30 +193,36 @@ export class AuthService {
   public async signIn(
     authCredentialDto: AuthCredentialsDto,
   ): Promise<LoginType> {
-    this.logger.debug(
-      `Received Login user payload ${JSON.stringify(authCredentialDto)}`,
-    );
-
     try {
       const { email, password } = authCredentialDto;
 
       email.toLowerCase();
-      const user = await this.authRepository.findOne({ email });
+      const user = await this.authRepository.findOne({ email: email });
 
-      const credential = await this.credentialRepository.findOne({ email });
+      const credential = await this.credentialRepository.findOne({
+        email: email,
+      });
 
-      const result = new LoginType();
-
-      if (await user) {
+      if (user) {
         const hash = await this.hashPassword(password, credential.salt);
+
         if (hash === credential.password) {
-          result.user = user;
-          result.JWT = await this.createToken(user.id, user.email);
+          const JWT = await this.createToken(
+            user.id,
+            user.email,
+            user.userInformation,
+          );
+
+          const result = {
+            user,
+            JWT,
+          };
+
           return result;
         }
       }
     } catch {
-      throw new exception('Invalid Credentials');
+      throw new RpcException('Invalid Credentials');
     }
   }
 }

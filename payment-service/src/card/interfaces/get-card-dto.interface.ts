@@ -1,0 +1,3 @@
+interface IGetCardDto {
+  id: string;
+}

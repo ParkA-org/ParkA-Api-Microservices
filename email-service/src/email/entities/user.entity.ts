@@ -1,6 +1,4 @@
 import { Column, Entity, ObjectIdColumn, PrimaryColumn, Unique } from 'typeorm';
-import { IBaseEntity } from '../interfaces/base-entity.interface';
-import { IUser } from '../interfaces/user-entity.interface';
 
 @Entity()
 @Unique(['email'])

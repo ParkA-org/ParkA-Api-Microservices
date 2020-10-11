@@ -1,6 +1,4 @@
-import { IBaseEntity } from 'src/make/interfaces/base-entity.interface';
 import { Column, Entity, ObjectIdColumn, PrimaryColumn, Unique } from 'typeorm';
-import { IColor } from '../interfaces/color-entity.interface';
 
 @Entity()
 @Unique(['name'])

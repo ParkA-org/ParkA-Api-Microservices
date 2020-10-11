@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateConfirmEmailDto } from './dto/create-confirm-email.dto';
+import { CreateConfirmEmailDto } from './dtos/create-confirm-email.dto';
 import { ConfirmEmail } from './entities/confirm-email.entity';
 import { User } from './entities/user.entity';
 import { v4 as uuid } from 'uuid';
@@ -9,10 +9,10 @@ import * as bcrypt from 'bcryptjs';
 import { RpcException } from '@nestjs/microservices';
 import { sendEmail } from './utils/sendEmail';
 import { exception } from 'console';
-import { ValidateEmailCodeDto } from './dto/validate-email-code.dto';
-import { CreateResetPasswordDto } from './dto/create-reset-password.dto';
+import { ValidateEmailCodeDto } from './dtos/validate-email-code.dto';
+import { CreateResetPasswordDto } from './dtos/create-reset-password.dto';
 import { ResetPassword } from './entities/reset-password.entity';
-import { ValidateResetPasswordCodeDto } from './dto/validate-reset-password-code.dto';
+import { ValidateResetPasswordCodeDto } from './dtos/validate-reset-password-code.dto';
 import { Credential } from './entities/credential.entity';
 
 @Injectable()

@@ -1,6 +1,4 @@
 import { Column, Entity, ObjectIdColumn, PrimaryColumn } from 'typeorm';
-import { IBaseEntity } from '../interfaces/base-entity.interface';
-import { IMake } from '../interfaces/make-entity.interface';
 
 @Entity()
 export class Make implements IMake, IBaseEntity {

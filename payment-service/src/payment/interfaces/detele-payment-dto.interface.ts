@@ -1,0 +1,3 @@
+interface IDeletePaymentDto {
+  id: string;
+}

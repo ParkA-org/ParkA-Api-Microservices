@@ -1,4 +1,4 @@
-export interface IBaseEntity {
+interface IBaseEntity {
   createdAt: string;
   updatedAt: string;
 }

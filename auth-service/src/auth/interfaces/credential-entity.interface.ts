@@ -1,4 +1,4 @@
-export interface ICredential {
+interface ICredential {
   _id: string;
 
   id: string;

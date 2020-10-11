@@ -1,7 +1,6 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { IModelType } from '../interfaces/model-type.interface';
 
-@ObjectType()
+@ObjectType('Model')
 export class ModelType implements IModelType {
   @Field(type => ID)
   id: string;

@@ -1,6 +1,5 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { ModelType } from 'src/vehicle-service/model/types/model.type';
-import { IMakeType } from '../interfaces/make-type.interface';
 
 @ObjectType()
 export class MakeType implements IMakeType {
