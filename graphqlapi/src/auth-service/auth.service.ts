@@ -110,13 +110,4 @@ export class AuthService {
     );
     return response.toPromise();
   }
-
-  public async getUserByUserInformation(id: string): Promise<UserType> {
-    this.logger.log('Got UserInformationid data');
-    const response = this.client.send<UserType>(
-      { type: 'get-user-by-userInformation' },
-      id,
-    );
-    return response.toPromise();
-  }
 }

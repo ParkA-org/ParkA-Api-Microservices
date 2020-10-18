@@ -25,7 +25,6 @@ export class ParkingResolver {
   constructor(
     private parkingService: ParkingService,
     private featureService: FeatureService,
-    private userService: AuthService,
   ) {}
 
   @Query(returns => ParkingType)
@@ -88,7 +87,7 @@ export class ParkingResolver {
 
   @ResolveField(returns => [FeatureType])
   public async user(@Parent() parking: ParkingType): Promise<UserType> {
-    return await this.userService.getUserByUserInformation(
+    return await this.parkingService.getUserByUserInformation(
       parking.userInformation,
     );
   }
