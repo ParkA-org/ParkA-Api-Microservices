@@ -54,14 +54,6 @@ export class PaymentService {
     return response.toPromise();
   }
 
-  public async getAllPayments(user: JWTpayload): Promise<PaymentType> {
-    const response = await this.client.send<PaymentType>(
-      { type: 'get-all-user-payments' },
-      user.userInformation,
-    );
-    return response.toPromise();
-  }
-
   public async getAllUserPayments(
     getAllUserPaymentInternalInput: GetAllUserPaymentInternalInput,
   ): Promise<PaymentType[]> {

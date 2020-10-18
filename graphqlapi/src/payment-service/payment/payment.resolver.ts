@@ -16,6 +16,7 @@ import { CardType } from '../card/types/card.type';
 import { CreatePaymentInternalInput } from './inputs/create-payment-internal.input';
 import { CreatePaymentInput } from './inputs/create-payment.input';
 import { DeletePaymentInput } from './inputs/delete-payment.input';
+import { GetAllUserPaymentInternalInput } from './inputs/get-all-user-payments-internal.input';
 import { GetPaymentByIdInput } from './inputs/get-payment-by-id.input';
 import { PaymentService } from './payment.service';
 import { PaymentType } from './types/payment.type';
@@ -39,11 +40,13 @@ export class PaymentResolver {
     return this.paymentService.getPaymentById(getPaymentByIdInput);
   }
 
-  @Query(returns => PaymentType)
+  @Query(returns => [PaymentType])
   @UseGuards(AuthGuard)
   public async getAllPayments(@Context('user') user: JWTpayload) {
     this.logger.debug(`Received get all payments`);
-    return this.paymentService.getAllPayments(user);
+    const getAllUserPayment = new GetAllUserPaymentInternalInput();
+    getAllUserPayment.userInformation = user.userInformation;
+    return this.paymentService.getAllUserPayments(getAllUserPayment);
   }
 
   @UseGuards(AuthGuard)
