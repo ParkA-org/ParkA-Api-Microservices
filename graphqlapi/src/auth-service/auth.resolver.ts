@@ -3,7 +3,15 @@ import {
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
-import { Query, Resolver, Mutation, Args, Context } from '@nestjs/graphql';
+import {
+  Query,
+  Resolver,
+  Mutation,
+  Args,
+  Context,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
 import { AuthGuard } from './strategy/auth.guard';
 import { AuthService } from './auth.service';
 import { UpdateUserInput } from './inputs/update-user.input';
@@ -14,6 +22,7 @@ import { UserType } from './types/user.type';
 import { UpdateUserPasswordInput } from './inputs/update-user-password.input';
 import { ConfirmEmailInput } from 'src/email-service/inputs/confirm-email.input';
 import { JWTpayload } from './types/jwt.type';
+import { UserInformationType } from 'src/core-service/user-information/types/user-information.type';
 
 @Resolver(of => UserType)
 export class AuthResolver {
@@ -90,5 +99,13 @@ export class AuthResolver {
   @UseGuards(AuthGuard)
   async getLoggedUser(@Context('user') user: JWTpayload): Promise<UserType> {
     return await this.authService.getUserById(user.id);
+  }
+
+  @ResolveField(returns => UserInformationType)
+  public async userInformation(
+    @Parent() user: UserType,
+  ): Promise<UserInformationType> {
+    const { userInformation } = user;
+    return this.paymentCardService.getCardById(getPaymentCardByIdInput);
   }
 }
