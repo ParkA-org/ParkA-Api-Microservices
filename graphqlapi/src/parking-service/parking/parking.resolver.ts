@@ -8,8 +8,11 @@ import {
   ResolveField,
   Parent,
 } from '@nestjs/graphql';
+import { AuthService } from 'src/auth-service/auth.service';
 import { AuthGuard } from 'src/auth-service/strategy/auth.guard';
 import { JWTpayload } from 'src/auth-service/types/jwt.type';
+import { UserType } from 'src/auth-service/types/user.type';
+import { UserInformationService } from 'src/core-service/user-information/user-information.service';
 import { FeatureService } from '../feature/feature.service';
 import { FeatureType } from '../feature/types/feature.type';
 import { CreateParkingInput } from './inputs/create-parking.input';
@@ -22,6 +25,7 @@ export class ParkingResolver {
   constructor(
     private parkingService: ParkingService,
     private featureService: FeatureService,
+    private userService: AuthService,
   ) {}
 
   @Query(returns => ParkingType)
@@ -80,5 +84,12 @@ export class ParkingResolver {
     @Parent() parking: ParkingType,
   ): Promise<FeatureType[]> {
     return await this.featureService.getFeaturesByIds(parking.features);
+  }
+
+  @ResolveField(returns => [FeatureType])
+  public async user(@Parent() parking: ParkingType): Promise<UserType> {
+    return await this.userService.getUserByUserInformation(
+      parking.userInformation,
+    );
   }
 }
