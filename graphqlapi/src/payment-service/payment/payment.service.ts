@@ -4,6 +4,7 @@ import {
   ClientProxyFactory,
   Transport,
 } from '@nestjs/microservices';
+import { JWTpayload } from 'src/auth-service/types/jwt.type';
 import { CreatePaymentInternalInput } from './inputs/create-payment-internal.input';
 import { DeletePaymentInput } from './inputs/delete-payment.input';
 import { GetAllUserPaymentInternalIpunt } from './inputs/get-all-user-payments-internal.input';
@@ -49,6 +50,14 @@ export class PaymentService {
     const response = await this.client.send<PaymentType>(
       { type: 'get-payment' },
       getPaymentByIdInput,
+    );
+    return response.toPromise();
+  }
+
+  public async getAllPayments(user: JWTpayload): Promise<PaymentType> {
+    const response = await this.client.send<PaymentType>(
+      { type: 'get-all-payments' },
+      user.userInformation,
     );
     return response.toPromise();
   }
