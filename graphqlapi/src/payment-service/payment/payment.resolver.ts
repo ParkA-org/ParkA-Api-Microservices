@@ -42,7 +42,7 @@ export class PaymentResolver {
 
   @Query(returns => [PaymentType])
   @UseGuards(AuthGuard)
-  public async getAllPayments(@Context('user') user: JWTpayload) {
+  public async getAllUserPayments(@Context('user') user: JWTpayload) {
     this.logger.debug(`Received get all payments`);
     const getAllUserPayment = new GetAllUserPaymentInternalInput();
     getAllUserPayment.userInformation = user.userInformation;
