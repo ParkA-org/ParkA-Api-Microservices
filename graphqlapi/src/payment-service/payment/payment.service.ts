@@ -67,7 +67,7 @@ export class PaymentService {
   ): Promise<PaymentType[]> {
     const response = await this.client.send<PaymentType[]>(
       { type: 'get-all-user-payments' },
-      getAllUserPaymentInternalIpunt,
+      getAllUserPaymentInternalInput,
     );
     return response.toPromise();
   }
