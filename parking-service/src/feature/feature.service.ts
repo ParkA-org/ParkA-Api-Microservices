@@ -65,10 +65,9 @@ export class FeatureService {
     this.logger.debug(`Received get features by IDs`);
     try {
       const features = [];
-      ids.forEach(id => {
-        const feature = this.getFeatureById(id);
+      ids.forEach(async id => {
+        const feature = await this.getFeatureById(id);
         features.push(feature);
-        console.log(features);
       });
       return await features;
     } catch (error) {
