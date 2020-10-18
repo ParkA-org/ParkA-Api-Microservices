@@ -85,4 +85,10 @@ export class AuthResolver {
   ): Promise<UserType> {
     return await this.authService.updateUser(updateUserInput, user);
   }
+
+  @Mutation(returns => UserType)
+  @UseGuards(AuthGuard)
+  async getLoggedUser(@Context('user') user: JWTpayload): Promise<UserType> {
+    return await this.authService.getLoggedUser(user);
+  }
 }
