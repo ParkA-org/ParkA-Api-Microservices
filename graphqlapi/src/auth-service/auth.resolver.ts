@@ -23,10 +23,15 @@ import { UpdateUserPasswordInput } from './inputs/update-user-password.input';
 import { ConfirmEmailInput } from 'src/email-service/inputs/confirm-email.input';
 import { JWTpayload } from './types/jwt.type';
 import { UserInformationType } from 'src/core-service/user-information/types/user-information.type';
+import { UserInformationService } from 'src/core-service/user-information/user-information.service';
+import { GetUserInformationByIdInput } from 'src/core-service/user-information/inputs/get-user-information-by-id.input';
 
 @Resolver(of => UserType)
 export class AuthResolver {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private userInformationService: UserInformationService,
+  ) {}
 
   @Query(returns => UserType)
   @UseGuards(AuthGuard)
@@ -106,6 +111,8 @@ export class AuthResolver {
     @Parent() user: UserType,
   ): Promise<UserInformationType> {
     const { userInformation } = user;
-    return this.paymentCardService.getCardById(getPaymentCardByIdInput);
+    const data = new GetUserInformationByIdInput();
+    data.id = userInformation;
+    return this.userInformationService.getUserInformationById(data);
   }
 }
