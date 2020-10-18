@@ -101,11 +101,21 @@ export class AuthService {
 
     return response.toPromise();
   }
+
   public async login(loginUserInput: LoginUserInput): Promise<LoginType> {
     this.logger.log('Got LoginUserInput data');
     const response = this.client.send<LoginType>(
       { type: 'sign-in' },
       loginUserInput,
+    );
+    return response.toPromise();
+  }
+
+  public async getUserByUserInformation(id: string): Promise<UserType> {
+    this.logger.log('Got UserInformationid data');
+    const response = this.client.send<UserType>(
+      { type: 'get-user-by-userInformation' },
+      id,
     );
     return response.toPromise();
   }
