@@ -1,4 +1,5 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { UserType } from 'src/auth-service/types/user.type';
 import { UserInformationType } from 'src/core-service/user-information/types/user-information.type';
 import { FeatureType } from 'src/parking-service/feature/types/feature.type';
 import { IParkingType } from '../interfaces/parking-type.interface';
@@ -55,4 +56,7 @@ export class ParkingType implements IParkingType {
 
   @Field(type => UserInformationType)
   userInformation: string;
+
+  @Field(type => UserType)
+  user: string;
 }
