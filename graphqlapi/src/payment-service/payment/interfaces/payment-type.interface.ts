@@ -4,5 +4,4 @@ interface IPaymentType {
   digit: string;
   activated: boolean;
   card: string;
-  deleted: boolean;
 }

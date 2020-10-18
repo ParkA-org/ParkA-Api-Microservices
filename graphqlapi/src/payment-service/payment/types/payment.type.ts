@@ -23,7 +23,4 @@ export class PaymentType implements IPaymentType, IBaseType {
 
   @Field(type => CardType)
   card: string;
-
-  @Field()
-  deleted: boolean;
 }
