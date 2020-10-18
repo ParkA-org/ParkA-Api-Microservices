@@ -21,6 +21,14 @@ export class AuthController {
     return await this.authService.getUser(id);
   }
 
+  @MessagePattern({ type: 'get-user-by-userInformation' })
+  public async getUserByUserInformation(id: string): Promise<User> {
+    this.logger.debug(
+      `Received id UserInformation message with data ${JSON.stringify(id)}`,
+    );
+    return await this.authService.getUserByUserInformation(id);
+  }
+
   @MessagePattern({ type: 'get-users' })
   public async getUsers(): Promise<User[]> {
     return await this.authService.getAllUser();
