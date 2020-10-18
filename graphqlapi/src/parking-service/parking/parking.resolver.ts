@@ -79,6 +79,6 @@ export class ParkingResolver {
   public async features(
     @Parent() parking: ParkingType,
   ): Promise<FeatureType[]> {
-    return this.featureService.getFeaturesByIds(parking.features);
+    return await this.featureService.getFeaturesByIds(parking.features);
   }
 }

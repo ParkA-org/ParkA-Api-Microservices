@@ -65,11 +65,13 @@ export class FeatureService {
     this.logger.debug(`Received get features by IDs`);
     try {
       const features = [];
-      ids.forEach(async id => {
-        const feature = await this.getFeatureById(id);
+      for (let i = 0; i < ids.length; i++) {
+        const feature = await this.getFeatureById(ids[i]);
         features.push(feature);
-      });
-      return await features;
+        if (i == ids.length - 1) {
+          return features;
+        }
+      }
     } catch (error) {
       throw new RpcException('Features not Found');
     }
