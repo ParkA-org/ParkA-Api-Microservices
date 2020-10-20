@@ -5,6 +5,7 @@ import {
   Transport,
 } from '@nestjs/microservices';
 import { JWTpayload } from 'src/auth-service/types/jwt.type';
+import { UserType } from 'src/auth-service/types/user.type';
 import { CreateParkingInput } from './inputs/create-parking.input';
 import { InternCreateParking } from './inputs/intern-create-parking';
 import { InternUpdateParking } from './inputs/intern-update-parking';
@@ -109,6 +110,15 @@ export class ParkingService {
       getAllUserParkingsInternalInput,
     );
 
+    return response.toPromise();
+  }
+
+  public async getUserByUserInformation(id: string): Promise<UserType> {
+    this.logger.log('Got UserInformationid data');
+    const response = this.client.send<UserType>(
+      { type: 'get-user-by-userInformation' },
+      id,
+    );
     return response.toPromise();
   }
 }

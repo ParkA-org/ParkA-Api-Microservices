@@ -16,4 +16,5 @@ export interface IParkingType {
   features: string[];
   verified: boolean;
   userInformation: string;
+  user: string;
 }

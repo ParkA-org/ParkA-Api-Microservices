@@ -1,4 +1,5 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { UserInformationType } from 'src/core-service/user-information/types/user-information.type';
 import { IUserType } from '../interfaces/user-type.interface';
 
 @ObjectType('User')
@@ -23,6 +24,9 @@ export class UserType implements IUserType {
 
   @Field({ nullable: true })
   confirmed: boolean;
+
+  @Field(type => UserInformationType, { nullable: true })
+  userInformation: string;
 
   @Field()
   origin: string;

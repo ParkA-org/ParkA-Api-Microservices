@@ -3,7 +3,15 @@ import {
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
-import { Query, Resolver, Mutation, Args, Context } from '@nestjs/graphql';
+import {
+  Query,
+  Resolver,
+  Mutation,
+  Args,
+  Context,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
 import { AuthGuard } from './strategy/auth.guard';
 import { AuthService } from './auth.service';
 import { UpdateUserInput } from './inputs/update-user.input';
@@ -14,10 +22,16 @@ import { UserType } from './types/user.type';
 import { UpdateUserPasswordInput } from './inputs/update-user-password.input';
 import { ConfirmEmailInput } from 'src/email-service/inputs/confirm-email.input';
 import { JWTpayload } from './types/jwt.type';
+import { UserInformationType } from 'src/core-service/user-information/types/user-information.type';
+import { UserInformationService } from 'src/core-service/user-information/user-information.service';
+import { GetUserInformationByIdInput } from 'src/core-service/user-information/inputs/get-user-information-by-id.input';
 
 @Resolver(of => UserType)
 export class AuthResolver {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private userInformationService: UserInformationService,
+  ) {}
 
   @Query(returns => UserType)
   @UseGuards(AuthGuard)
@@ -84,5 +98,21 @@ export class AuthResolver {
     @Context('user') user: JWTpayload,
   ): Promise<UserType> {
     return await this.authService.updateUser(updateUserInput, user);
+  }
+
+  @Query(returns => UserType)
+  @UseGuards(AuthGuard)
+  async getLoggedUser(@Context('user') user: JWTpayload): Promise<UserType> {
+    return await this.authService.getUserById(user.id);
+  }
+
+  @ResolveField(returns => UserInformationType)
+  public async userInformation(
+    @Parent() user: UserType,
+  ): Promise<UserInformationType> {
+    const { userInformation } = user;
+    const data = new GetUserInformationByIdInput();
+    data.id = userInformation;
+    return this.userInformationService.getUserInformationById(data);
   }
 }

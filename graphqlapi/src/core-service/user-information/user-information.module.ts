@@ -15,6 +15,7 @@ import { UserInformationService } from './user-information.service';
     ParkingModule,
     VehicleModule,
   ],
+  exports: [UserInformationService],
   providers: [UserInformationResolver, UserInformationService],
 })
 export class UserInformationModule {}

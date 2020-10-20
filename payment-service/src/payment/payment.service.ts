@@ -38,7 +38,11 @@ export class PaymentService {
   public async getAllUserPayments(
     getAllUserPaymentsDto: GetAllUserPaymentsDto,
   ): Promise<Payment[]> {
-    return this.paymentRepository.find(getAllUserPaymentsDto);
+    const { userInformation } = getAllUserPaymentsDto;
+    return this.paymentRepository.find({
+      deleted: false,
+      userInformation: userInformation,
+    });
   }
 
   public async createPayment(
