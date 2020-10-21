@@ -64,14 +64,13 @@ export class FeatureService {
   public async getFeaturesByIds(ids: string[]): Promise<Feature[]> {
     this.logger.debug(`Received get features by IDs`);
     try {
-      const features = [];
-      for (let i = 0; i < ids.length; i++) {
-        const feature = await this.getFeatureById(ids[i]);
-        features.push(feature);
-        if (i == ids.length - 1) {
-          return features;
-        }
-      }
+      const features = this.featureRepository.find({
+        where: {
+          id: { $in: ids },
+        },
+      });
+
+      return features;
     } catch (error) {
       throw new RpcException('Features not Found');
     }
