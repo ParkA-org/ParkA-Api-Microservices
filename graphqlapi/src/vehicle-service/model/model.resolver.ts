@@ -26,6 +26,13 @@ export class ModelResolver {
     return await this.modelService.getModelById(getModelByIdInput);
   }
 
+  @Query(returns => [ModelType])
+  public async getAllModels(): Promise<ModelType[]> {
+    this.logger.debug(`Received get  all modes`);
+
+    return await this.modelService.getAllModels();
+  }
+
   @UseGuards(AuthGuard)
   @Mutation(of => ModelType)
   public async createModel(

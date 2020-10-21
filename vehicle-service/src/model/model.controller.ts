@@ -15,6 +15,11 @@ export class ModelController {
     return await this.modelService.getModelById(getModelByIdDto);
   }
 
+  @MessagePattern({ type: 'get-all-models' })
+  public async getAllModels(): Promise<Model[]> {
+    return this.modelService.getAllModels();
+  }
+
   @MessagePattern({ type: 'get-many-models-by-id' })
   public async getManyModelsById(
     getManyModelsByIdDto: GetManyModelsByIdDto,
