@@ -1,16 +1,28 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import { ModelType } from './types/model.type';
 import { CreateModelInput } from './inputs/create-model.input';
 import { GetModelByIdInput } from './inputs/get-model-by-id.input';
 import { ModelService } from './model.service';
 import { Logger, UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/auth-service/strategy/auth.guard';
+import { MakeService } from '../make/make.service';
+import { MakeType } from '../make/types/make.type';
 
 @Resolver(of => ModelType)
 export class ModelResolver {
   private logger = new Logger('ModelResolver');
 
-  constructor(private modelService: ModelService) {}
+  constructor(
+    private modelService: ModelService,
+    private makeService: MakeService,
+  ) {}
 
   @Query(returns => ModelType)
   public async getModelById(
@@ -44,5 +56,10 @@ export class ModelResolver {
     );
 
     return await this.modelService.createModel(createModelInput);
+  }
+
+  @ResolveField(returns => MakeType)
+  private async make(@Parent() model: ModelType): Promise<MakeType> {
+    return this.makeService.getMakeById({ id: model.make });
   }
 }
