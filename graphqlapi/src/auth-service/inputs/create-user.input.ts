@@ -9,7 +9,7 @@ import {
 } from 'class-validator';
 import { IUserInput } from '../interfaces/user-input.interface';
 
-@InputType('createUserInput')
+@InputType('CreateUserInput')
 export class CreateUserInput implements IUserInput {
   @Field()
   @MinLength(2)

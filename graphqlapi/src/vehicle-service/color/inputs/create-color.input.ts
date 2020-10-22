@@ -1,7 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { MinLength } from 'class-validator';
 
-@InputType('createColorInput')
+@InputType('CreateColorInput')
 export class CreateColorInput implements ICreateColorInput {
   @Field()
   @MinLength(2)

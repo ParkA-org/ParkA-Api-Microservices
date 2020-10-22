@@ -2,7 +2,7 @@ import { Field, ObjectType } from '@nestjs/graphql';
 import { IsEmail } from 'class-validator';
 import { IResetPasswordType } from '../interfaces/reset-password-type.interface';
 
-@ObjectType()
+@ObjectType('ResetPassword')
 export class ResetPasswordType implements IResetPasswordType {
   @Field()
   @IsEmail()
