@@ -2,7 +2,7 @@ import { Field, InputType } from '@nestjs/graphql';
 import { MaxLength, MinLength, ValidateIf } from 'class-validator';
 import { IUpdateParkingInput } from '../interfaces/update-parking-input.interface';
 
-@InputType('UpdateParkingInput')
+@InputType('updateParkingInput')
 export class UpdateParkingInput implements IUpdateParkingInput {
   @Field({ nullable: true })
   id: string;

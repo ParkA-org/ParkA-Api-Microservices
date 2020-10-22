@@ -2,7 +2,7 @@ import { Field, InputType } from '@nestjs/graphql';
 import { IsEmail, MinLength, ValidateIf } from 'class-validator';
 import { IValidateResetPasswordCodeInput } from '../interfaces/validate-reset-password-code-input.interface';
 
-@InputType()
+@InputType('ValidateResetPasswordCodeInput')
 export class ValidateResetPasswordCodeInput
   implements IValidateResetPasswordCodeInput {
   @Field({ nullable: true })

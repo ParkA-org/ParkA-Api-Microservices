@@ -1,7 +1,7 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
 import { IsDateString, IsUUID, Length, ValidateIf } from 'class-validator';
 
-@InputType('updateUserInformationInput')
+@InputType('UpdateUserInformationInput')
 export class UpdateUserInformationInput implements IUpdateUserInformationInput {
   @Field({ nullable: true })
   @ValidateIf(

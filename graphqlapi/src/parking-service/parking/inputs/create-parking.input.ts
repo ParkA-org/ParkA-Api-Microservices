@@ -2,7 +2,7 @@ import { Field, ID, InputType } from '@nestjs/graphql';
 import { MaxLength, MinLength } from 'class-validator';
 import { ICreateParkingInput } from '../interfaces/create-parking-input.interface';
 
-@InputType('CreateParkingInput')
+@InputType('createParkingInput')
 export class CreateParkingInput implements ICreateParkingInput {
   @Field()
   countParking: number;

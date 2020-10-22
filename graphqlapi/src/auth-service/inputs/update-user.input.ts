@@ -2,7 +2,7 @@ import { Field, ID, InputType } from '@nestjs/graphql';
 import { IsUrl, MaxLength, MinLength, ValidateIf } from 'class-validator';
 import { IUpdateUserInput } from '../interfaces/update-user-input.interface';
 
-@InputType()
+@InputType('UpdateUserInput')
 export class UpdateUserInput implements IUpdateUserInput {
   @Field({ nullable: true })
   @ValidateIf((input: UpdateUserInput) => input.name !== undefined)

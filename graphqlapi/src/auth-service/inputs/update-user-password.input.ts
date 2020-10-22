@@ -2,7 +2,7 @@ import { Field, InputType } from '@nestjs/graphql';
 import { IsEmail, IsLowercase, MinLength } from 'class-validator';
 import { IUpdateUserPasswordInput } from '../interfaces/update-user-password-input.interface';
 
-@InputType()
+@InputType('UpdateUserPasswordInput')
 export class UpdateUserPasswordInput implements IUpdateUserPasswordInput {
   @MinLength(8)
   @Field()
