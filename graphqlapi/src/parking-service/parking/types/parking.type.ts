@@ -1,6 +1,8 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { type } from 'os';
 import { UserType } from 'src/auth-service/types/user.type';
 import { UserInformationType } from 'src/core-service/user-information/types/user-information.type';
+import { CalendarType } from 'src/parking-service/calendar/types/calendar.type';
 import { FeatureType } from 'src/parking-service/feature/types/feature.type';
 import { IParkingType } from '../interfaces/parking-type.interface';
 
@@ -24,8 +26,9 @@ export class ParkingType implements IParkingType {
   @Field()
   parkingName: string;
 
-  @Field(type => [String])
-  calendar: string[];
+  //TODO: update here with corresponding type
+  @Field(type => CalendarType)
+  calendar: string;
 
   @Field()
   priceHours: string;

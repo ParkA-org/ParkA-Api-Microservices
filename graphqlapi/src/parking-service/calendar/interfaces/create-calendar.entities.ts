@@ -1,8 +1,4 @@
-interface ICalendarType {
-  id: string;
-
-  parkingId: string;
-
+interface ICreateCalendarInput {
   monday: IScheduleType[];
 
   tuesday: IScheduleType[];
