@@ -1,17 +1,26 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
-import { MaxLength, MinLength } from 'class-validator';
+import {
+  IsLatitude,
+  IsLongitude,
+  IsPositive,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
 import { CreateCalendarInputType } from 'src/parking-service/calendar/inputs/create-calendar.input';
 import { ICreateParkingInput } from '../interfaces/create-parking-input.interface';
 
 @InputType('CreateParkingInput')
 export class CreateParkingInput implements ICreateParkingInput {
   @Field()
+  @IsPositive()
   countParking: number;
 
   @Field()
+  @IsLatitude()
   latitude: string;
 
   @Field()
+  @IsLongitude()
   longitude: string;
 
   @Field()
@@ -23,9 +32,10 @@ export class CreateParkingInput implements ICreateParkingInput {
   calendar: CreateCalendarInputType;
 
   @Field()
+  @IsPositive()
   priceHours: number;
 
-  @Field(type => [ID])
+  @Field(type => [ID], { nullable: true, defaultValue: [] })
   pictures: string[];
 
   @Field()
