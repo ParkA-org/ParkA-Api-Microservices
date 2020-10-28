@@ -1,9 +1,10 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
 import { MaxLength, MinLength } from 'class-validator';
 import { CreateCalendarInputType } from 'src/parking-service/calendar/inputs/create-calendar.input';
+import { ICreateParkingInput } from '../interfaces/create-parking-input.interface';
 
 @InputType('CreateParkingInput')
-export class CreateParkingInput {
+export class CreateParkingInput implements ICreateParkingInput {
   @Field()
   countParking: number;
 
@@ -22,7 +23,7 @@ export class CreateParkingInput {
   calendar: CreateCalendarInputType;
 
   @Field()
-  priceHours: string;
+  priceHours: number;
 
   @Field(type => [ID])
   pictures: string[];

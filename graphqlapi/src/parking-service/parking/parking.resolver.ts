@@ -13,6 +13,8 @@ import { AuthGuard } from 'src/auth-service/strategy/auth.guard';
 import { JWTpayload } from 'src/auth-service/types/jwt.type';
 import { UserType } from 'src/auth-service/types/user.type';
 import { UserInformationService } from 'src/core-service/user-information/user-information.service';
+import { CalendarService } from '../calendar/calendar.service';
+import { CalendarType } from '../calendar/types/calendar.type';
 import { FeatureService } from '../feature/feature.service';
 import { FeatureType } from '../feature/types/feature.type';
 import { CreateParkingInput } from './inputs/create-parking.input';
@@ -25,6 +27,7 @@ export class ParkingResolver {
   constructor(
     private parkingService: ParkingService,
     private featureService: FeatureService,
+    private calendarService: CalendarService,
   ) {}
 
   @Query(returns => ParkingType)
@@ -39,9 +42,11 @@ export class ParkingResolver {
       userInformationId: user.userInformation,
     };
 
-    return this.parkingService.getAllUserParkings(
+    const result = await this.parkingService.getAllUserParkings(
       getAllUserParkingsInternalInput,
     );
+
+    return result;
   }
 
   @Query(returns => [ParkingType])
@@ -90,5 +95,10 @@ export class ParkingResolver {
     return await this.parkingService.getUserByUserInformation(
       parking.userInformation,
     );
+  }
+
+  @ResolveField(returns => [CalendarType])
+  public async calendar(@Parent() parking: ParkingType): Promise<CalendarType> {
+    return this.calendarService.getCalendarById({ id: parking.calendar });
   }
 }
