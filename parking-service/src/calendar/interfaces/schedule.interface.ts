@@ -1,5 +1,4 @@
 interface ISchedule {
-  start: string;
-
-  finish: string;
+  start: number;
+  finish: number;
 }

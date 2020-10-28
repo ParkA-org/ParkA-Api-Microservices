@@ -1,4 +1,4 @@
 export class Schedule implements ISchedule {
-  start: string;
-  finish: string;
+  start: number;
+  finish: number;
 }

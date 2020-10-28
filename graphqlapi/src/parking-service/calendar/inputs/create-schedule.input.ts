@@ -3,7 +3,7 @@ import { Field, InputType } from '@nestjs/graphql';
 @InputType('CreateScheduleInput')
 export class CreateScheduleInputType implements IScheduleType {
   @Field()
-  start: string;
+  start: number;
   @Field()
-  finish: string;
+  finish: number;
 }

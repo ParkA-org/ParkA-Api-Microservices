@@ -1,5 +1,4 @@
 interface IScheduleType {
-  start: string;
-
-  finish: string;
+  start: number;
+  finish: number;
 }
