@@ -1,10 +1,10 @@
-interface IParking {
+export interface IParking {
   countParking: number;
   latitude: string;
   longitude: string;
   published: boolean;
   parkingName: string;
-  calendar: string[];
+  calendar: string;
   priceHours: string;
   pictures: string[];
   mainPicture: string;

@@ -16,6 +16,7 @@ import { NationalityModule } from './core-service/nationality/nationality.module
 import { CountryModule } from './core-service/country/country.module';
 import { ParkingModule } from './parking-service/parking/parking.module';
 import { FeatureModule } from './parking-service/feature/feature.module';
+import { CalendarModule } from './parking-service/calendar/calendar.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { FeatureModule } from './parking-service/feature/feature.module';
     CountryModule,
     ParkingModule,
     FeatureModule,
+    CalendarModule,
   ],
   providers: [],
 })

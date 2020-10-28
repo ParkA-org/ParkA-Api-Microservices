@@ -1,4 +1,5 @@
 import { MaxLength, MinLength } from 'class-validator';
+import { Calendar } from 'src/calendar/entities/calendar.entity';
 
 export class CreateParkingDto implements ICreateParkingDto {
   countParking: number;
@@ -7,7 +8,7 @@ export class CreateParkingDto implements ICreateParkingDto {
   @MinLength(2)
   @MaxLength(50)
   parkingName: string;
-  calendar: string[];
+  calendar: Calendar;
   priceHours: string;
   pictures: string[];
   mainPicture: string;
