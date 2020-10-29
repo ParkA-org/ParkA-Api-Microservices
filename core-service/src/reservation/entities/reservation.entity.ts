@@ -1,12 +1,23 @@
 import { Column, Entity, ObjectIdColumn, PrimaryColumn } from 'typeorm';
+import { IReservation } from '../interfaces/reservation-entity.interface';
+import { ReservationStatuses } from './../utils/statuses';
 
 @Entity()
-export class Reservation implements IReservation {
+export class Reservation implements IReservation, IBaseEntity {
   @ObjectIdColumn()
   _id: string;
 
   @PrimaryColumn()
   id: string;
+
+  @Column()
+  parking: string;
+
+  @Column()
+  client: string;
+
+  @Column()
+  owner: string;
 
   @Column()
   checkInDate: string;
@@ -15,17 +26,23 @@ export class Reservation implements IReservation {
   checkOutDate: string;
 
   @Column()
-  vehicleId: string;
+  vehicle: string;
 
   @Column()
-  paymentInfoId: string;
+  paymentInfo: string;
+
+  @Column()
+  total: number;
 
   @Column()
   rentDate: string;
 
   @Column()
-  status: string;
+  status: ReservationStatuses;
 
   @Column()
-  userId: string;
+  createdAt: string;
+
+  @Column()
+  updatedAt: string;
 }

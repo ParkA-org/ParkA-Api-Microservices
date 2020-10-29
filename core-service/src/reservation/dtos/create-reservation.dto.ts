@@ -1,10 +1,7 @@
+import { ICreateReservationDto } from '../interfaces/create-reservation-dto.interface-dto';
 import { ReservationStatuses } from '../utils/statuses';
 
-export interface IReservation {
-  _id: string;
-
-  id: string;
-
+export class CreateReservationDto implements ICreateReservationDto {
   parking: string;
 
   client: string;

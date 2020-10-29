@@ -1,10 +1,6 @@
 import { ReservationStatuses } from '../utils/statuses';
 
-export interface IReservation {
-  _id: string;
-
-  id: string;
-
+export interface ICreateReservationDto {
   parking: string;
 
   client: string;

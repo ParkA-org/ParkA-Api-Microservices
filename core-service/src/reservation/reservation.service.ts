@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GetReservationByIdDto } from './dtos/get-reservation-by-id.dto';
 import { Reservation } from './entities/reservation.entity';
+import { CreateReservationDto } from './dtos/create-reservation.dto';
 
 @Injectable()
 export class ReservationService {
@@ -38,5 +39,28 @@ export class ReservationService {
     this.logger.debug(`Received get all reservations`);
 
     return this.reservationRepository.find();
+  }
+
+  //TODO: implement creation logic
+  public async createReservation(
+    createReservationDto: CreateReservationDto,
+  ): Promise<Reservation> {
+    return;
+  }
+
+  public async updateReservation(
+    createReservationDto: CreateReservationDto,
+  ): Promise<Reservation> {
+    //TODO: implement update logic
+
+    return;
+  }
+
+  public async cancelReservation(
+    createReservationDto: CreateReservationDto,
+  ): Promise<Reservation> {
+    //TODO: implement cancel logic
+
+    return;
   }
 }
