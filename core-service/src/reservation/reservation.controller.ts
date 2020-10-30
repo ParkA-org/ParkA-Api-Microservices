@@ -1,7 +1,9 @@
 import { Controller, Logger } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
+import { CancelReservationDto } from './dtos/cancel-reservation.dto';
 import { CreateReservationDto } from './dtos/create-reservation.dto';
 import { GetReservationByIdDto } from './dtos/get-reservation-by-id.dto';
+import { UpdateReservationDto } from './dtos/update-reservation.dto';
 import { Reservation } from './entities/reservation.entity';
 import { ReservationService } from './reservation.service';
 
@@ -42,21 +44,15 @@ export class ReservationController {
 
   @MessagePattern({ type: 'update-reservation' })
   public async updateReservation(
-    //TODO: change parameter type and name
-    createReservationDto: CreateReservationDto,
+    updateReservationDto: UpdateReservationDto,
   ): Promise<Reservation> {
-    //TODO: update update logic
-
-    return this.reservationService.updateReservation(createReservationDto);
+    return this.reservationService.updateReservation(updateReservationDto);
   }
 
   @MessagePattern({ type: 'cancel-reservation' })
   public async cancelReservation(
-    //TODO: change parameter type and name
-    createReservationDto: CreateReservationDto,
+    cancelReservationDto: CancelReservationDto,
   ): Promise<Reservation> {
-    //TODO: update cancel logic
-
-    return this.cancelReservation(createReservationDto);
+    return this.cancelReservation(cancelReservationDto);
   }
 }

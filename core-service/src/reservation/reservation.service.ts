@@ -5,6 +5,10 @@ import { Repository } from 'typeorm';
 import { GetReservationByIdDto } from './dtos/get-reservation-by-id.dto';
 import { Reservation } from './entities/reservation.entity';
 import { CreateReservationDto } from './dtos/create-reservation.dto';
+import { UpdateReservationDto } from './dtos/update-reservation.dto';
+import { v4 as uuid } from 'uuid';
+import { CancelReservationDto } from './dtos/cancel-reservation.dto';
+import { ReservationStatuses } from './utils/statuses';
 
 @Injectable()
 export class ReservationService {
@@ -45,22 +49,63 @@ export class ReservationService {
   public async createReservation(
     createReservationDto: CreateReservationDto,
   ): Promise<Reservation> {
-    return;
+    const {
+      checkInDate,
+      checkOutDate,
+      client,
+      owner,
+      parking,
+      paymentInfo,
+      rentDate,
+      status,
+      total,
+      vehicle,
+    } = createReservationDto;
+
+    const reservation = this.reservationRepository.create({
+      id: uuid(),
+      checkInDate,
+      checkOutDate,
+      client,
+      owner,
+      parking,
+      paymentInfo,
+      rentDate,
+      status,
+      total,
+      vehicle,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    });
+
+    return this.reservationRepository.save(reservation);
   }
 
   public async updateReservation(
-    createReservationDto: CreateReservationDto,
+    updateReservationDto: UpdateReservationDto,
   ): Promise<Reservation> {
-    //TODO: implement update logic
+    const { data, where } = updateReservationDto;
 
-    return;
+    const reservation = await this.getReservationById(where);
+
+    const fieldsToUpdate = Object.keys(data);
+
+    for (const field of fieldsToUpdate) {
+      reservation[field] = where[field];
+    }
+
+    reservation.updatedAt = new Date().toISOString();
+
+    return this.reservationRepository.save(reservation);
   }
 
   public async cancelReservation(
-    createReservationDto: CreateReservationDto,
+    cancelReservationDto: CancelReservationDto,
   ): Promise<Reservation> {
-    //TODO: implement cancel logic
+    const reservation = await this.getReservationById(cancelReservationDto);
 
-    return;
+    reservation.status = ReservationStatuses.Cancelled;
+
+    return this.reservationRepository.save(reservation);
   }
 }
