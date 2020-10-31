@@ -2,6 +2,7 @@ import { Controller, Logger } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
 import { CancelReservationDto } from './dtos/cancel-reservation.dto';
 import { CreateReservationDto } from './dtos/create-reservation.dto';
+import { GetAllUserReservationsAsClientDto } from './dtos/get-all-user-reservations.dto';
 import { GetReservationByIdDto } from './dtos/get-reservation-by-id.dto';
 import { UpdateReservationDto } from './dtos/update-reservation.dto';
 import { Reservation } from './entities/reservation.entity';
@@ -31,6 +32,17 @@ export class ReservationController {
     this.logger.debug(`Received get all reservations`);
 
     return this.reservationService.getAllReservations();
+  }
+
+  @MessagePattern({ type: 'get-all-user-reservations-as-client' })
+  public async getAllUserReservationsAsClient(
+    getAllUserReservationsAsClientDto: GetAllUserReservationsAsClientDto,
+  ): Promise<Reservation[]> {
+    this.logger.debug(`Received get all user reservations`);
+
+    return this.reservationService.getAllUserReservationsAsClient(
+      getAllUserReservationsAsClientDto,
+    );
   }
 
   @MessagePattern({ type: 'create-reservation' })

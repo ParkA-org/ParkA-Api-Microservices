@@ -9,6 +9,7 @@ import { UpdateReservationDto } from './dtos/update-reservation.dto';
 import { v4 as uuid } from 'uuid';
 import { CancelReservationDto } from './dtos/cancel-reservation.dto';
 import { ReservationStatuses } from './utils/statuses';
+import { GetAllUserReservationsAsClientDto } from './dtos/get-all-user-reservations.dto';
 
 @Injectable()
 export class ReservationService {
@@ -43,6 +44,20 @@ export class ReservationService {
     this.logger.debug(`Received get all reservations`);
 
     return this.reservationRepository.find();
+  }
+
+  public async getAllUserReservationsAsClient(
+    getAllUserReservationsAsClientDto: GetAllUserReservationsAsClientDto,
+  ): Promise<Reservation[]> {
+    this.logger.debug(`Received get all user reservations`);
+
+    const { id } = getAllUserReservationsAsClientDto;
+
+    return this.reservationRepository.find({
+      where: {
+        client: id,
+      },
+    });
   }
 
   //TODO: implement creation logic

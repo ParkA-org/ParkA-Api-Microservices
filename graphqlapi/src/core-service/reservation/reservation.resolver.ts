@@ -25,6 +25,7 @@ import { VehicleService } from 'src/vehicle-service/vehicle/vehicle.service';
 import { CancelReservationInput } from './inputs/cancel-reservation.input';
 import { CreateReservationInternalInput } from './inputs/create-reservation-internal.input';
 import { CreateReservationInput } from './inputs/create-reservation.input';
+import { GetAllUserReservationsAsClientInput } from './inputs/get-all-user-reservations-as-client.input';
 import { GetReservationByIdInput } from './inputs/get-reservation-by-id.input';
 import { UpdateReservationInput } from './inputs/update-reservation.input';
 import { ReservationService } from './reservation.service';
@@ -42,6 +43,7 @@ export class ReservationResolver {
     private readonly userService: AuthService,
   ) {}
 
+  @UseGuards(AuthGuard)
   @Query(returns => ReservationType)
   public async getReservationById(
     @Args('getReservationByIdInput')
@@ -56,11 +58,28 @@ export class ReservationResolver {
     return this.reservationService.getReservationById(getReservationByIdInput);
   }
 
+  @UseGuards(AuthGuard)
   @Query(returns => [ReservationType])
   public async getAllReservations(): Promise<ReservationType[]> {
     this.logger.debug(`Received get all reservatios`);
 
     return this.reservationService.getAllReservations();
+  }
+
+  @UseGuards(AuthGuard)
+  @Query(of => [ReservationType])
+  public async getAllUserReservationsAsClient(
+    @Context('user') user: JWTpayload,
+  ): Promise<ReservationType[]> {
+    this.logger.debug(`Received get all user reservations as client`);
+
+    const getAllUserReservationsAsClientInput: GetAllUserReservationsAsClientInput = {
+      id: user.id,
+    };
+
+    return this.reservationService.getAllUserReservationsAsClient(
+      getAllUserReservationsAsClientInput,
+    );
   }
 
   @UseGuards(AuthGuard)
