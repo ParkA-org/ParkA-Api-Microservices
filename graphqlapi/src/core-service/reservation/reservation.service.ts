@@ -5,6 +5,7 @@ import {
   Transport,
 } from '@nestjs/microservices';
 import { CancelReservationInput } from './inputs/cancel-reservation.input';
+import { CreateReservationInternalInput } from './inputs/create-reservation-internal.input';
 import { CreateReservationInput } from './inputs/create-reservation.input';
 import { GetReservationByIdInput } from './inputs/get-reservation-by-id.input';
 import { UpdateReservationInput } from './inputs/update-reservation.input';
@@ -53,17 +54,17 @@ export class ReservationService {
   }
 
   public async createReservation(
-    createReservationInput: CreateReservationInput,
+    createReservationInternalInput: CreateReservationInternalInput,
   ): Promise<ReservationType> {
     this.logger.debug(
       `Received create reservation with payload ${JSON.stringify(
-        createReservationInput,
+        createReservationInternalInput,
       )}`,
     );
 
     const response = await this.client.send<ReservationType>(
       { type: 'create-reservation' },
-      createReservationInput,
+      createReservationInternalInput,
     );
 
     return response.toPromise();

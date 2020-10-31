@@ -10,10 +10,6 @@ export class CreateReservationInput implements ICreateReservationInput {
 
   @Field()
   @IsUUID()
-  client: string;
-
-  @Field()
-  @IsUUID()
   owner: string;
 
   @Field()

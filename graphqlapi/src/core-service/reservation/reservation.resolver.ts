@@ -1,6 +1,11 @@
-import { InternalServerErrorException, Logger } from '@nestjs/common';
+import {
+  InternalServerErrorException,
+  Logger,
+  UseGuards,
+} from '@nestjs/common';
 import {
   Args,
+  Context,
   Mutation,
   Parent,
   Query,
@@ -8,6 +13,8 @@ import {
   Resolver,
 } from '@nestjs/graphql';
 import { AuthService } from 'src/auth-service/auth.service';
+import { AuthGuard } from 'src/auth-service/strategy/auth.guard';
+import { JWTpayload } from 'src/auth-service/types/jwt.type';
 import { UserType } from 'src/auth-service/types/user.type';
 import { ParkingService } from 'src/parking-service/parking/parking.service';
 import { ParkingType } from 'src/parking-service/parking/types/parking.type';
@@ -16,6 +23,7 @@ import { PaymentType } from 'src/payment-service/payment/types/payment.type';
 import { VehicleType } from 'src/vehicle-service/vehicle/types/vehicle.type';
 import { VehicleService } from 'src/vehicle-service/vehicle/vehicle.service';
 import { CancelReservationInput } from './inputs/cancel-reservation.input';
+import { CreateReservationInternalInput } from './inputs/create-reservation-internal.input';
 import { CreateReservationInput } from './inputs/create-reservation.input';
 import { GetReservationByIdInput } from './inputs/get-reservation-by-id.input';
 import { UpdateReservationInput } from './inputs/update-reservation.input';
@@ -55,10 +63,12 @@ export class ReservationResolver {
     return this.reservationService.getAllReservations();
   }
 
+  @UseGuards(AuthGuard)
   @Mutation(of => ReservationType)
   public async createReservation(
     @Args('createReservationInput')
     createReservationInput: CreateReservationInput,
+    @Context('user') user: JWTpayload,
   ): Promise<ReservationType> {
     this.logger.debug(
       `Received create reservation with payload ${JSON.stringify(
@@ -66,13 +76,40 @@ export class ReservationResolver {
       )}`,
     );
 
-    return this.reservationService.createReservation(createReservationInput);
+    const {
+      checkInDate,
+      checkOutDate,
+      owner,
+      parking,
+      paymentInfo,
+      rentDate,
+      total,
+      vehicle,
+    } = createReservationInput;
+
+    const createReservationInternalInput: CreateReservationInternalInput = {
+      checkInDate,
+      checkOutDate,
+      client: user.id,
+      owner,
+      parking,
+      paymentInfo,
+      rentDate,
+      total,
+      vehicle,
+    };
+
+    return this.reservationService.createReservation(
+      createReservationInternalInput,
+    );
   }
 
+  @UseGuards(AuthGuard)
   @Mutation(of => ReservationType)
   public async updateReservation(
     @Args('updateReservationInput')
     updateReservationInput: UpdateReservationInput,
+    @Context('user') user: JWTpayload,
   ): Promise<ReservationType> {
     this.logger.debug(
       `Received update reservation with payload ${JSON.stringify(
@@ -83,6 +120,7 @@ export class ReservationResolver {
     return this.reservationService.updateReservation(updateReservationInput);
   }
 
+  @UseGuards(AuthGuard)
   @Mutation(of => ReservationType)
   public async cancelReservation(
     @Args('cancelReservationInput')

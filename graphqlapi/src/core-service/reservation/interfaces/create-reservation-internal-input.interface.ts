@@ -1,7 +1,9 @@
-export interface ICreateReservationInput {
+interface ICreateReservationInternalInput {
   parking: string;
 
   owner: string;
+
+  client: string;
 
   checkInDate: string;
 
