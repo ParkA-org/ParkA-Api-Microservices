@@ -1,5 +1,4 @@
 import { ICreateReservationDto } from '../interfaces/create-reservation-dto.interface-dto';
-import { ReservationStatuses } from '../utils/statuses';
 
 export class CreateReservationDto implements ICreateReservationDto {
   parking: string;
@@ -19,6 +18,4 @@ export class CreateReservationDto implements ICreateReservationDto {
   total: number;
 
   rentDate: string;
-
-  status: ReservationStatuses;
 }

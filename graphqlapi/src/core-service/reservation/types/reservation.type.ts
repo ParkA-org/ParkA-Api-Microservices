@@ -1,8 +1,10 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { IReservationType } from '../interfaces/reservation-type.interface';
+import { ReservationStatuses } from '../utils/statuses';
 
 @ObjectType('Reservation')
 export class ReservationType implements IReservationType {
-  @Field()
+  @Field(type => ID)
   id: string;
 
   @Field()
@@ -12,17 +14,26 @@ export class ReservationType implements IReservationType {
   checkOutDate: string;
 
   @Field()
-  vehicleId: string;
+  vehicle: string;
 
   @Field()
-  paymentInfoId: string;
+  paymentInfo: string;
+
+  @Field()
+  parking: string;
+
+  @Field()
+  client: string;
+
+  @Field()
+  owner: string;
+
+  @Field()
+  total: number;
 
   @Field()
   rentDate: string;
 
-  @Field()
-  status: string;
-
-  @Field()
-  userId: string;
+  @Field(type => ReservationStatuses)
+  status: ReservationStatuses;
 }

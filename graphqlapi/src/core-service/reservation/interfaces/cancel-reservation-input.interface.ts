@@ -1,0 +1,3 @@
+interface ICancelReservationInput {
+  id: string;
+}

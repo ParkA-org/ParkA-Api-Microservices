@@ -1,5 +1,3 @@
-import { ReservationStatuses } from '../utils/statuses';
-
 export interface ICreateReservationDto {
   parking: string;
 
@@ -18,6 +16,4 @@ export interface ICreateReservationDto {
   total: number;
 
   rentDate: string;
-
-  status: ReservationStatuses;
 }

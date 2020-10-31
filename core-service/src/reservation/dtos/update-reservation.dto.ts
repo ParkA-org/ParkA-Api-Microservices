@@ -1,11 +1,7 @@
+import { GetReservationByIdDto } from './get-reservation-by-id.dto';
+import { UpdateReservationPayload } from './update-reservation.payload';
+
 export class UpdateReservationDto implements IUpdateReservationDto {
-  where: { id: string };
-  data: {
-    checkInDate: string;
-    checkOutDate: string;
-    vehicle: string;
-    total: number;
-    paymentInfo: string;
-    rentDate: string;
-  };
+  where: GetReservationByIdDto;
+  data: UpdateReservationPayload;
 }

@@ -57,7 +57,6 @@ export class ReservationService {
       parking,
       paymentInfo,
       rentDate,
-      status,
       total,
       vehicle,
     } = createReservationDto;
@@ -71,7 +70,7 @@ export class ReservationService {
       parking,
       paymentInfo,
       rentDate,
-      status,
+      status: ReservationStatuses.Created,
       total,
       vehicle,
       createdAt: new Date().toISOString(),

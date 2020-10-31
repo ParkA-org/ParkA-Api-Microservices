@@ -1,8 +1,4 @@
-import { ReservationStatuses } from '../utils/statuses';
-
-export interface IReservationType {
-  id: string;
-
+export interface ICreateReservationInput {
   parking: string;
 
   client: string;
@@ -20,6 +16,4 @@ export interface IReservationType {
   total: number;
 
   rentDate: string;
-
-  status: ReservationStatuses;
 }
