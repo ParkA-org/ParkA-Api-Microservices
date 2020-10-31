@@ -95,6 +95,10 @@ export class ReservationService {
       vehicle,
     } = createReservationDto;
 
+    if (client === owner) {
+      throw new RpcException('User cannot rent his own parking');
+    }
+
     const reservation = this.reservationRepository.create({
       id: uuid(),
       checkInDate,
