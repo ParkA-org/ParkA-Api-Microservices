@@ -49,6 +49,12 @@ export class ReservationService {
   public async createReservation(
     createReservationDto: CreateReservationDto,
   ): Promise<Reservation> {
+    this.logger.debug(
+      `Received create reservation with payload ${JSON.stringify(
+        createReservationDto,
+      )}`,
+    );
+
     const {
       checkInDate,
       checkOutDate,

@@ -1,5 +1,20 @@
 import { InternalServerErrorException, Logger } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
+import { AuthService } from 'src/auth-service/auth.service';
+import { UserType } from 'src/auth-service/types/user.type';
+import { ParkingService } from 'src/parking-service/parking/parking.service';
+import { ParkingType } from 'src/parking-service/parking/types/parking.type';
+import { PaymentService } from 'src/payment-service/payment/payment.service';
+import { PaymentType } from 'src/payment-service/payment/types/payment.type';
+import { VehicleType } from 'src/vehicle-service/vehicle/types/vehicle.type';
+import { VehicleService } from 'src/vehicle-service/vehicle/vehicle.service';
 import { CancelReservationInput } from './inputs/cancel-reservation.input';
 import { CreateReservationInput } from './inputs/create-reservation.input';
 import { GetReservationByIdInput } from './inputs/get-reservation-by-id.input';
@@ -11,7 +26,13 @@ import { ReservationType } from './types/reservation.type';
 export class ReservationResolver {
   private logger = new Logger('ReservationResolver');
 
-  constructor(private reservationService: ReservationService) {}
+  constructor(
+    private reservationService: ReservationService,
+    private readonly vehicleService: VehicleService,
+    private readonly paymentService: PaymentService,
+    private readonly parkingService: ParkingService,
+    private readonly userService: AuthService,
+  ) {}
 
   @Query(returns => ReservationType)
   public async getReservationById(
@@ -40,7 +61,9 @@ export class ReservationResolver {
     createReservationInput: CreateReservationInput,
   ): Promise<ReservationType> {
     this.logger.debug(
-      `Received create reservation with payload ${createReservationInput}`,
+      `Received create reservation with payload ${JSON.stringify(
+        createReservationInput,
+      )}`,
     );
 
     return this.reservationService.createReservation(createReservationInput);
@@ -52,7 +75,9 @@ export class ReservationResolver {
     updateReservationInput: UpdateReservationInput,
   ): Promise<ReservationType> {
     this.logger.debug(
-      `Received update reservation with payload ${updateReservationInput}`,
+      `Received update reservation with payload ${JSON.stringify(
+        updateReservationInput,
+      )}`,
     );
 
     return this.reservationService.updateReservation(updateReservationInput);
@@ -64,9 +89,47 @@ export class ReservationResolver {
     cancelReservationInput: CancelReservationInput,
   ): Promise<ReservationType> {
     this.logger.debug(
-      `Received cancel reservation with payload ${cancelReservationInput}`,
+      `Received cancel reservation with payload ${JSON.stringify(
+        cancelReservationInput,
+      )}`,
     );
 
     return this.reservationService.cancelReservation(cancelReservationInput);
+  }
+
+  //Field Resolvers
+  @ResolveField(of => VehicleType)
+  public async vehicle(
+    @Parent() reservation: ReservationType,
+  ): Promise<VehicleType> {
+    return this.vehicleService.getVehicleById({ id: reservation.vehicle });
+  }
+
+  @ResolveField(of => PaymentType)
+  public async paymentInfo(
+    @Parent() reservation: ReservationType,
+  ): Promise<PaymentType> {
+    return this.paymentService.getPaymentById({ id: reservation.paymentInfo });
+  }
+
+  @ResolveField(of => ParkingType)
+  public async parking(
+    @Parent() reservation: ReservationType,
+  ): Promise<ParkingType> {
+    return this.parkingService.getParkingById(reservation.parking);
+  }
+
+  @ResolveField(of => UserType)
+  public async owner(
+    @Parent() reservation: ReservationType,
+  ): Promise<UserType> {
+    return this.userService.getUserById(reservation.owner);
+  }
+
+  @ResolveField(of => UserType)
+  public async client(
+    @Parent() reservation: ReservationType,
+  ): Promise<UserType> {
+    return this.userService.getUserById(reservation.client);
   }
 }

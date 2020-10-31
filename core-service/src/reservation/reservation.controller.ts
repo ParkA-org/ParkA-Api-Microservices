@@ -37,7 +37,11 @@ export class ReservationController {
   public async createReservation(
     createReservationDto: CreateReservationDto,
   ): Promise<Reservation> {
-    this.logger.debug(`Received create reservation`);
+    this.logger.debug(
+      `Received create reservation with payload ${JSON.stringify(
+        createReservationDto,
+      )}`,
+    );
 
     return this.reservationService.createReservation(createReservationDto);
   }
@@ -46,6 +50,12 @@ export class ReservationController {
   public async updateReservation(
     updateReservationDto: UpdateReservationDto,
   ): Promise<Reservation> {
+    this.logger.debug(
+      `Received update reservation with payload ${JSON.stringify(
+        updateReservationDto,
+      )}`,
+    );
+
     return this.reservationService.updateReservation(updateReservationDto);
   }
 
@@ -53,6 +63,12 @@ export class ReservationController {
   public async cancelReservation(
     cancelReservationDto: CancelReservationDto,
   ): Promise<Reservation> {
+    this.logger.debug(
+      `Received cancel reservation with payload ${JSON.stringify(
+        cancelReservationDto,
+      )}`,
+    );
+
     return this.cancelReservation(cancelReservationDto);
   }
 }

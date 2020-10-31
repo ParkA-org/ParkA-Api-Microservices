@@ -55,7 +55,11 @@ export class ReservationService {
   public async createReservation(
     createReservationInput: CreateReservationInput,
   ): Promise<ReservationType> {
-    this.logger.debug(`Received create reservation`);
+    this.logger.debug(
+      `Received create reservation with payload ${JSON.stringify(
+        createReservationInput,
+      )}`,
+    );
 
     const response = await this.client.send<ReservationType>(
       { type: 'create-reservation' },
@@ -68,7 +72,11 @@ export class ReservationService {
   public async updateReservation(
     updateReservationInput: UpdateReservationInput,
   ): Promise<ReservationType> {
-    this.logger.debug(`Received update reservation with payload`);
+    this.logger.debug(
+      `Received update reservation with payload ${JSON.stringify(
+        updateReservationInput,
+      )}`,
+    );
 
     const response = await this.client.send<ReservationType>(
       { type: 'update-reservation' },
@@ -82,7 +90,9 @@ export class ReservationService {
     cancelReservationInput: CancelReservationInput,
   ): Promise<ReservationType> {
     this.logger.debug(
-      `Received cancel reservation with payload ${cancelReservationInput}`,
+      `Received cancel reservation with payload ${JSON.stringify(
+        cancelReservationInput,
+      )}`,
     );
 
     const response = await this.client.send<ReservationType>(
