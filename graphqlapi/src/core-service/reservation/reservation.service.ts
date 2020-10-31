@@ -7,7 +7,7 @@ import {
 import { CancelReservationInput } from './inputs/cancel-reservation.input';
 import { CreateReservationInternalInput } from './inputs/create-reservation-internal.input';
 import { CreateReservationInput } from './inputs/create-reservation.input';
-import { GetAllUserReservationsAsClientInput } from './inputs/get-all-user-reservations-as-client.input';
+import { GetAllUserReservationsInput } from './inputs/get-all-user-reservations-as-client.input';
 import { GetReservationByIdInput } from './inputs/get-reservation-by-id.input';
 import { UpdateReservationInput } from './inputs/update-reservation.input';
 import { ReservationType } from './types/reservation.type';
@@ -54,14 +54,14 @@ export class ReservationService {
     return response.toPromise();
   }
 
-  public async getAllUserReservationsAsClient(
-    getAllUserReservationsAsClientInput: GetAllUserReservationsAsClientInput,
+  public async getAllUserReservations(
+    getAllUserReservationsInput: GetAllUserReservationsInput,
   ): Promise<ReservationType[]> {
     this.logger.debug(`Received get all user reservations as client`);
 
     const response = await this.client.send<ReservationType[]>(
       { type: 'get-all-user-reservations-as-client' },
-      getAllUserReservationsAsClientInput,
+      getAllUserReservationsInput,
     );
 
     return response.toPromise();

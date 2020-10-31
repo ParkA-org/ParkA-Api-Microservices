@@ -9,7 +9,8 @@ import { UpdateReservationDto } from './dtos/update-reservation.dto';
 import { v4 as uuid } from 'uuid';
 import { CancelReservationDto } from './dtos/cancel-reservation.dto';
 import { ReservationStatuses } from './utils/statuses';
-import { GetAllUserReservationsAsClientDto } from './dtos/get-all-user-reservations.dto';
+import { GetAllUserReservations } from './dtos/get-all-user-reservations.dto';
+import { UserRoles } from './utils/user-roles';
 
 @Injectable()
 export class ReservationService {
@@ -47,17 +48,29 @@ export class ReservationService {
   }
 
   public async getAllUserReservationsAsClient(
-    getAllUserReservationsAsClientDto: GetAllUserReservationsAsClientDto,
+    getAllUserReservations: GetAllUserReservations,
   ): Promise<Reservation[]> {
     this.logger.debug(`Received get all user reservations`);
 
-    const { id } = getAllUserReservationsAsClientDto;
+    const { id, role } = getAllUserReservations;
 
-    return this.reservationRepository.find({
-      where: {
-        client: id,
-      },
-    });
+    if (role === UserRoles.Client) {
+      return this.reservationRepository.find({
+        where: {
+          client: id,
+        },
+      });
+    }
+
+    if (role === UserRoles.Owner) {
+      return this.reservationRepository.find({
+        where: {
+          owner: id,
+        },
+      });
+    }
+
+    return [];
   }
 
   //TODO: implement creation logic
