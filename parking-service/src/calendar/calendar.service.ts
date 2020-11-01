@@ -65,6 +65,12 @@ export class CalendarService {
 
     const calendar = await this.getCalendarById(calendarId);
 
+    const fieldsToUpdate = Object.keys(updateCalendarPayload);
+
+    for (const field of fieldsToUpdate) {
+      calendar[field] = updateCalendarPayload[field];
+    }
+
     calendar.updatedAt = new Date().toISOString();
 
     return this.calendarRepository.save(calendar);
