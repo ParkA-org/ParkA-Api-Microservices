@@ -1,0 +1,3 @@
+interface IGetCalendarByIdInput {
+  id: string;
+}

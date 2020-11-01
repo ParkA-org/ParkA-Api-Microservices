@@ -1,4 +1,5 @@
 import { Column, Entity, ObjectIdColumn, PrimaryColumn } from 'typeorm';
+import { IParking } from '../interfaces/parking-entity.interface';
 
 @Entity()
 export class Parking implements IParking, IBaseEntity {
@@ -30,7 +31,7 @@ export class Parking implements IParking, IBaseEntity {
   parkingName: string;
 
   @Column()
-  calendar: string[];
+  calendar: string;
 
   @Column()
   priceHours: string;

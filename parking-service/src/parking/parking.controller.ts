@@ -38,6 +38,7 @@ export class ParkingController {
     return await this.parkingService.createParking(createParkingDto);
   }
 
+  //TODO: fix logic to update a parking
   @MessagePattern({ type: 'update-parking' })
   public async updateParking(
     updateParkingDto: UpdateParkingDto,

@@ -1,19 +1,27 @@
-interface IReservation {
+import { ReservationStatuses } from '../utils/statuses';
+
+export interface IReservation {
   _id: string;
 
   id: string;
+
+  parking: string;
+
+  client: string;
+
+  owner: string;
 
   checkInDate: string;
 
   checkOutDate: string;
 
-  vehicleId: string;
+  vehicle: string;
 
-  paymentInfoId: string;
+  paymentInfo: string;
+
+  total: number;
 
   rentDate: string;
 
-  status: string;
-
-  userId: string;
+  status: ReservationStatuses;
 }
