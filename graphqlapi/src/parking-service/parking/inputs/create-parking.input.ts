@@ -3,8 +3,10 @@ import {
   IsLatitude,
   IsLongitude,
   IsPositive,
+  IsUrl,
   MaxLength,
   MinLength,
+  ValidateNested,
 } from 'class-validator';
 import { CreateCalendarInputType } from 'src/parking-service/calendar/inputs/create-calendar.input';
 import { ICreateParkingInput } from '../interfaces/create-parking-input.interface';
@@ -39,6 +41,7 @@ export class CreateParkingInput implements ICreateParkingInput {
   pictures: string[];
 
   @Field()
+  @IsUrl()
   mainPicture: string;
 
   @Field()
