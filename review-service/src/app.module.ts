@@ -12,7 +12,8 @@ import { Review } from './review/entities/review.entity';
     }),
     TypeOrmModule.forRoot({
       type: 'mongodb',
-      url: `${process.env.MONGODB_CONNECTION_STRING}`,
+      url:
+        'mongodb+srv://parkaApiUser:vUrmea2Sp4SSCBWj@parkawebapimicroservice.br7y0.mongodb.net/ParkaMicroservices?retryWrites=true&w=majority',
       useUnifiedTopology: true,
       useNewUrlParser: true,
       synchronize: true,
