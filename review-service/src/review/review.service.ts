@@ -25,7 +25,9 @@ export class ReviewService {
 
     try {
       const { id, calification, review, title } = updateReviewDto;
-      const reviewData = await this.getReviewById(id);
+      const getReviewById = new GetReviewByIdDto();
+      getReviewById.id;
+      const reviewData = await this.getReviewById(getReviewById);
 
       calification !== undefined
         ? (reviewData.calification = calification)
