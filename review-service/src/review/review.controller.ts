@@ -56,6 +56,6 @@ export class ReviewController {
         updateReviewDto,
       )}`,
     );
-    return await this.reviewService.updateReview(updateUserDto);
+    return await this.reviewService.updateReview(updateReviewDto);
   }
 }
