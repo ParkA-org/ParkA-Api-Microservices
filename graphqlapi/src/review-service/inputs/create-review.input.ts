@@ -4,7 +4,7 @@ import { ICreateReviewInput } from '../interfaces/create-review-input.interface'
 
 @InputType('CreateReviewInput')
 export class CreateReviewInput implements ICreateReviewInput {
-  @Field()
+  @Field({ nullable: true })
   @IsUUID('all')
   user: string;
 
