@@ -8,7 +8,7 @@ import { ReservationService } from './reservation.service';
 
 @Module({
   imports: [VehicleModule, PaymentModule, ParkingModule, AuthModule],
-  exports: [],
+  exports: [ReservationService],
   providers: [ReservationResolver, ReservationService],
 })
 export class ReservationModule {}

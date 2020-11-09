@@ -86,6 +86,19 @@ services:
     volumes:
       - ./payment-service:/usr/src/app
 
+  review-service:
+    container_name: "review-service"
+    restart: "always"
+    build:
+      context: ./review-service
+      dockerfile: Dockerfile
+    external_links:
+      - redis
+    ports:
+      - "3006:3000"
+    volumes:
+      - ./review-service:/usr/src/app
+
   parking-service:
     container_name: "parking-service"
     restart: "always"
