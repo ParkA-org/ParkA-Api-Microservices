@@ -1,7 +1,7 @@
 import { Controller, Logger } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
 import { CreateReviewDto } from './dtos/create-review.dto';
-import { GetAllParkingReview } from './dtos/get-all-parking-review.dto';
+import { GetAllParkingReviewDto } from './dtos/get-all-parking-review.dto';
 import { GetAllUserReviewDto } from './dtos/get-all-user-review.dto';
 import { GetReviewByIdDto } from './dtos/get-review-by-id.dto';
 import { UpdateReviewDto } from './dtos/update-review.dto';
@@ -19,7 +19,7 @@ export class ReviewController {
   ): Promise<Review> {
     this.logger.debug(
       `Received id review message with data ${JSON.stringify(
-        getReviewByIdDtod,
+        getReviewByIdDto,
       )}`,
     );
     return await this.reviewService.getReviewById(getReviewByIdDto);
@@ -39,9 +39,9 @@ export class ReviewController {
 
   @MessagePattern({ type: 'get-all-parking-review' })
   public async getAllParkingReview(
-    getAllParkingReview: GetAllParkingReview,
+    getAllParkingReviewDto: GetAllParkingReviewDto,
   ): Promise<Review[]> {
-    return await this.reviewService.getAllParkingReview(getAllParkingReview);
+    return await this.reviewService.getAllParkingReview(getAllParkingReviewDto);
   }
 
   @MessagePattern({ type: 'create-review' })
