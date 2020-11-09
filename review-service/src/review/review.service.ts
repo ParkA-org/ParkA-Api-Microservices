@@ -3,13 +3,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 import { RpcException } from '@nestjs/microservices';
-import { exception } from 'console';
-import { ConfigService } from '@nestjs/config';
 import { Review } from './entities/review.entity';
 import { UpdateReviewDto } from './dtos/update-review.dto';
 import { CreateReviewDto } from './dtos/create-review.dto';
 import { GetAllUserReviewDto } from './dtos/get-all-user-review.dto';
-import { GetAllParkingReview } from './dtos/get-all-parking-review.dto';
+import { GetAllParkingReviewDto } from './dtos/get-all-parking-review.dto';
+import { GetReviewByIdDto } from './dtos/get-review-by-id.dto';
 
 @Injectable()
 export class ReviewService {
@@ -17,7 +16,6 @@ export class ReviewService {
 
   constructor(
     @InjectRepository(Review) private reviewRepository: Repository<Review>,
-    private configService: ConfigService,
   ) {}
 
   public async updateReview(updateReviewDto: UpdateReviewDto): Promise<Review> {
@@ -27,21 +25,23 @@ export class ReviewService {
 
     try {
       const { id, calification, review, title } = updateReviewDto;
-      const reviewData = await this.getReview(id);
+      const reviewData = await this.getReviewById(id);
 
-      lastName !== undefined ? (reviewData.lastName = lastName) : null;
+      calification !== undefined
+        ? (reviewData.calification = calification)
+        : null;
 
-      name !== undefined ? (user.name = name) : null;
+      review !== undefined ? (reviewData.review = review) : null;
 
-      user.updatedAt = new Date().toISOString();
+      title !== undefined ? (reviewData.title = title) : null;
 
-      user.origin = origin;
+      reviewData.updatedAt = new Date().toISOString();
 
-      await this.authRepository.save(user);
+      await this.reviewRepository.save(reviewData);
 
-      return user;
+      return reviewData;
     } catch (error) {
-      throw new RpcException('User not Found');
+      throw new RpcException('Review not Found');
     }
   }
 
@@ -84,86 +84,32 @@ export class ReviewService {
   ): Promise<Review[]> {
     try {
       const { user } = getAllUserReviewDto;
-      const review = this.reviewRepository.find({ user: user });
-      return await review;
+      const reviews = this.reviewRepository.find({ user: user });
+      return await reviews;
     } catch (error) {
-      new RpcException('User Review not found');
+      new RpcException('User Reviews not found');
     }
   }
 
   public async getAllParkingReview(
-    getAllParkingReviewDto: GetAllParkingReview,
+    getAllParkingReviewDto: GetAllParkingReviewDto,
   ): Promise<Review[]> {
     try {
-      const { user } = getAllUserReviewDto;
-      const review = this.reviewRepository.find({ user: user });
+      const { parking } = getAllParkingReviewDto;
+      const reviews = this.reviewRepository.find({ parking: parking });
+      return await reviews;
+    } catch (error) {
+      new RpcException('Parking Reviews not found');
+    }
+  }
+
+  public async getReviewById(getReviewById: GetReviewByIdDto): Promise<Review> {
+    try {
+      const { id } = getReviewById;
+      const review = this.reviewRepository.findOne({ id });
       return await review;
     } catch (error) {
-      new RpcException('User Review not found');
-    }
-  }
-
-  private createToken(id: string, email: string, userInformation: string) {
-    return jwt.sign(
-      { id: id, email: email, userInformation: userInformation },
-      this.configService.get('JWT_SECRET'),
-      {
-        expiresIn: '100d',
-      },
-    );
-  }
-
-  public async getUser(id: string): Promise<User> {
-    try {
-      const user = this.authRepository.findOne({ id });
-      return await user;
-    } catch (error) {
-      throw new exception('User not Found');
-    }
-  }
-
-  public async getUserByUserInformation(id: string): Promise<User> {
-    try {
-      const user = this.authRepository.findOne({ userInformation: id });
-      return await user;
-    } catch (error) {
-      throw new exception('User not Found');
-    }
-  }
-
-  public async signIn(
-    authCredentialDto: AuthCredentialsDto,
-  ): Promise<LoginType> {
-    try {
-      const { email, password } = authCredentialDto;
-
-      email.toLowerCase();
-      const user = await this.authRepository.findOne({ email: email });
-
-      const credential = await this.credentialRepository.findOne({
-        email: email,
-      });
-
-      if (user) {
-        const hash = await this.hashPassword(password, credential.salt);
-
-        if (hash === credential.password) {
-          const JWT = await this.createToken(
-            user.id,
-            user.email,
-            user.userInformation,
-          );
-
-          const result = {
-            user,
-            JWT,
-          };
-
-          return result;
-        }
-      }
-    } catch {
-      throw new RpcException('Invalid Credentials');
+      throw new RpcException('Review not Found');
     }
   }
 }
