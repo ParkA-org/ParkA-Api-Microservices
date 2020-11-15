@@ -1,13 +1,15 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
 import { InjectConnection, InjectRepository } from '@nestjs/typeorm';
-import { Connection, Repository } from 'typeorm';
+import { Connection, getMongoRepository, Repository } from 'typeorm';
 import { CreateParkingDto } from './dtos/create-parking.dto';
 import { Parking } from './entities/parking.entity';
 import { v4 as uuid } from 'uuid';
 import { UpdateParkingDto } from './dtos/update-parking.dto';
 import { GetAllMyParkingsDto } from './dtos/get-all-my-parkings.dto';
 import { Calendar } from 'src/calendar/entities/calendar.entity';
+import { FilterDto } from './dtos/filter.dto';
+import { graphqlToMongoQueryUtil } from 'src/utils/graphql-to-mongo-query.util';
 
 @Injectable()
 export class ParkingService {
@@ -157,9 +159,33 @@ export class ParkingService {
     return parking;
   }
 
-  public async getAllParkings(): Promise<Parking[]> {
-    this.logger.debug(`Received get all parkings`);
-    return await this.parkingRepository.find();
+  public async getAllParkings(filterDto: FilterDto): Promise<Parking[]> {
+    this.logger.debug(
+      `Received get all parkings with ${JSON.stringify(filterDto)}`,
+    );
+
+    let queryBuilder = {};
+
+    const { limit, start, where } = filterDto;
+
+    if (limit) {
+      queryBuilder = { ...queryBuilder, take: limit };
+    }
+
+    if (start) {
+      queryBuilder = { ...queryBuilder, skip: start };
+    }
+
+    if (where) {
+      const convertedWhereFilter = graphqlToMongoQueryUtil(where);
+      queryBuilder = { ...queryBuilder, where: convertedWhereFilter };
+    }
+
+    console.log(queryBuilder);
+
+    const result = await this.parkingRepository.find(queryBuilder);
+
+    return await result;
   }
 
   public async getAllMyParkings(

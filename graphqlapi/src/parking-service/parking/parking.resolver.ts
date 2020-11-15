@@ -18,6 +18,7 @@ import { CalendarType } from '../calendar/types/calendar.type';
 import { FeatureService } from '../feature/feature.service';
 import { FeatureType } from '../feature/types/feature.type';
 import { CreateParkingInput } from './inputs/create-parking.input';
+import { FilterInput } from './inputs/filter.input';
 import { UpdateParkingInput } from './inputs/update-parking.input';
 import { ParkingService } from './parking.service';
 import { ParkingType } from './types/parking.type';
@@ -50,8 +51,10 @@ export class ParkingResolver {
   }
 
   @Query(returns => [ParkingType])
-  public async getAllParkings() {
-    return this.parkingService.getAllParkings();
+  public async getAllParkings(
+    @Args('input', { nullable: true }) filterInput: FilterInput,
+  ) {
+    return this.parkingService.getAllParkings(filterInput);
   }
 
   @Mutation(returns => ParkingType)
