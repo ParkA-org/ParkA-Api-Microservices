@@ -92,6 +92,10 @@ export class ParkingService {
       createdParking.parkingName = parkingName;
       createdParking.pictures = pictures;
       createdParking.priceHours = priceHours;
+      createdParking.position = {
+        coordinates: [parseFloat(longitude), parseFloat(latitude)],
+        type: 'Point',
+      };
 
       createdParking.sector = sector;
       createdParking.userInformation = userInformation;
@@ -185,7 +189,7 @@ export class ParkingService {
 
     const result = await this.parkingRepository.find(queryBuilder);
 
-    return await result;
+    return result;
   }
 
   public async getAllMyParkings(
