@@ -185,7 +185,7 @@ export class ParkingService {
       queryBuilder = { ...queryBuilder, where: convertedWhereFilter };
     }
 
-    console.log(queryBuilder);
+    // console.log(queryBuilder);
 
     const result = await this.parkingRepository.find(queryBuilder);
 
