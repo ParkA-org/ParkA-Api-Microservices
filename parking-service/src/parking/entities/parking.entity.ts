@@ -68,4 +68,10 @@ export class Parking implements IParking, IBaseEntity {
 
   @Column()
   userInformation: string;
+
+  @Column()
+  review: number;
+
+  @Column()
+  totalReviews: number;
 }

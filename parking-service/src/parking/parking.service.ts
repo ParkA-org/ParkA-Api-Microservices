@@ -10,6 +10,7 @@ import { GetAllMyParkingsDto } from './dtos/get-all-my-parkings.dto';
 import { Calendar } from 'src/calendar/entities/calendar.entity';
 import { FilterDto } from './dtos/filter.dto';
 import { graphqlToMongoQueryUtil } from 'src/utils/graphql-to-mongo-query.util';
+import { VoteParkingDto } from './dtos/vote-parking.dto';
 
 @Injectable()
 export class ParkingService {
@@ -94,6 +95,8 @@ export class ParkingService {
       createdParking.parkingName = parkingName;
       createdParking.pictures = pictures;
       createdParking.priceHours = priceHours;
+      createdParking.review = 5;
+      createdParking.totalReviews = 1;
       createdParking.position = {
         coordinates: [parseFloat(longitude), parseFloat(latitude)],
         type: 'Point',
@@ -123,7 +126,6 @@ export class ParkingService {
     }
   }
 
-  //TODO: update this method to comply with the new data structure
   public async updateParking(
     updateParkingDto: UpdateParkingDto,
   ): Promise<Parking> {
@@ -178,6 +180,8 @@ export class ParkingService {
             calendarToUpdate[field] = calendar[field];
           }
         }
+
+        calendarToUpdate.updatedAt = new Date().toISOString();
 
         await queryRunner.manager.save(calendarToUpdate);
       }
@@ -243,5 +247,24 @@ export class ParkingService {
     return await this.parkingRepository.find({
       userInformation: userInformationId,
     });
+  }
+
+  public async reviewParking(rateParking: VoteParkingDto) {
+    const { calification, id } = rateParking;
+
+    const parkingToVote = await this.parkingRepository.findOne({ id: id });
+
+    if (!parkingToVote) {
+      throw new RpcException('Parking not found');
+    }
+
+    parkingToVote.totalReviews += 1;
+
+    const newRating =
+      (parkingToVote.review + calification) / parkingToVote.totalReviews;
+
+    parkingToVote.review = newRating;
+
+    return this.parkingRepository.save(parkingToVote);
   }
 }

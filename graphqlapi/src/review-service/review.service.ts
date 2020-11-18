@@ -31,6 +31,14 @@ export class ReviewService {
       { type: 'create-review' },
       createReviewInput,
     );
+
+    const { calification, parking } = createReviewInput;
+
+    this.client.send<ReviewType>(
+      { type: 'review-parking' },
+      { id: parking, calification },
+    );
+
     return response.toPromise();
   }
 

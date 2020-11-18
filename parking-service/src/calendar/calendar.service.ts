@@ -68,7 +68,9 @@ export class CalendarService {
     const fieldsToUpdate = Object.keys(updateCalendarPayload);
 
     for (const field of fieldsToUpdate) {
-      calendar[field] = updateCalendarPayload[field];
+      if (updateCalendarPayload[field]) {
+        calendar[field] = updateCalendarPayload[field];
+      }
     }
 
     calendar.updatedAt = new Date().toISOString();
