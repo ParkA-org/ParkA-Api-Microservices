@@ -73,6 +73,7 @@ export class ParkingService {
         updateParkingInput,
       )}`,
     );
+
     const internUpdateParking = new InternUpdateParking();
 
     const internFieldList = Object.keys(updateParkingInput);

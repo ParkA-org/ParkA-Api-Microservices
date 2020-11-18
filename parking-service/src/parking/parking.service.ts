@@ -17,6 +17,8 @@ export class ParkingService {
 
   constructor(
     @InjectRepository(Parking) private parkingRepository: Repository<Parking>,
+    @InjectRepository(Calendar)
+    private calendarRepository: Repository<Calendar>,
     @InjectConnection() private readonly connection: Connection,
   ) {}
 
@@ -140,18 +142,57 @@ export class ParkingService {
     });
 
     if (!parking) {
-      throw new RpcException('Entry not found');
+      throw new RpcException('Parking not found');
     }
 
-    const updateFieldList = Object.keys(updateParkingDto);
+    const calendarToUpdate = await this.calendarRepository.findOne({
+      id: parking.calendar,
+    });
 
-    for (const field of updateFieldList) {
-      parking[field] = updateParkingDto[field];
+    if (!calendarToUpdate) {
+      throw new RpcException('Calendar not found');
     }
 
-    parking.updatedAt = new Date().toISOString();
+    const queryRunner = this.connection.createQueryRunner();
 
-    return await this.parkingRepository.save(parking);
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      const updateFieldList = Object.keys(updateParkingDto);
+
+      for (const field of updateFieldList) {
+        if (field != 'calendar') {
+          parking[field] = updateParkingDto[field];
+        }
+      }
+
+      parking.updatedAt = new Date().toISOString();
+
+      const { calendar } = updateParkingDto;
+
+      if (calendar) {
+        const calendarFieldToUpdate = Object.keys(calendarToUpdate);
+        for (const field of calendarFieldToUpdate) {
+          if (calendar[field]) {
+            calendarToUpdate[field] = calendar[field];
+          }
+        }
+
+        await queryRunner.manager.save(calendarToUpdate);
+      }
+
+      await queryRunner.manager.save(parking);
+
+      await queryRunner.commitTransaction();
+      await queryRunner.release();
+
+      return parking;
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      await queryRunner.release();
+      throw new RpcException('An undefined error occured');
+    }
   }
 
   public async getParkingById(id: string): Promise<Parking> {

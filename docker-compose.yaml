@@ -2,7 +2,7 @@ version: "3"
 
 services:
   graphql-api:
-    container_name: "api-gateway"
+    container_name: "graphql-gateway"
     restart: "always"
     build:
       context: ./graphqlapi

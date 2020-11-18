@@ -7,7 +7,7 @@ export interface IUpdateParkingInput {
 
   parkingName: string;
 
-  calendar: string[];
+  calendar: IUpdateCalendarPayload;
 
   priceHours: string;
 
