@@ -70,7 +70,7 @@ export class Parking implements IParking, IBaseEntity {
   userInformation: string;
 
   @Column()
-  review: number;
+  rating: number;
 
   @Column()
   totalReviews: number;

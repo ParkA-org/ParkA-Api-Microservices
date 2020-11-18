@@ -95,7 +95,7 @@ export class ParkingService {
       createdParking.parkingName = parkingName;
       createdParking.pictures = pictures;
       createdParking.priceHours = priceHours;
-      createdParking.review = 5;
+      createdParking.rating = 5;
       createdParking.totalReviews = 1;
       createdParking.position = {
         coordinates: [parseFloat(longitude), parseFloat(latitude)],
@@ -261,9 +261,9 @@ export class ParkingService {
     parkingToVote.totalReviews += 1;
 
     const newRating =
-      (parkingToVote.review + calification) / parkingToVote.totalReviews;
+      (parkingToVote.rating + calification) / parkingToVote.totalReviews;
 
-    parkingToVote.review = newRating;
+    parkingToVote.rating = newRating;
 
     return this.parkingRepository.save(parkingToVote);
   }

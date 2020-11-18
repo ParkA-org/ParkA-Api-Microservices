@@ -15,6 +15,6 @@ export interface IParking {
   features: string[];
   verified: boolean;
   userInformation: string;
-  review: number;
+  rating: number;
   totalReviews: number;
 }
