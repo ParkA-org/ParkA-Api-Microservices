@@ -60,6 +60,18 @@ export class Parking implements IParking, IBaseEntity {
   @Column()
   verified: boolean;
 
+  @Column({ type: 'point' })
+  position: {
+    coordinates: number[];
+    type: 'Point';
+  };
+
   @Column()
   userInformation: string;
+
+  @Column()
+  rating: number;
+
+  @Column()
+  totalReviews: number;
 }

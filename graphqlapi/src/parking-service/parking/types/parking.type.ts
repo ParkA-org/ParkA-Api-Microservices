@@ -61,4 +61,7 @@ export class ParkingType implements IParkingType {
 
   @Field(type => UserType)
   user: string;
+
+  @Field()
+  rating: number;
 }

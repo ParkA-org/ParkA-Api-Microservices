@@ -7,6 +7,7 @@ import {
 import { JWTpayload } from 'src/auth-service/types/jwt.type';
 import { UserType } from 'src/auth-service/types/user.type';
 import { CreateParkingInput } from './inputs/create-parking.input';
+import { FilterInput } from './inputs/filter.input';
 import { InternCreateParking } from './inputs/intern-create-parking';
 import { InternUpdateParking } from './inputs/intern-update-parking';
 import { UpdateParkingInput } from './inputs/update-parking.input';
@@ -72,6 +73,7 @@ export class ParkingService {
         updateParkingInput,
       )}`,
     );
+
     const internUpdateParking = new InternUpdateParking();
 
     const internFieldList = Object.keys(updateParkingInput);
@@ -89,12 +91,14 @@ export class ParkingService {
     return response.toPromise();
   }
 
-  public async getAllParkings(): Promise<ParkingType[]> {
+  public async getAllParkings(
+    filterInput: FilterInput,
+  ): Promise<ParkingType[]> {
     this.logger.debug(`Received get all parkings`);
 
     const response = await this.client.send<ParkingType[]>(
       { type: 'get-all-parkings' },
-      {},
+      filterInput,
     );
 
     return response.toPromise();

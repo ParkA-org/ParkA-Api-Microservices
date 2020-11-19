@@ -1,4 +1,5 @@
 import { IsOptional } from 'class-validator';
+import { UpdateCalendarDto } from 'src/calendar/dtos/update-calendar.dto';
 import { Calendar } from 'src/calendar/entities/calendar.entity';
 
 export class UpdateParkingDto implements IUpdateParkingDto {
@@ -16,7 +17,7 @@ export class UpdateParkingDto implements IUpdateParkingDto {
   parkingName: string;
 
   @IsOptional()
-  calendar: Calendar;
+  calendar: UpdateCalendarDto;
 
   @IsOptional()
   priceHours: string;
