@@ -1,0 +1,3 @@
+interface ICancelReservationDto {
+  id: string;
+}

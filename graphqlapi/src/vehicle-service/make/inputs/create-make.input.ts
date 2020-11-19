@@ -1,7 +1,7 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
 import { IsUUID, MinLength } from 'class-validator';
 
-@InputType('createMakeInput')
+@InputType('CreateMakeInput')
 export class CreateMakeInput implements ICreateMakeInput {
   @Field()
   @MinLength(4)

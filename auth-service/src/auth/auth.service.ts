@@ -190,6 +190,15 @@ export class AuthService {
     }
   }
 
+  public async getUserByUserInformation(id: string): Promise<User> {
+    try {
+      const user = this.authRepository.findOne({ userInformation: id });
+      return await user;
+    } catch (error) {
+      throw new exception('User not Found');
+    }
+  }
+
   public async signIn(
     authCredentialDto: AuthCredentialsDto,
   ): Promise<LoginType> {

@@ -4,7 +4,7 @@ interface IUpdateParkingDto {
   countParking: number;
   published: boolean;
   parkingName: string;
-  calendar: string;
+  calendar: IUpdateCalendarDto;
   priceHours: string;
   pictures: string[];
   mainPicture: string;

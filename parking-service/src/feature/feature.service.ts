@@ -44,7 +44,7 @@ export class FeatureService {
   public async getFeatureById(id: string): Promise<Feature> {
     this.logger.debug(`Received get feature by ID`);
     try {
-      const feature = this.featureRepository.findOne({ id });
+      const feature = this.featureRepository.findOne({ id: id });
       return await feature;
     } catch (error) {
       throw new RpcException('Feature not Found');
@@ -64,12 +64,13 @@ export class FeatureService {
   public async getFeaturesByIds(ids: string[]): Promise<Feature[]> {
     this.logger.debug(`Received get features by IDs`);
     try {
-      const features = [];
-      ids.forEach(id => {
-        const feature = this.getFeatureById(id);
-        features.push(feature);
+      const features = this.featureRepository.find({
+        where: {
+          id: { $in: ids },
+        },
       });
-      return await features;
+
+      return features;
     } catch (error) {
       throw new RpcException('Features not Found');
     }

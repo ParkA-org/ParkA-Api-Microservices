@@ -5,7 +5,7 @@ export interface IParkingType {
   longitude: string;
   published: boolean;
   parkingName: string;
-  calendar: string[];
+  calendar: string;
   priceHours: string;
   pictures: string[];
   mainPicture: string;
@@ -16,4 +16,6 @@ export interface IParkingType {
   features: string[];
   verified: boolean;
   userInformation: string;
+  user: string;
+  rating: number;
 }

@@ -1,7 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { IsDateString, MaxLength, MinLength } from 'class-validator';
 
-@InputType()
+@InputType('CreatePaymentInput')
 export class CreatePaymentInput implements ICreatePaymentInput {
   @Field()
   @MinLength(2)

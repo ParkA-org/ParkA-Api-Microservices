@@ -32,6 +32,12 @@ export class ModelService {
     return result;
   }
 
+  public async getAllModels(): Promise<Model[]> {
+    this.logger.debug(`Received get all models`);
+
+    return await this.modelRepository.find();
+  }
+
   public async getManyModelsById(
     getManyModelsByIdDto: GetManyModelsByIdDto,
   ): Promise<Model[]> {

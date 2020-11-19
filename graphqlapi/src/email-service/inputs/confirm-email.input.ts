@@ -2,7 +2,7 @@ import { Field, InputType } from '@nestjs/graphql';
 import { IsEmail } from 'class-validator';
 import { IConfirmEmailInput } from '../interfaces/confirm-email-input.interface';
 
-@InputType()
+@InputType('ConfirmEmailInput')
 export class ConfirmEmailInput implements IConfirmEmailInput {
   @Field()
   @IsEmail()

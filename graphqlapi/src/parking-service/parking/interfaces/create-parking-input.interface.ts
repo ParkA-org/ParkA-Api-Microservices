@@ -3,8 +3,8 @@ export interface ICreateParkingInput {
   latitude: string;
   longitude: string;
   parkingName: string;
-  calendar: string[];
-  priceHours: string;
+  calendar: ICreateCalendarInput;
+  priceHours: number;
   pictures: string[];
   mainPicture: string;
   sector: string;

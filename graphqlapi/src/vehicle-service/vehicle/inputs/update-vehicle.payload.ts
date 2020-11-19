@@ -31,6 +31,7 @@ export class UpdateVehiclePayload implements IUpdateVehiclePayload {
   @IsUUID('4')
   model: string;
 
+  @Field(type => [String], { nullable: true })
   pictures: string[];
 
   @Field({ nullable: true })

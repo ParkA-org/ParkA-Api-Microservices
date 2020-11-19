@@ -1,7 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { MinLength } from 'class-validator';
 
-@InputType('updateCountryPayload')
+@InputType('UpdateCountryPayload')
 export class UpdateCountryPayload implements IUpdateCountryPayload {
   @Field()
   @MinLength(2)

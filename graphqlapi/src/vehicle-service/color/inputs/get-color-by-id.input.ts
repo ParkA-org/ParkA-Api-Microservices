@@ -1,7 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { IsUUID } from 'class-validator';
 
-@InputType('getColorByIdInput')
+@InputType('GetColorByIdInput')
 export class GetColorByIdInput implements IGetColorByIdInput {
   @Field()
   @IsUUID('4')

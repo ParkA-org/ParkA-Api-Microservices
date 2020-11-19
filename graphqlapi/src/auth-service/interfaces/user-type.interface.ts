@@ -11,5 +11,7 @@ export interface IUserType {
 
   profilePicture?: string;
 
+  userInformation: string;
+
   confirmed: boolean;
 }

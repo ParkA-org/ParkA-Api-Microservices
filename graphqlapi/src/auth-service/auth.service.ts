@@ -101,6 +101,7 @@ export class AuthService {
 
     return response.toPromise();
   }
+
   public async login(loginUserInput: LoginUserInput): Promise<LoginType> {
     this.logger.log('Got LoginUserInput data');
     const response = this.client.send<LoginType>(

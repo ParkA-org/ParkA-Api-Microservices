@@ -3,7 +3,7 @@ interface ICreateParkingDto {
   latitude: string;
   longitude: string;
   parkingName: string;
-  calendar: string[];
+  calendar: ICalendar;
   priceHours: string;
   pictures: string[];
   mainPicture: string;

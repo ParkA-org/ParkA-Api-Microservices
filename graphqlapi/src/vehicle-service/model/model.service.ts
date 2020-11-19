@@ -42,6 +42,19 @@ export class ModelService {
     return response.toPromise();
   }
 
+  public async getAllModels(): Promise<ModelType[]> {
+    this.logger.debug(`Received get all models`);
+
+    const response = await this.client.send<ModelType[]>(
+      {
+        type: 'get-all-models',
+      },
+      {},
+    );
+
+    return response.toPromise();
+  }
+
   public async getManyModelsById(
     getManyModelsByIdInput: GetManyModelsByIdInput,
   ): Promise<ModelType[]> {

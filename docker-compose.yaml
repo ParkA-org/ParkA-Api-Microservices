@@ -2,7 +2,7 @@ version: "3"
 
 services:
   graphql-api:
-    container_name: "api-gateway"
+    container_name: "graphql-gateway"
     restart: "always"
     build:
       context: ./graphqlapi
@@ -86,6 +86,19 @@ services:
     volumes:
       - ./payment-service:/usr/src/app
 
+  review-service:
+    container_name: "review-service"
+    restart: "always"
+    build:
+      context: ./review-service
+      dockerfile: Dockerfile
+    external_links:
+      - redis
+    ports:
+      - "3006:3000"
+    volumes:
+      - ./review-service:/usr/src/app
+
   parking-service:
     container_name: "parking-service"
     restart: "always"
@@ -98,3 +111,23 @@ services:
       - "3007:3000"
     volumes:
       - ./parking-service:/usr/src/app
+
+  nginx-parka-microservices-proxy-server:
+    container_name: "nginx-parka-microservices-proxy-server"
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    restart: "always"
+    depends_on:
+      - graphql-api
+      - auth-service
+      - vehicle-service
+      - email-service
+      - core-service
+      - payment-service
+      - parking-service
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/cert:/etc/nginx/certs

@@ -67,6 +67,17 @@ services:
     ports:
       - "3005:3000"
 
+  review-service:
+    container_name: "review-service"
+    restart: "always"
+    build:
+      context: ./review-service
+      dockerfile: Dockerfile.prod
+    external_links:
+      - redis
+    ports:
+      - "3006:3000"
+
   parking-service:
     container_name: "parking-service"
     restart: "always"
@@ -102,3 +113,5 @@ services:
     ports:
       - "80:80"
       - "443:443"
+    volumes:
+      - ./nginx/cert:/etc/nginx/certs
