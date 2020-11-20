@@ -36,7 +36,7 @@ export class UpdateUserInformationInput implements IUpdateUserInformationInput {
   @ValidateIf(
     (input: UpdateUserInformationInput) => input.telephoneNumber !== undefined,
   )
-  @Length(10, 11)
+  @Length(10, 14)
   telephoneNumber: string;
 
   @Field({ nullable: true })
