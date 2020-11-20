@@ -57,8 +57,8 @@ export class AuthService {
   public async updateUserPassword(
     updateUserPasswordDto: UpdateUserPasswordDto,
   ): Promise<User> {
-    const { oldPassword, newPassword, email } = updateUserPasswordDto;
-    email.toLowerCase();
+    let { oldPassword, newPassword, email } = updateUserPasswordDto;
+    email = email.toLowerCase();
 
     try {
       const credential = await this.credentialRepository.findOne({
@@ -107,7 +107,7 @@ export class AuthService {
   }
   // Is Inprogress
   public async createUser(createUserDto: CreateUserDto): Promise<User> {
-    const {
+    let {
       name,
       email,
       lastName,
@@ -118,7 +118,7 @@ export class AuthService {
     } = createUserDto;
 
     const date = new Date();
-    email.toLowerCase();
+    email = email.toLowerCase();
 
     try {
       const salt = await bcrypt.genSalt();
@@ -203,9 +203,9 @@ export class AuthService {
     authCredentialDto: AuthCredentialsDto,
   ): Promise<LoginType> {
     try {
-      const { email, password } = authCredentialDto;
+      let { email, password } = authCredentialDto;
 
-      email.toLowerCase();
+      email = email.toLowerCase();
       const user = await this.authRepository.findOne({ email: email });
 
       const credential = await this.credentialRepository.findOne({
