@@ -35,7 +35,7 @@ export class CreateUserInformationInpuType
     (input: CreateUserInformationInpuType) =>
       input.telephoneNumber !== undefined,
   )
-  @Length(13, 14)
+  @Length(10, 14)
   telephoneNumber: string;
 
   @Field({ nullable: true })
