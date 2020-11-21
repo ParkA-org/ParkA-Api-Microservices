@@ -1,4 +1,4 @@
-interface IUpdatePaymentPayload {
+export interface IUpdatePaymentPayload {
   id: string;
   cardHolder: string;
   digit: string;
