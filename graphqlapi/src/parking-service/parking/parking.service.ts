@@ -9,6 +9,7 @@ import { UserType } from 'src/auth-service/types/user.type';
 import { UserInformationType } from 'src/core-service/user-information/types/user-information.type';
 import { CreateParkingInput } from './inputs/create-parking.input';
 import { FilterInput } from './inputs/filter.input';
+import { GetUserInformationByIdDto } from './inputs/get-user-information-by-id.dto';
 import { InternCreateParking } from './inputs/intern-create-parking';
 import { InternUpdateParking } from './inputs/intern-update-parking';
 import { UpdateParkingInput } from './inputs/update-parking.input';
@@ -122,9 +123,11 @@ export class ParkingService {
     id: string,
   ): Promise<UserInformationType> {
     this.logger.log('Got User By UserInformationId data');
+    const data = new GetUserInformationByIdDto();
+    data.id = id;
     const response = this.client.send<UserInformationType>(
       { type: 'get-userInformation-by-id' },
-      id,
+      data,
     );
     return response.toPromise();
   }

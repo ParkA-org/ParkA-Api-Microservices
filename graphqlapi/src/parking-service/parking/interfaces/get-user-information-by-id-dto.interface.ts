@@ -1,0 +1,3 @@
+interface IGetUserInformationByIdDto {
+  id: string;
+}
