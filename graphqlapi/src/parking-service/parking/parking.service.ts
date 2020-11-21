@@ -126,7 +126,7 @@ export class ParkingService {
     const data = new GetUserInformationByIdDto();
     data.id = id;
     const response = this.client.send<UserInformationType>(
-      { type: 'get-userInformation-by-id' },
+      { type: 'get-user-information-by-id' },
       data,
     );
     return response.toPromise();

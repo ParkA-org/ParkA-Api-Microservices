@@ -94,13 +94,6 @@ export class ParkingResolver {
     return await this.featureService.getFeaturesByIds(parking.features);
   }
 
-  @ResolveField(returns => UserType)
-  public async user(@Parent() parking: ParkingType): Promise<UserType> {
-    return await this.parkingService.getUserByUserInformation(
-      parking.userInformation,
-    );
-  }
-
   @ResolveField(returns => UserInformationType)
   public async userInformation(
     @Parent() parking: ParkingType,
@@ -113,5 +106,12 @@ export class ParkingResolver {
   @ResolveField(returns => [CalendarType])
   public async calendar(@Parent() parking: ParkingType): Promise<CalendarType> {
     return this.calendarService.getCalendarById({ id: parking.calendar });
+  }
+
+  @ResolveField(returns => UserType)
+  public async user(@Parent() parking: ParkingType): Promise<UserType> {
+    return await this.parkingService.getUserByUserInformation(
+      parking.userInformation,
+    );
   }
 }
