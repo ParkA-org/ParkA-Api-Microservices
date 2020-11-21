@@ -9,6 +9,7 @@ import { v4 as uuid } from 'uuid';
 import * as bcrypt from 'bcryptjs';
 import { DeletePaymentDto } from './dtos/delete-payment.dto';
 import { GetAllUserPaymentsDto } from './dtos/get-all-user-payments.dto';
+import { UpdatePaymentDto } from './dtos/update-payment.dto';
 @Injectable()
 export class PaymentService {
   private logger = new Logger('PaymentService');
@@ -43,6 +44,16 @@ export class PaymentService {
       deleted: false,
       userInformation: userInformation,
     });
+  }
+
+  public async updatePayment(
+    updatePaymentDto: UpdatePaymentDto,
+  ): Promise<Payment> {
+    this.logger.debug(
+      `Received update payment with payload ${JSON.stringify(
+        updatePaymentDto,
+      )}`,
+    );
   }
 
   public async createPayment(
