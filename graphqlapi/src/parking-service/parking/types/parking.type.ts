@@ -1,4 +1,4 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
 import { UserType } from 'src/auth-service/types/user.type';
 import { UserInformationType } from 'src/core-service/user-information/types/user-information.type';
 import { CalendarType } from 'src/parking-service/calendar/types/calendar.type';
@@ -10,14 +10,14 @@ export class ParkingType implements IParkingType {
   @Field(type => ID)
   id: string;
 
-  @Field()
+  @Field(type => Int)
   countParking: number;
 
   @Field()
-  latitude: string;
+  latitude: number;
 
   @Field()
-  longitude: string;
+  longitude: number;
 
   @Field()
   published: boolean;
