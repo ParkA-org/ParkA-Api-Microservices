@@ -1,4 +1,4 @@
-interface ICreatePaymentDto {
+export interface ICreatePaymentDto {
   userInformationPayload: IUserInformationPayload;
   createPaymentPayload: ICreatePaymentPayload;
 }
