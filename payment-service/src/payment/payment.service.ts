@@ -85,6 +85,7 @@ export class PaymentService {
           const salt = await bcrypt.genSalt();
           const result = await this.hashCVV(updatePaymentPayload[field], salt);
           payment[field] = result;
+          payment['salt'] = salt;
         }
       }
 
