@@ -1,6 +1,8 @@
 export interface ICreateReservationInput {
   parking: string;
 
+  owner: string;
+
   checkInDate: string;
 
   checkOutDate: string;
