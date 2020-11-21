@@ -51,6 +51,32 @@ export class PaymentResolver {
 
   @UseGuards(AuthGuard)
   @Mutation(of => PaymentType)
+  public async updatePayment(
+    @Context('user') user: JWTpayload,
+    @Args('updatePaymentInput') updatePaymentInput: UpdatePaymentInput,
+  ): Promise<PaymentType> {
+    this.logger.debug(
+      `Received create payment data ${JSON.stringify(createPaymentInput)}`,
+    );
+
+    const createPaymentInternalInput: CreatePaymentInternalInput = {
+      createPaymentPayload: createPaymentInput,
+      userInformationPayload: {
+        userInformation: user.userInformation,
+      },
+    };
+
+    const payment = await this.paymentService.createPayment(
+      createPaymentInternalInput,
+    );
+    if (!payment) {
+      throw new BadRequestException('This payment already exists');
+    }
+    return payment;
+  }
+
+  @UseGuards(AuthGuard)
+  @Mutation(of => PaymentType)
   public async createPayment(
     @Context('user') user: JWTpayload,
     @Args('createPaymentInput') createPaymentInput: CreatePaymentInput,
