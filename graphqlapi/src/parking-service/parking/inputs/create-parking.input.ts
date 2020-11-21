@@ -50,7 +50,7 @@ export class CreateParkingInput implements ICreateParkingInput {
   @Field()
   direction: string;
 
-  @Field()
+  @Field({ nullable: true })
   information: string;
 
   @Field(type => [ID])

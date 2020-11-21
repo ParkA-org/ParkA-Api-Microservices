@@ -47,7 +47,7 @@ export class ParkingType implements IParkingType {
   @Field()
   direction: string;
 
-  @Field()
+  @Field({ nullable: true })
   information: string;
 
   @Field(type => [FeatureType])
@@ -59,7 +59,7 @@ export class ParkingType implements IParkingType {
   @Field(type => UserInformationType)
   userInformation: string;
 
-  @Field(type => UserType)
+  @Field(type => UserType, { nullable: true })
   user: string;
 
   @Field()
