@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { RpcException } from '@nestjs/microservices';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { InjectConnection, InjectRepository } from '@nestjs/typeorm';
+import { Connection, Repository } from 'typeorm';
 import { CreatePaymentDto } from './dtos/create-payment.dto';
 import { GetPaymentByIdDto } from './dtos/get-payment-by-id.dto';
 import { Payment } from './entities/payment.entity';
@@ -16,6 +16,7 @@ export class PaymentService {
 
   constructor(
     @InjectRepository(Payment) private paymentRepository: Repository<Payment>,
+    @InjectConnection() private readonly connection: Connection,
   ) {}
 
   public async getPaymentById(
@@ -54,6 +55,52 @@ export class PaymentService {
         updatePaymentDto,
       )}`,
     );
+
+    const { updatePaymentPayload, userInformationPayload } = updatePaymentDto;
+    const { id } = updatePaymentPayload;
+    const { userInformation } = userInformationPayload;
+
+    const payment = await this.paymentRepository.findOne({
+      userInformation: userInformation,
+      id: id,
+    });
+
+    if (!payment) {
+      throw new RpcException('Payment not found');
+    }
+
+    const queryRunner = this.connection.createQueryRunner();
+
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      const updateFieldList = Object.keys(updatePaymentPayload);
+
+      for (const field of updateFieldList) {
+        if (field != 'cvv') {
+          payment[field] = updatePaymentPayload[field];
+        }
+        if (field == 'cvv') {
+          const salt = await bcrypt.genSalt();
+          const result = await this.hashCVV(updatePaymentPayload[field], salt);
+          payment[field] = result;
+        }
+      }
+
+      payment.updatedAt = new Date().toISOString();
+
+      await queryRunner.manager.save(payment);
+
+      await queryRunner.commitTransaction();
+      await queryRunner.release();
+
+      return payment;
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      await queryRunner.release();
+      throw new RpcException('An undefined error occured');
+    }
   }
 
   public async createPayment(
