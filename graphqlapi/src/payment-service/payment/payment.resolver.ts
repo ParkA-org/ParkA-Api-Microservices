@@ -18,6 +18,8 @@ import { CreatePaymentInput } from './inputs/create-payment.input';
 import { DeletePaymentInput } from './inputs/delete-payment.input';
 import { GetAllUserPaymentInternalInput } from './inputs/get-all-user-payments-internal.input';
 import { GetPaymentByIdInput } from './inputs/get-payment-by-id.input';
+import { UpdatePaymentInternalInput } from './inputs/update-payment-internal.input';
+import { UpdatePaymentInput } from './inputs/update-payment.input';
 import { PaymentService } from './payment.service';
 import { PaymentType } from './types/payment.type';
 @Resolver(of => PaymentType)
@@ -56,22 +58,20 @@ export class PaymentResolver {
     @Args('updatePaymentInput') updatePaymentInput: UpdatePaymentInput,
   ): Promise<PaymentType> {
     this.logger.debug(
-      `Received create payment data ${JSON.stringify(createPaymentInput)}`,
+      `Received update payment data ${JSON.stringify(updatePaymentInput)}`,
     );
 
-    const createPaymentInternalInput: CreatePaymentInternalInput = {
-      createPaymentPayload: createPaymentInput,
+    const updatePaymentInternalInput: UpdatePaymentInternalInput = {
+      updatePaymentPayload: updatePaymentInput,
       userInformationPayload: {
         userInformation: user.userInformation,
       },
     };
 
-    const payment = await this.paymentService.createPayment(
-      createPaymentInternalInput,
+    const payment = await this.paymentService.updatePayment(
+      updatePaymentInternalInput,
     );
-    if (!payment) {
-      throw new BadRequestException('This payment already exists');
-    }
+
     return payment;
   }
 
