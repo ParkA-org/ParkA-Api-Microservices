@@ -56,7 +56,7 @@ export class ParkingType implements IParkingType {
   @Field()
   verified: boolean;
 
-  @Field(type => UserInformationType)
+  @Field(type => UserInformationType, { nullable: true })
   userInformation: string;
 
   @Field(type => UserType, { nullable: true })

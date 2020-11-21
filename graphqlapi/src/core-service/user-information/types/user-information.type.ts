@@ -10,22 +10,22 @@ export class UserInformationType implements IUserInformationType {
   @Field()
   id: string;
 
-  @Field(type => [PaymentType])
+  @Field(type => [PaymentType], { nullable: true })
   paymentInformation: string[];
 
-  @Field()
+  @Field({ nullable: true })
   documentNumber: string;
 
-  @Field(type => [VehicleType])
+  @Field(type => [VehicleType], { nullable: true })
   vehicles: string[];
 
-  @Field(type => [ParkingType])
+  @Field(type => [ParkingType], { nullable: true })
   parkings: string[];
 
-  @Field()
+  @Field({ nullable: true })
   telephoneNumber: string;
 
-  @Field()
+  @Field({ nullable: true })
   birthDate: string;
 
   @Field(type => CountryType)
