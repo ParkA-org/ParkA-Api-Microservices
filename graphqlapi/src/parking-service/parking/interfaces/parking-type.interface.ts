@@ -1,8 +1,8 @@
 export interface IParkingType {
   id: string;
   countParking: number;
-  latitude: string;
-  longitude: string;
+  latitude: number;
+  longitude: number;
   published: boolean;
   parkingName: string;
   calendar: string;

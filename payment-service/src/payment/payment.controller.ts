@@ -4,6 +4,7 @@ import { CreatePaymentDto } from './dtos/create-payment.dto';
 import { DeletePaymentDto } from './dtos/delete-payment.dto';
 import { GetAllUserPaymentsDto } from './dtos/get-all-user-payments.dto';
 import { GetPaymentByIdDto } from './dtos/get-payment-by-id.dto';
+import { UpdatePaymentDto } from './dtos/update-payment.dto';
 import { Payment } from './entities/payment.entity';
 import { PaymentService } from './payment.service';
 
@@ -15,8 +16,14 @@ export class PaymentController {
   public async createPayment(
     createPaymentDto: CreatePaymentDto,
   ): Promise<Payment> {
-    console.log('Aqui no llego v:');
     return await this.paymentService.createPayment(createPaymentDto);
+  }
+
+  @MessagePattern({ type: 'update-payment' })
+  public async updatePayment(
+    updatePaymentDto: UpdatePaymentDto,
+  ): Promise<Payment> {
+    return await this.paymentService.updatePayment(updatePaymentDto);
   }
 
   @MessagePattern({ type: 'delete-payment' })
