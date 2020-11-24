@@ -30,7 +30,7 @@ export class ParkingType implements IParkingType {
   calendar: string;
 
   @Field()
-  priceHours: string;
+  priceHours: number;
 
   @Field(type => [String])
   pictures: string[];
