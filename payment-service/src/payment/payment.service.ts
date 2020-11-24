@@ -78,15 +78,7 @@ export class PaymentService {
       const updateFieldList = Object.keys(updatePaymentPayload);
 
       for (const field of updateFieldList) {
-        if (field != 'cvv') {
-          payment[field] = updatePaymentPayload[field];
-        }
-        if (field == 'cvv') {
-          const salt = await bcrypt.genSalt();
-          const result = await this.hashCVV(updatePaymentPayload[field], salt);
-          payment[field] = result;
-          payment['salt'] = salt;
-        }
+        payment[field] = updatePaymentPayload[field];
       }
 
       payment.updatedAt = new Date().toISOString();

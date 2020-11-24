@@ -34,7 +34,7 @@ export class Parking implements IParking, IBaseEntity {
   calendar: string;
 
   @Column()
-  priceHours: string;
+  priceHours: number;
 
   @Column()
   pictures: string[];

@@ -4,7 +4,7 @@ interface ICreateParkingDto {
   longitude: string;
   parkingName: string;
   calendar: ICalendar;
-  priceHours: string;
+  priceHours: number;
   pictures: string[];
   mainPicture: string;
   sector: string;

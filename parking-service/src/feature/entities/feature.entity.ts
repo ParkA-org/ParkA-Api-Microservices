@@ -16,5 +16,8 @@ export class Feature implements IFeature, IBaseEntity {
   createdAt: string;
 
   @Column()
+  slug: string;
+
+  @Column()
   name: string;
 }

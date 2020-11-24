@@ -5,7 +5,7 @@ export interface IParking {
   published: boolean;
   parkingName: string;
   calendar: string;
-  priceHours: string;
+  priceHours: number;
   pictures: string[];
   mainPicture: string;
   isAvailable: boolean;

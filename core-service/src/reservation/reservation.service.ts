@@ -111,6 +111,7 @@ export class ReservationService {
       status: ReservationStatuses.Created,
       total,
       vehicle,
+      reviewed: false,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     });
