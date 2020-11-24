@@ -44,7 +44,7 @@ export class CreateParkingInput implements ICreateParkingInput {
   @IsUrl()
   mainPicture: string;
 
-  @Field()
+  @Field({ nullable: true })
   sector: string;
 
   @Field()
