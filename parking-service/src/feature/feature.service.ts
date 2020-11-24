@@ -5,6 +5,7 @@ import { CreateFeatureDto } from './dtos/create-feature.dto';
 import { Feature } from './entities/feature.entity';
 import { v4 as uuid } from 'uuid';
 import { RpcException } from '@nestjs/microservices/exceptions/rpc-exception';
+import slugify from 'slugify';
 
 @Injectable()
 export class FeatureService {
@@ -25,10 +26,17 @@ export class FeatureService {
 
     const { name } = createFeatureDro;
 
+    const searchFeature = this.featureRepository.findOne({ name: name });
+
+    if (searchFeature) {
+      throw new RpcException('Duplicate field');
+    }
+
     try {
       const feature = this.featureRepository.save({
         id: uuid(),
         name,
+        slug: slugify(name),
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       });
