@@ -36,7 +36,7 @@ export class FeatureService {
       const feature = this.featureRepository.save({
         id: uuid(),
         name,
-        slug: slugify(name),
+        slug: slugify(name, { lower: true }),
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       });
