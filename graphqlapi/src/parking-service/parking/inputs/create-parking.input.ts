@@ -1,4 +1,4 @@
-import { Field, ID, InputType } from '@nestjs/graphql';
+import { Field, ID, InputType, Int } from '@nestjs/graphql';
 import {
   IsLatitude,
   IsLongitude,
@@ -13,7 +13,7 @@ import { ICreateParkingInput } from '../interfaces/create-parking-input.interfac
 
 @InputType('CreateParkingInput')
 export class CreateParkingInput implements ICreateParkingInput {
-  @Field()
+  @Field(type => Int)
   @IsPositive()
   countParking: number;
 

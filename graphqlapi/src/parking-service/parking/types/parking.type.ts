@@ -41,7 +41,7 @@ export class ParkingType implements IParkingType {
   @Field()
   isAvailable: boolean;
 
-  @Field()
+  @Field({ nullable: true })
   sector: string;
 
   @Field()
