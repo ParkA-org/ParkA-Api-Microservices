@@ -9,7 +9,7 @@ export class CreateParkingDto implements ICreateParkingDto {
   @MaxLength(50)
   parkingName: string;
   calendar: Calendar;
-  priceHours: string;
+  priceHours: number;
   pictures: string[];
   mainPicture: string;
   sector: string;
