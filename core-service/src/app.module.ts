@@ -9,6 +9,8 @@ import { Nationality } from './nationality/entities/nationality.entity';
 import { CountryModule } from './country/country.module';
 import { Country } from './country/entities/country.entity';
 import { ConfigModule } from '@nestjs/config';
+import { CalendarModule } from './calendar/calendar.module';
+import { Calendar } from './calendar/entities/calendar.entity';
 
 @Module({
   imports: [
@@ -23,10 +25,11 @@ import { ConfigModule } from '@nestjs/config';
       useUnifiedTopology: true,
       useNewUrlParser: true,
       synchronize: true,
-      entities: [Reservation, UserInformation, Nationality, Country],
+      entities: [Reservation, UserInformation, Nationality, Country, Calendar],
     }),
     NationalityModule,
     CountryModule,
+    CalendarModule,
   ],
   controllers: [],
   providers: [],
