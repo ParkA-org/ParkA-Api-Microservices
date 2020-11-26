@@ -164,21 +164,49 @@ export class ReservationService {
       start: startTime,
     };
 
-    calendar.schedules.push(schedule);
+    const originalSchedule = calendar.schedules;
 
-    calendar.schedules.sort((_schedule1, _schedule2) => {
-      if (_schedule1.start < _schedule2.start) {
-        return -1;
+    const canCreate = this.checkScheduleCreation(schedule, originalSchedule);
+
+    if (canCreate) {
+      calendar.schedules.push(schedule);
+
+      calendar.schedules.sort((_schedule1, _schedule2) => {
+        if (_schedule1.start < _schedule2.start) {
+          return -1;
+        }
+
+        if (_schedule1.start > _schedule2.start) {
+          return 1;
+        }
+
+        return 0;
+      });
+
+      return this.calendarRepository.save(calendar);
+    } else {
+      throw new RpcException('Cannot create reservation in this schedule');
+    }
+  }
+
+  private checkScheduleCreation(
+    _scheduleToCheck: Schedule,
+    _scheduleList: Schedule[],
+  ) {
+    for (const el of _scheduleList) {
+      if (
+        _scheduleToCheck.start < el.start &&
+        _scheduleToCheck.finish <= el.start
+      ) {
+        break;
+      } else if (_scheduleToCheck.start >= el.finish) {
+        continue;
+      } else {
+        return false;
       }
+    }
 
-      if (_schedule1.start > _schedule2.start) {
-        return 1;
-      }
-
-      return 0;
-    });
-
-    return this.calendarRepository.save(calendar);
+    return true;
   }
 
   private getTotalDaysOfReservation(
@@ -256,12 +284,64 @@ export class ReservationService {
     const fieldsToUpdate = Object.keys(data);
 
     for (const field of fieldsToUpdate) {
-      reservation[field] = where[field];
+      reservation[field] = data[field];
     }
 
-    reservation.updatedAt = new Date().toISOString();
+    console.log(reservation);
 
-    return this.reservationRepository.save(reservation);
+    const { id, checkInDate, parking, checkOutDate } = reservation;
+
+    const extractDateTime = this.extractDateTime(checkInDate);
+    const { day, month, year } = extractDateTime.date;
+
+    const reservationDate = new Date(year, month, day).toISOString();
+
+    const parkingCalendar = await this.calendarRepository.findOne({
+      parking,
+      date: reservationDate,
+    });
+
+    const extractedCheckInDate = this.extractDateTime(checkInDate);
+    const extractedCheckOutDate = this.extractDateTime(checkOutDate);
+
+    const { time: startTime } = extractedCheckInDate;
+    const { time: endTime } = extractedCheckOutDate;
+
+    const _schedules = parkingCalendar.schedules.filter(
+      el => el.reservation != id,
+    );
+
+    const schedule: Schedule = {
+      finish: endTime,
+      reservation: id,
+      start: startTime,
+    };
+
+    const canCreate = this.checkScheduleCreation(schedule, _schedules);
+
+    parkingCalendar.schedules = _schedules;
+
+    if (canCreate) {
+      parkingCalendar.schedules.push(schedule);
+
+      parkingCalendar.schedules.sort((_schedule1, _schedule2) => {
+        if (_schedule1.start < _schedule2.start) {
+          return -1;
+        }
+
+        if (_schedule1.start > _schedule2.start) {
+          return 1;
+        }
+
+        return 0;
+      });
+
+      reservation.updatedAt = new Date().toISOString();
+
+      return this.reservationRepository.save(reservation);
+    } else {
+      throw new RpcException('Cannot update reservation with this schedule');
+    }
   }
 
   public async cancelReservation(
@@ -269,7 +349,27 @@ export class ReservationService {
   ): Promise<Reservation> {
     const reservation = await this.getReservationById(cancelReservationDto);
 
+    const { id, checkInDate, parking } = reservation;
+
+    const extractDateTime = this.extractDateTime(checkInDate);
+    const { day, month, year } = extractDateTime.date;
+
+    const reservationDate = new Date(year, month, day).toISOString();
+
     reservation.status = ReservationStatuses.Cancelled;
+
+    const parkingCalendar = await this.calendarRepository.findOne({
+      parking,
+      date: reservationDate,
+    });
+
+    const _schedules = parkingCalendar.schedules.filter(
+      el => el.reservation != id,
+    );
+
+    parkingCalendar.schedules = _schedules;
+
+    await this.calendarRepository.save(parkingCalendar);
 
     return this.reservationRepository.save(reservation);
   }

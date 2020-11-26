@@ -81,6 +81,6 @@ export class ReservationController {
       )}`,
     );
 
-    return this.cancelReservation(cancelReservationDto);
+    return this.reservationService.cancelReservation(cancelReservationDto);
   }
 }
