@@ -283,11 +283,24 @@ export class ReservationService {
 
     const fieldsToUpdate = Object.keys(data);
 
+    const {
+      checkInDate: checkInDateToUpdate,
+      checkOutDate: checkOutDateToUpdate,
+    } = data;
+
+    if (
+      (checkInDateToUpdate !== undefined &&
+        checkOutDateToUpdate === undefined) ||
+      (checkInDateToUpdate === undefined && checkOutDateToUpdate !== undefined)
+    ) {
+      throw new Error(
+        'When Updating check in date, checkout date cannot be undefined and viceversa',
+      );
+    }
+
     for (const field of fieldsToUpdate) {
       reservation[field] = data[field];
     }
-
-    console.log(reservation);
 
     const { id, checkInDate, parking, checkOutDate } = reservation;
 
