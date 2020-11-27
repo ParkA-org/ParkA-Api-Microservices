@@ -5,4 +5,5 @@ interface IUpdateReservationPayload {
   total: number;
   paymentInfo: string;
   rentDate: string;
+  reviewed: boolean;
 }

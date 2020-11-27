@@ -19,6 +19,9 @@ export class Reservation implements IReservation, IBaseEntity {
   @Column()
   owner: string;
 
+  @Column({ default: false })
+  reviewed: boolean;
+
   @Column()
   checkInDate: string;
 

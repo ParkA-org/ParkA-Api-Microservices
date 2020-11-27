@@ -1,22 +1,31 @@
 import { Field, InputType } from '@nestjs/graphql';
+import { IsDateString, ValidateIf } from 'class-validator';
 
 @InputType('UpdateReservationPayload')
 export class UpdateReservationPayload implements IUpdateReservationPayload {
-  @Field()
+  @Field({ nullable: true })
+  @IsDateString()
+  @ValidateIf(
+    (input: UpdateReservationPayload) => input.checkOutDate !== undefined,
+  )
   checkInDate: string;
 
-  @Field()
+  @Field({ nullable: true })
+  @IsDateString()
+  @ValidateIf(
+    (input: UpdateReservationPayload) => input.checkInDate !== undefined,
+  )
   checkOutDate: string;
 
-  @Field()
+  @Field({ nullable: true })
   vehicle: string;
 
-  @Field()
+  @Field({ nullable: true })
   total: number;
 
-  @Field()
+  @Field({ nullable: true })
   paymentInfo: string;
 
-  @Field()
+  @Field({ nullable: true })
   rentDate: string;
 }

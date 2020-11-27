@@ -1,4 +1,4 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
 import { UserType } from 'src/auth-service/types/user.type';
 import { UserInformationType } from 'src/core-service/user-information/types/user-information.type';
 import { CalendarType } from 'src/parking-service/calendar/types/calendar.type';
@@ -10,14 +10,14 @@ export class ParkingType implements IParkingType {
   @Field(type => ID)
   id: string;
 
-  @Field()
+  @Field(type => Int)
   countParking: number;
 
   @Field()
-  latitude: string;
+  latitude: number;
 
   @Field()
-  longitude: string;
+  longitude: number;
 
   @Field()
   published: boolean;
@@ -30,7 +30,7 @@ export class ParkingType implements IParkingType {
   calendar: string;
 
   @Field()
-  priceHours: string;
+  priceHours: number;
 
   @Field(type => [String])
   pictures: string[];
@@ -41,13 +41,13 @@ export class ParkingType implements IParkingType {
   @Field()
   isAvailable: boolean;
 
-  @Field()
+  @Field({ nullable: true })
   sector: string;
 
   @Field()
   direction: string;
 
-  @Field()
+  @Field({ nullable: true })
   information: string;
 
   @Field(type => [FeatureType])
@@ -56,10 +56,10 @@ export class ParkingType implements IParkingType {
   @Field()
   verified: boolean;
 
-  @Field(type => UserInformationType)
+  @Field(type => UserInformationType, { nullable: true })
   userInformation: string;
 
-  @Field(type => UserType)
+  @Field(type => UserType, { nullable: true })
   user: string;
 
   @Field()

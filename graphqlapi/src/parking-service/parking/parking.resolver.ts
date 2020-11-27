@@ -12,6 +12,7 @@ import { AuthService } from 'src/auth-service/auth.service';
 import { AuthGuard } from 'src/auth-service/strategy/auth.guard';
 import { JWTpayload } from 'src/auth-service/types/jwt.type';
 import { UserType } from 'src/auth-service/types/user.type';
+import { UserInformationType } from 'src/core-service/user-information/types/user-information.type';
 import { UserInformationService } from 'src/core-service/user-information/user-information.service';
 import { CalendarService } from '../calendar/calendar.service';
 import { CalendarType } from '../calendar/types/calendar.type';
@@ -93,9 +94,11 @@ export class ParkingResolver {
     return await this.featureService.getFeaturesByIds(parking.features);
   }
 
-  @ResolveField(returns => [FeatureType])
-  public async user(@Parent() parking: ParkingType): Promise<UserType> {
-    return await this.parkingService.getUserByUserInformation(
+  @ResolveField(returns => UserInformationType)
+  public async userInformation(
+    @Parent() parking: ParkingType,
+  ): Promise<UserInformationType> {
+    return await this.parkingService.getUserInformationById(
       parking.userInformation,
     );
   }
@@ -103,5 +106,12 @@ export class ParkingResolver {
   @ResolveField(returns => [CalendarType])
   public async calendar(@Parent() parking: ParkingType): Promise<CalendarType> {
     return this.calendarService.getCalendarById({ id: parking.calendar });
+  }
+
+  @ResolveField(returns => UserType)
+  public async user(@Parent() parking: ParkingType): Promise<UserType> {
+    return await this.parkingService.getUserByUserInformation(
+      parking.userInformation,
+    );
   }
 }

@@ -1,5 +1,4 @@
-import { MaxLength, MinLength } from 'class-validator';
-import { IsUUID } from 'class-validator';
+import { ICreatePaymentDto } from '../interfaces/create-payment-dto.interface';
 import { CreatePaymentPayload } from './create-payment.payload';
 import { UserInformationPayload } from './user-information.payload';
 
