@@ -23,6 +23,7 @@ export class CalendarService {
     const reservationDate = new Date(year, month, day).toISOString();
 
     const filterObject = {
+      take: 7,
       where: {
         parking,
         date: { $gte: reservationDate },
