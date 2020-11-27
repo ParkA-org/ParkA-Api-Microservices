@@ -18,6 +18,7 @@ import { ParkingModule } from './parking-service/parking/parking.module';
 import { FeatureModule } from './parking-service/feature/feature.module';
 import { CalendarModule } from './parking-service/calendar/calendar.module';
 import { ReviewModule } from './review-service/review.module';
+import { ParkingCalendarModule } from './core-service/calendar/parking-resolver.module';
 
 @Module({
   imports: [
@@ -46,6 +47,7 @@ import { ReviewModule } from './review-service/review.module';
     FeatureModule,
     CalendarModule,
     ReviewModule,
+    ParkingCalendarModule,
   ],
   providers: [],
 })
