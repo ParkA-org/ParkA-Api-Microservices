@@ -20,7 +20,7 @@ export class CalendarService {
     const extractedDate = this.extractDateTime(date);
     const { day, month, year } = extractedDate.date;
 
-    const reservationDate = new Date(year, month, day).toISOString();
+    const reservationDate = new Date(year, month - 1, day).toISOString();
 
     const filterObject = {
       take: 7,
