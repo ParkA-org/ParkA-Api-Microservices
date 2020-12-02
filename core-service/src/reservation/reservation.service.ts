@@ -136,7 +136,7 @@ export class ReservationService {
 
     const { day, month, year } = extractedCheckInDate.date;
 
-    const reservationDate = new Date(year, month, day).toISOString();
+    const reservationDate = new Date(year, month - 1, day).toISOString();
 
     console.log(reservationDate);
 
@@ -248,7 +248,7 @@ export class ReservationService {
   private getNumberOfDaysInMonth(dateObject: ICalendarDate) {
     const { day, year, month } = dateObject;
 
-    return new Date(year, month, day).getDate();
+    return new Date(year, month - 1, day).getDate();
   }
 
   private extractDateTime(dateTime: string): ICalendarDateTimeDto {
@@ -307,7 +307,7 @@ export class ReservationService {
     const extractDateTime = this.extractDateTime(checkInDate);
     const { day, month, year } = extractDateTime.date;
 
-    const reservationDate = new Date(year, month, day).toISOString();
+    const reservationDate = new Date(year, month - 1, day).toISOString();
 
     const parkingCalendar = await this.calendarRepository.findOne({
       parking,
@@ -367,7 +367,7 @@ export class ReservationService {
     const extractDateTime = this.extractDateTime(checkInDate);
     const { day, month, year } = extractDateTime.date;
 
-    const reservationDate = new Date(year, month, day).toISOString();
+    const reservationDate = new Date(year, month - 1, day).toISOString();
 
     reservation.status = ReservationStatuses.Cancelled;
 
