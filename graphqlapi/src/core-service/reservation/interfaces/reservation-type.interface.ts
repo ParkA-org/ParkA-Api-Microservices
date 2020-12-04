@@ -22,4 +22,6 @@ export interface IReservationType {
   rentDate: string;
 
   status: ReservationStatuses;
+
+  reviewed: boolean;
 }
