@@ -74,14 +74,18 @@ export class ReservationController {
   @MessagePattern({ type: 'cancel-reservation' })
   public async cancelReservation(
     cancelReservationDto: CancelReservationDto,
+    user: string,
   ): Promise<Reservation> {
     this.logger.debug(
       `Received cancel reservation with payload ${JSON.stringify(
         cancelReservationDto,
-      )}`,
+      )} User id ${JSON.stringify(user)}`,
     );
 
-    return this.reservationService.cancelReservation(cancelReservationDto);
+    return this.reservationService.cancelReservation(
+      cancelReservationDto,
+      user,
+    );
   }
 
   @MessagePattern({ type: 'confirm-reservation' })

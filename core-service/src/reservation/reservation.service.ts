@@ -359,8 +359,13 @@ export class ReservationService {
 
   public async cancelReservation(
     cancelReservationDto: CancelReservationDto,
+    user: string,
   ): Promise<Reservation> {
     const reservation = await this.getReservationById(cancelReservationDto);
+
+    if (reservation.client != user && reservation.owner != user) {
+      throw new RpcException('Entry not found');
+    }
 
     const { id, checkInDate, parking } = reservation;
 
