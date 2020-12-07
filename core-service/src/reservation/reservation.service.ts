@@ -7,7 +7,10 @@ import { Reservation } from './entities/reservation.entity';
 import { CreateReservationDto } from './dtos/create-reservation.dto';
 import { UpdateReservationDto } from './dtos/update-reservation.dto';
 import { v4 as uuid } from 'uuid';
-import { CancelReservationDto } from './dtos/cancel-reservation.dto';
+import {
+  CancelReservationDto,
+  ValidaUserDto,
+} from './dtos/cancel-reservation.dto';
 import { ReservationStatuses } from './utils/statuses';
 import { GetAllUserReservations } from './dtos/get-all-user-reservations.dto';
 import { UserRoles } from './utils/user-roles';
@@ -359,11 +362,11 @@ export class ReservationService {
 
   public async cancelReservation(
     cancelReservationDto: CancelReservationDto,
-    user: string,
+    user: ValidaUserDto,
   ): Promise<Reservation> {
     const reservation = await this.getReservationById(cancelReservationDto);
 
-    if (reservation.client != user && reservation.owner != user) {
+    if (reservation.client != user.id && reservation.owner != user.id) {
       throw new RpcException('Entry not found');
     }
 
