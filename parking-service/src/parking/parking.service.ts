@@ -261,7 +261,7 @@ export class ParkingService {
     parkingToVote.totalReviews += 1;
 
     const newRating =
-      ((parkingToVote.rating - 1) * parkingToVote.totalReviews + calification) /
+      (parkingToVote.rating * (parkingToVote.totalReviews - 1) + calification) /
       parkingToVote.totalReviews;
 
     parkingToVote.updatedAt = new Date().toISOString();
