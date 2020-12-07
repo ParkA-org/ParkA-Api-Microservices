@@ -28,6 +28,7 @@ import { CreateReservationInput } from './inputs/create-reservation.input';
 import { GetAllUserReservationsInput } from './inputs/get-all-user-reservations-as-client.input';
 import { GetReservationByIdInput } from './inputs/get-reservation-by-id.input';
 import { UpdateReservationInput } from './inputs/update-reservation.input';
+import { ValidateUser } from './inputs/validate-user';
 import { ReservationService } from './reservation.service';
 import { ReservationType } from './types/reservation.type';
 import { UserRoles } from './utils/user-roles';
@@ -171,9 +172,12 @@ export class ReservationResolver {
       )}`,
     );
 
+    const validate = new ValidateUser();
+    validate.id = user.id;
+
     return this.reservationService.cancelReservation(
       cancelReservationInput,
-      user.id,
+      validate,
     );
   }
 
