@@ -83,4 +83,7 @@ export class ReservationController {
 
     return this.reservationService.cancelReservation(cancelReservationDto);
   }
+
+  @MessagePattern({ type: 'confirm-reservation' })
+  public async confirmReservation() {}
 }

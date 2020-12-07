@@ -103,6 +103,7 @@ export class ReservationService {
 
   public async cancelReservation(
     cancelReservationInput: CancelReservationInput,
+    user: string,
   ): Promise<ReservationType> {
     this.logger.debug(
       `Received cancel reservation with payload ${JSON.stringify(
@@ -112,7 +113,7 @@ export class ReservationService {
 
     const response = await this.client.send<ReservationType>(
       { type: 'cancel-reservation' },
-      cancelReservationInput,
+      { cancelReservationInput, user },
     );
 
     return response.toPromise();

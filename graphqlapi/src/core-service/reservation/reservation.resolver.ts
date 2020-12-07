@@ -163,6 +163,7 @@ export class ReservationResolver {
   public async cancelReservation(
     @Args('cancelReservationInput')
     cancelReservationInput: CancelReservationInput,
+    @Context('user') user: JWTpayload,
   ): Promise<ReservationType> {
     this.logger.debug(
       `Received cancel reservation with payload ${JSON.stringify(
@@ -170,10 +171,12 @@ export class ReservationResolver {
       )}`,
     );
 
-    return this.reservationService.cancelReservation(cancelReservationInput);
+    return this.reservationService.cancelReservation(
+      cancelReservationInput,
+      user.id,
+    );
   }
 
-  //Field Resolvers
   @ResolveField(of => VehicleType)
   public async vehicle(
     @Parent() reservation: ReservationType,
