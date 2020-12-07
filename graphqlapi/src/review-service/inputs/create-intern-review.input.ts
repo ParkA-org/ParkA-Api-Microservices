@@ -1,4 +1,6 @@
 import { IsUUID } from 'class-validator';
+import { ICreateInternReviewInput } from '../interfaces/create-intern-review-input.interface';
+import { CreateReviewInput } from './create-review.input';
 
 export class CreateInternReviewInput implements ICreateInternReviewInput {
   parking: string;
@@ -15,4 +17,23 @@ export class CreateInternReviewInput implements ICreateInternReviewInput {
   calification: number;
 
   type: boolean;
+}
+
+export class CreateInternReviewInputFunction {
+  public async createReview(
+    createReviewInput: CreateReviewInput,
+    user: string,
+  ): Promise<CreateInternReviewInput> {
+    const createInternReviewInput = new CreateInternReviewInput();
+
+    createInternReviewInput.calification = createReviewInput.calification;
+    createInternReviewInput.parking = createReviewInput.parking;
+    createInternReviewInput.reservation = createReviewInput.reservation;
+    createInternReviewInput.review = createReviewInput.review;
+    createInternReviewInput.user = user;
+    createInternReviewInput.title = createReviewInput.title;
+    createInternReviewInput.type = createReviewInput.type;
+
+    return createInternReviewInput;
+  }
 }
