@@ -83,7 +83,7 @@ export class ParkingService {
       const createdParking: Parking = new Parking();
 
       createdParking.id = parkingId;
-      createdParking.isAvailable = false;
+      createdParking.isAvailable = true;
       createdParking.calendar = calendarId;
       createdParking.countParking = countParking;
       createdParking.features = features;
