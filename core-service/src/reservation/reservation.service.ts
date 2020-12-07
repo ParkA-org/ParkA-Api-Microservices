@@ -360,6 +360,28 @@ export class ReservationService {
     }
   }
 
+  public async updateReservationReviewed(
+    updateReservationDto: UpdateReservationDto,
+  ): Promise<Reservation> {
+    try {
+      const { data, where } = updateReservationDto;
+
+      const reservation = await this.getReservationById(where);
+
+      const fieldsToUpdate = Object.keys(data);
+
+      for (const field of fieldsToUpdate) {
+        reservation[field] = data[field];
+      }
+
+      reservation.updatedAt = new Date().toISOString();
+
+      return this.reservationRepository.save(reservation);
+    } catch {
+      throw new RpcException('Invalid operation');
+    }
+  }
+
   public async cancelReservation(
     cancelReservationDto: CancelReservationDto,
     user: ValidaUserDto,
