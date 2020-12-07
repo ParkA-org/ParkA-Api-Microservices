@@ -4,6 +4,8 @@ import {
   ClientProxyFactory,
   Transport,
 } from '@nestjs/microservices';
+import { ReservationType } from 'src/core-service/reservation/types/reservation.type';
+import { ParkingType } from 'src/parking-service/parking/types/parking.type';
 import { CreateInternReviewInput } from './inputs/create-intern-review.input';
 import { CreateReviewInput } from './inputs/create-review.input';
 import { GetAllParkingReviewInput } from './inputs/get-all-parking-review.input';
@@ -32,24 +34,6 @@ export class ReviewService {
       { type: 'create-review' },
       createInternReviewInput,
     );
-
-    const { calification, parking, reservation } = createInternReviewInput;
-
-    this.client.send<ReviewType>(
-      { type: 'review-parking' },
-      { id: parking, calification },
-    );
-
-    const obj = {
-      where: {
-        id: reservation,
-      },
-      data: {
-        reviewed: true,
-      },
-    };
-
-    this.client.send<ReviewType>({ type: 'update-reservation' }, { obj });
 
     return response.toPromise();
   }

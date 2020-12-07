@@ -119,4 +119,24 @@ export class ReservationService {
 
     return response.toPromise();
   }
+
+  public async updateReservationReviewed(
+    reservation: string,
+  ): Promise<ReservationType> {
+    const obj = {
+      where: {
+        id: reservation,
+      },
+      data: {
+        reviewed: true,
+      },
+    };
+
+    const response = await this.client.send<ReservationType>(
+      { type: 'update-reservation' },
+      obj,
+    );
+
+    return response.toPromise();
+  }
 }

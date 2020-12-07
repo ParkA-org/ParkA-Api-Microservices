@@ -86,6 +86,13 @@ export class ReviewResolver {
       createInternReviewInput,
     );
 
+    await this.parkingService.reviewParking(
+      review.parking,
+      review.calification,
+    );
+
+    await this.reservationService.updateReservationReviewed(review.reservation);
+
     if (!review) {
       throw new BadRequestException('This review already exists');
     }

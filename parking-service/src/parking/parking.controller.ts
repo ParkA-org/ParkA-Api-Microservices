@@ -44,11 +44,19 @@ export class ParkingController {
   public async updateParking(
     updateParkingDto: UpdateParkingDto,
   ): Promise<Parking> {
+    this.logger.debug(
+      `Received update parking data message with data ${JSON.stringify(
+        updateParkingDto,
+      )}`,
+    );
     return await this.parkingService.updateParking(updateParkingDto);
   }
 
   @MessagePattern({ type: 'review-parking' })
   public async reviewParking(rateParking: VoteParkingDto): Promise<Parking> {
+    this.logger.debug(
+      `Received rate parking message with data ${JSON.stringify(rateParking)}`,
+    );
     return await this.parkingService.reviewParking(rateParking);
   }
 }
