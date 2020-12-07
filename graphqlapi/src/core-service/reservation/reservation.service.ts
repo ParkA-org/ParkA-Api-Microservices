@@ -123,15 +123,12 @@ export class ReservationService {
   public async updateReservationReviewed(
     reservation: string,
   ): Promise<ReservationType> {
-    const data = new ReservationType();
-    data.reviewed = true;
-
     const obj = {
       where: {
         id: reservation,
       },
       data: {
-        data,
+        reviewed: true,
       },
     };
 

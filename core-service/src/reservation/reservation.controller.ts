@@ -84,7 +84,9 @@ export class ReservationController {
       )}`,
     );
 
-    return this.reservationService.updateReservation(updateReservationDto);
+    return this.reservationService.updateReservationReviewed(
+      updateReservationDto,
+    );
   }
 
   @MessagePattern({ type: 'cancel-reservation' })
