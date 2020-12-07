@@ -4,6 +4,7 @@ import {
   ClientProxyFactory,
   Transport,
 } from '@nestjs/microservices';
+import { CreateInternReviewInput } from './inputs/create-intern-review.input';
 import { CreateReviewInput } from './inputs/create-review.input';
 import { GetAllParkingReviewInput } from './inputs/get-all-parking-review.input';
 import { GetAllUserReviewInput } from './inputs/get-all-user-review.input';
@@ -25,14 +26,14 @@ export class ReviewService {
   }
 
   public async createReview(
-    createReviewInput: CreateReviewInput,
+    createInternReviewInput: CreateInternReviewInput,
   ): Promise<ReviewType> {
     const response = await this.client.send<ReviewType>(
       { type: 'create-review' },
-      createReviewInput,
+      createInternReviewInput,
     );
 
-    const { calification, parking, reservation } = createReviewInput;
+    const { calification, parking, reservation } = createInternReviewInput;
 
     this.client.send<ReviewType>(
       { type: 'review-parking' },

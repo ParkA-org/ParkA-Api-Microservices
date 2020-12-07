@@ -22,7 +22,7 @@ export class CreateInternReviewInput implements ICreateInternReviewInput {
 export class CreateInternReviewInputFunction {
   public async createReview(
     createReviewInput: CreateReviewInput,
-    user: string,
+    id: string,
   ): Promise<CreateInternReviewInput> {
     const createInternReviewInput = new CreateInternReviewInput();
 
@@ -30,7 +30,7 @@ export class CreateInternReviewInputFunction {
     createInternReviewInput.parking = createReviewInput.parking;
     createInternReviewInput.reservation = createReviewInput.reservation;
     createInternReviewInput.review = createReviewInput.review;
-    createInternReviewInput.user = user;
+    createInternReviewInput.user = id;
     createInternReviewInput.title = createReviewInput.title;
     createInternReviewInput.type = createReviewInput.type;
 
