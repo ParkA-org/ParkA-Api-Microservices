@@ -74,6 +74,19 @@ export class ReservationController {
     return this.reservationService.updateReservation(updateReservationDto);
   }
 
+  @MessagePattern({ type: 'update-reservation-reviewed' })
+  public async updateReservationReviewed(
+    updateReservationDto: UpdateReservationDto,
+  ): Promise<Reservation> {
+    this.logger.debug(
+      `Received update reservation reviewed with payload ${JSON.stringify(
+        updateReservationDto,
+      )}`,
+    );
+
+    return this.reservationService.updateReservation(updateReservationDto);
+  }
+
   @MessagePattern({ type: 'cancel-reservation' })
   public async cancelReservation(
     cancelReservationDto: CancelReservationDto,
