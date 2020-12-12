@@ -37,11 +37,10 @@ export class EmailService {
         createConfirmEmailDto,
       )}`,
     );
-    const { email, origin } = createConfirmEmailDto;
-
+    let { email, origin } = createConfirmEmailDto;
     const date = new Date();
-    email.toLowerCase();
-
+    email = email.toLowerCase();
+    origin = origin.toLowerCase();
     try {
       let salt;
       if (origin == 'web') {
@@ -79,8 +78,8 @@ export class EmailService {
         createResetPasswordDto,
       )}`,
     );
-    const { email, origin } = createResetPasswordDto;
-    email.toLowerCase();
+    let { email } = createResetPasswordDto;
+    email = email.toLowerCase();
     const resetPassword = await this.resetPasswordRepository.findOne({
       email: email,
     });
@@ -100,7 +99,9 @@ export class EmailService {
     createResetPasswordDto: CreateResetPasswordDto,
   ): Promise<ResetPassword> {
     try {
-      const { email, origin } = createResetPasswordDto;
+      let { email, origin } = createResetPasswordDto;
+      email = email.toLowerCase();
+      origin = origin.toLowerCase();
       resetPassword.updatedAt = new Date().toISOString();
       resetPassword.origin = origin;
 
@@ -129,9 +130,10 @@ export class EmailService {
   public async createResetPassword(
     createResetPasswordDto: CreateResetPasswordDto,
   ): Promise<ResetPassword> {
-    const { email, origin } = createResetPasswordDto;
+    let { email, origin } = createResetPasswordDto;
     const date = new Date();
-    email.toLowerCase();
+    email = email.toLowerCase();
+    origin = origin.toLowerCase();
 
     try {
       let salt;
@@ -171,9 +173,9 @@ export class EmailService {
       )}`,
     );
 
-    const { email, origin } = createConfirmEmailDto;
-    email.toLowerCase();
-
+    let { email, origin } = createConfirmEmailDto;
+    email = email.toLowerCase();
+    origin = origin.toLowerCase();
     try {
       const confirmEmail = await this.getConfirmEmail(email);
       confirmEmail.updatedAt = new Date().toISOString();
@@ -210,7 +212,8 @@ export class EmailService {
       )}`,
     );
 
-    const { email, origin, code } = validateEmailCodeDto;
+    let { email, origin, code } = validateEmailCodeDto;
+    origin = origin.toLowerCase();
 
     if (origin == 'mobile') {
       try {
@@ -266,8 +269,8 @@ export class EmailService {
       )}`,
     );
 
-    const { email, origin, code, newPassword } = validateResetPasswordCodeDto;
-
+    let { email, origin, code, newPassword } = validateResetPasswordCodeDto;
+    origin = origin.toLowerCase();
     if (origin == 'mobile') {
       try {
         const resetPassword = await this.getResetPassword(email);
@@ -337,6 +340,7 @@ export class EmailService {
 
   public async getConfirmEmail(email: string): Promise<ConfirmEmail> {
     try {
+      email = email.toLowerCase();
       const confirm = await this.confirmEmailRepository.findOne({
         email: email,
       });
@@ -348,6 +352,7 @@ export class EmailService {
 
   public async getResetPassword(email: string): Promise<ResetPassword> {
     try {
+      email = email.toLowerCase();
       const reset = await this.resetPasswordRepository.findOne({
         email: email,
       });
