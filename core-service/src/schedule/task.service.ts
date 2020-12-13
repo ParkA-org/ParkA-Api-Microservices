@@ -50,8 +50,8 @@ export class TasksService {
       this.client.send<TaskDto>({ type: 'update-parking-from-cron-job' }, obj);
     });
 
-    this.schedulerRegistry.addCronJob(taskDto.parking, job);
-    this.schedulerRegistry.addCronJob(taskDto.parking + 2, job2);
+    this.schedulerRegistry.addCronJob(taskDto.reservation, job);
+    this.schedulerRegistry.addCronJob(taskDto.reservation + 2, job2);
     job.start();
     job2.start();
 
