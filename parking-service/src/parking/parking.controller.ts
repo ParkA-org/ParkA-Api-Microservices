@@ -3,6 +3,7 @@ import { MessagePattern } from '@nestjs/microservices';
 import { CreateParkingDto } from './dtos/create-parking.dto';
 import { FilterDto } from './dtos/filter.dto';
 import { GetAllMyParkingsDto } from './dtos/get-all-my-parkings.dto';
+import { UpdateParkingFromCronJobDto } from './dtos/update-parking-from-cron-job.dto';
 import { UpdateParkingDto } from './dtos/update-parking.dto';
 import { VoteParkingDto } from './dtos/vote-parking.dto';
 import { Parking } from './entities/parking.entity';
@@ -54,14 +55,16 @@ export class ParkingController {
 
   @MessagePattern({ type: 'update-parking-from-cron-job' })
   public async updateParkingFromCronJob(
-    updateParkingDto: UpdateParkingDto,
+    updateParkingFromCronJobDto: UpdateParkingFromCronJobDto,
   ): Promise<Parking> {
     this.logger.debug(
-      `Received update parking data message with data ${JSON.stringify(
-        updateParkingDto,
+      `Received update parking from cron job data message with data ${JSON.stringify(
+        updateParkingFromCronJobDto,
       )}`,
     );
-    return await this.parkingService.updateParking(updateParkingDto);
+    return await this.parkingService.updateParkingFromCronJob(
+      updateParkingFromCronJobDto,
+    );
   }
 
   @MessagePattern({ type: 'review-parking' })

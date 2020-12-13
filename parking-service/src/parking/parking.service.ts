@@ -11,6 +11,7 @@ import { Calendar } from 'src/calendar/entities/calendar.entity';
 import { FilterDto } from './dtos/filter.dto';
 import { graphqlToMongoQueryUtil } from 'src/utils/graphql-to-mongo-query.util';
 import { VoteParkingDto } from './dtos/vote-parking.dto';
+import { UpdateParkingFromCronJobDto } from './dtos/update-parking-from-cron-job.dto';
 
 @Injectable()
 export class ParkingService {
@@ -195,6 +196,31 @@ export class ParkingService {
     } catch (error) {
       await queryRunner.rollbackTransaction();
       await queryRunner.release();
+      throw new RpcException('An undefined error occured');
+    }
+  }
+
+  public async updateParkingFromCronJob(
+    updateParkingFromCronJobDto: UpdateParkingFromCronJobDto,
+  ): Promise<Parking> {
+    this.logger.debug(
+      `Received update parking with payload ${JSON.stringify(
+        updateParkingFromCronJobDto,
+      )}`,
+    );
+
+    const { parking, isAvailable } = updateParkingFromCronJobDto;
+
+    const parkingEntity = await this.parkingRepository.findOne({
+      id: parking,
+    });
+
+    try {
+      parkingEntity.isAvailable = isAvailable;
+      parkingEntity.updatedAt = new Date().toISOString();
+      await this.parkingRepository.save(parkingEntity);
+      return parkingEntity;
+    } catch {
       throw new RpcException('An undefined error occured');
     }
   }

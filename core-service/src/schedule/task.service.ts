@@ -1,40 +1,63 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { MessagePattern } from '@nestjs/microservices';
-import { Cron, CronExpression, SchedulerRegistry } from '@nestjs/schedule';
+import {
+  ClientProxy,
+  ClientProxyFactory,
+  MessagePattern,
+  Transport,
+} from '@nestjs/microservices';
+import { SchedulerRegistry } from '@nestjs/schedule';
 import { CronJob } from 'cron';
-import { TaskParkingDto } from './dtos/task-parking.dto';
+import { TaskDto } from './dtos/task.dto';
 
 @Injectable()
 export class TasksService {
   private readonly logger = new Logger(TasksService.name);
+  private client: ClientProxy;
 
-  constructor(private schedulerRegistry: SchedulerRegistry) {}
+  constructor(
+    private schedulerRegistry: SchedulerRegistry,
+    client = ClientProxyFactory.create({
+      transport: Transport.REDIS,
+      options: { url: `${process.env.REDIS_URL}` },
+    }),
+  ) {}
 
   @MessagePattern({ type: 'add-cron-job-parking' })
-  addCronJobParking(taskParkingdto: TaskParkingDto) {
-    const job = new CronJob(`* ${taskParkingdto.startTime} * * * *`, () => {
+  addCronJobParking(taskDto: TaskDto) {
+    const job = new CronJob(`* ${taskDto.startTime} * * * *`, () => {
       this.logger.warn(
-        `time (${taskParkingdto.startTime}) for job ${taskParkingdto.parking} to run!`,
+        `time (${taskDto.startTime}) for job ${taskDto.parking} to run!`,
       );
+
+      const obj = {
+        parking: taskDto.parking,
+        isAvailable: false,
+      };
+
+      this.client.send<TaskDto>({ type: 'update-parking-from-cron-job' }, obj);
     });
 
-    this.schedulerRegistry.addCronJob(taskParkingdto.parking, job);
+    const job2 = new CronJob(`* ${taskDto.endTime} * * * *`, () => {
+      this.logger.warn(
+        `time (${taskDto.startTime}) for job ${taskDto.parking} to run!`,
+      );
+
+      const obj = {
+        parking: taskDto.parking,
+        isAvailable: true,
+      };
+
+      this.client.send<TaskDto>({ type: 'update-parking-from-cron-job' }, obj);
+    });
+
+    this.schedulerRegistry.addCronJob(taskDto.parking, job);
+    this.schedulerRegistry.addCronJob(taskDto.parking + 2, job2);
     job.start();
+    job2.start();
 
     this.logger.warn(
-      `job ${taskParkingdto.parking} added for each ${taskParkingdto.startTime} minutes!`,
+      `job ${taskDto.parking} added for each ${taskDto.startTime} minutes!`,
     );
-  }
-
-  addCronJobReservation(name: string, minutes: string) {
-    const job = new CronJob(`* ${minutes} * * * *`, () => {
-      this.logger.warn(`time (${minutes}) for job ${name} to run!`);
-    });
-
-    this.schedulerRegistry.addCronJob(name, job);
-    job.start();
-
-    this.logger.warn(`job ${name} added for each ${minutes} minutes!`);
   }
 
   deleteCron(name: string) {
