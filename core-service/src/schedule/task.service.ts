@@ -60,6 +60,7 @@ export class TasksService {
     );
   }
 
+  @MessagePattern({ type: 'delete-cron-job-parking' })
   deleteCron(name: string) {
     this.schedulerRegistry.deleteCronJob(name);
     this.logger.warn(`job ${name} deleted!`);
