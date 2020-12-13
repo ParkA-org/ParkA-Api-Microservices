@@ -34,12 +34,21 @@ export class TasksService {
         isAvailable: false,
       };
 
+      const obj2 = {
+        reservation: taskDto.reservation,
+      };
+
       this.client.send<TaskDto>({ type: 'update-parking-from-cron-job' }, obj);
+
+      this.client.send<TaskDto>(
+        { type: 'update-resevation-from-cron-job' },
+        obj2,
+      );
     });
 
     const job2 = new CronJob(`* ${taskDto.endTime} * * * *`, () => {
       this.logger.warn(
-        `time (${taskDto.startTime}) for job ${taskDto.parking} to run!`,
+        `time (${taskDto.endTime}) for job ${taskDto.parking} to run!`,
       );
 
       const obj = {

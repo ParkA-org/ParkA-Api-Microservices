@@ -360,6 +360,21 @@ export class ReservationService {
     }
   }
 
+  public async updateReservationFromCronJob(
+    updateReservationDto: UpdateReservationDto,
+  ): Promise<Reservation> {
+    const { data, where } = updateReservationDto;
+
+    const reservation = await this.getReservationById(where);
+
+    const { id, checkInDate, parking, checkOutDate } = reservation;
+
+    reservation.status = ReservationStatuses.Created;
+    reservation.updatedAt = new Date().toISOString();
+
+    return this.reservationRepository.save(reservation);
+  }
+
   public async updateReservationReviewed(
     updateReservationDto: UpdateReservationDto,
   ): Promise<Reservation> {
