@@ -16,6 +16,7 @@ import { GetAllUserReservations } from './dtos/get-all-user-reservations.dto';
 import { UserRoles } from './utils/user-roles';
 import { ParkingCalendar } from 'src/calendar/entities/calendar.entity';
 import { Schedule } from 'src/calendar/entities/schedule.entity';
+import { UpdateReservationFromCronJobDto } from './dtos/update-reservation-from-cron-job.dto';
 
 @Injectable()
 export class ReservationService {
@@ -361,18 +362,20 @@ export class ReservationService {
   }
 
   public async updateReservationFromCronJob(
-    updateReservationDto: UpdateReservationDto,
+    updateReservationFromCronJobDto: UpdateReservationFromCronJobDto,
   ): Promise<Reservation> {
-    const { data, where } = updateReservationDto;
+    const { reservation, type } = updateReservationFromCronJobDto;
 
-    const reservation = await this.getReservationById(where);
+    const data = await this.reservationRepository.findOne({ id: reservation });
 
-    const { id, checkInDate, parking, checkOutDate } = reservation;
+    if (type) {
+      data.status = ReservationStatuses.InProgress;
+    } else {
+      data.status = ReservationStatuses.Completed;
+    }
+    data.updatedAt = new Date().toISOString();
 
-    reservation.status = ReservationStatuses.Created;
-    reservation.updatedAt = new Date().toISOString();
-
-    return this.reservationRepository.save(reservation);
+    return this.reservationRepository.save(data);
   }
 
   public async updateReservationReviewed(
