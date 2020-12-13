@@ -17,6 +17,7 @@ import { UserRoles } from './utils/user-roles';
 import { ParkingCalendar } from 'src/calendar/entities/calendar.entity';
 import { Schedule } from 'src/calendar/entities/schedule.entity';
 import { UpdateReservationFromCronJobDto } from './dtos/update-reservation-from-cron-job.dto';
+import { TaskDto } from 'src/schedule/dtos/task.dto';
 
 @Injectable()
 export class ReservationService {
@@ -124,9 +125,35 @@ export class ReservationService {
       updatedAt: new Date().toISOString(),
     });
 
+    await this.createNewJobs(reservation);
     await this.createCalendarEntries(reservation);
 
     return this.reservationRepository.save(reservation);
+  }
+
+  private async createNewJobs(reservation: Reservation) {
+    const task = new TaskDto();
+    task.parking = reservation.parking;
+    task.reservation = reservation.id;
+    const checkinHours = parseInt(
+      reservation.checkInDate.split('T')[1].split(':')[0],
+    );
+    const checkOutHours = parseInt(
+      reservation.checkInDate.split('T')[1].split(':')[0],
+    );
+    const checkinMinutes = parseInt(
+      reservation.checkInDate.split('T')[1].split(':')[1],
+    );
+    const checkOutMinutes = parseInt(
+      reservation.checkInDate.split('T')[1].split(':')[1],
+    );
+    const diference = checkOutHours - checkinHours;
+    const diferenceMinutes = checkOutMinutes - checkinHours;
+    const date = new Date();
+    date.toLocaleString('en-US', { timeZone: 'America/Santo_Domingo' });
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const totalMinutes = diference * 60 + diferenceMinutes;
   }
 
   private async createCalendarEntries(reservation: Reservation) {
