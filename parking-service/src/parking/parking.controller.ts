@@ -52,6 +52,18 @@ export class ParkingController {
     return await this.parkingService.updateParking(updateParkingDto);
   }
 
+  @MessagePattern({ type: 'update-parking-from-cron-job' })
+  public async updateParkingFromCronJob(
+    updateParkingDto: UpdateParkingDto,
+  ): Promise<Parking> {
+    this.logger.debug(
+      `Received update parking data message with data ${JSON.stringify(
+        updateParkingDto,
+      )}`,
+    );
+    return await this.parkingService.updateParking(updateParkingDto);
+  }
+
   @MessagePattern({ type: 'review-parking' })
   public async reviewParking(rateParking: VoteParkingDto): Promise<Parking> {
     this.logger.debug(
