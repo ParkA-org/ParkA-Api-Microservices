@@ -7,6 +7,7 @@ import {
 import { CreateReservationDto } from './dtos/create-reservation.dto';
 import { GetAllUserReservations } from './dtos/get-all-user-reservations.dto';
 import { GetReservationByIdDto } from './dtos/get-reservation-by-id.dto';
+import { UpdateReservationFromCronJobDto } from './dtos/update-reservation-from-cron-job.dto';
 import { UpdateReservationDto } from './dtos/update-reservation.dto';
 import { Reservation } from './entities/reservation.entity';
 import { ReservationService } from './reservation.service';
@@ -72,6 +73,21 @@ export class ReservationController {
     );
 
     return this.reservationService.updateReservation(updateReservationDto);
+  }
+
+  @MessagePattern({ type: 'update-reservation-from-cron-job' })
+  public async updateReservationFromCronJob(
+    updateReservationFromCronJobDto: UpdateReservationFromCronJobDto,
+  ): Promise<Reservation> {
+    this.logger.debug(
+      `Received update reservation with payload ${JSON.stringify(
+        updateReservationFromCronJobDto,
+      )}`,
+    );
+
+    return this.reservationService.updateReservationFromCronJob(
+      updateReservationFromCronJobDto,
+    );
   }
 
   @MessagePattern({ type: 'update-reservation-reviewed' })
