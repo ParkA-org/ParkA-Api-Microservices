@@ -23,8 +23,8 @@ export class TasksService {
   ) {}
 
   @MessagePattern({ type: 'add-cron-job-parking' })
-  addCronJobParking(taskDto: TaskDto) {
-    const job = new CronJob(`* ${taskDto.startTime} * * * *`, () => {
+  async addCronJobParking(taskDto: TaskDto) {
+    const job = new CronJob(`* ${taskDto.startTime} * * * *`, async () => {
       this.logger.warn(
         `time (${taskDto.startTime}) for job ${taskDto.parking} to run!`,
       );
@@ -36,11 +36,15 @@ export class TasksService {
 
       const obj2 = {
         reservation: taskDto.reservation,
+        type: true,
       };
 
-      this.client.send<TaskDto>({ type: 'update-parking-from-cron-job' }, obj);
+      await this.client.send<TaskDto>(
+        { type: 'update-parking-from-cron-job' },
+        obj,
+      );
 
-      this.client.send<TaskDto>(
+      await this.client.send<TaskDto>(
         { type: 'update-resevation-from-cron-job' },
         obj2,
       );
@@ -56,11 +60,20 @@ export class TasksService {
         isAvailable: true,
       };
 
+      const obj2 = {
+        reservation: taskDto.reservation,
+        type: false,
+      };
+
       this.client.send<TaskDto>({ type: 'update-parking-from-cron-job' }, obj);
+      this.client.send<TaskDto>(
+        { type: 'update-reservation-from-cron-job' },
+        obj2,
+      );
     });
 
-    this.schedulerRegistry.addCronJob(taskDto.reservation, job);
-    this.schedulerRegistry.addCronJob(taskDto.reservation + 2, job2);
+    await this.schedulerRegistry.addCronJob(taskDto.reservation, job);
+    await this.schedulerRegistry.addCronJob(taskDto.reservation + 2, job2);
     job.start();
     job2.start();
 

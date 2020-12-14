@@ -417,8 +417,16 @@ export class ReservationService {
 
     if (type) {
       data.status = ReservationStatuses.InProgress;
+      await this.client.send<TaskDto>(
+        { type: 'delete-cron-job-parking' },
+        data.id,
+      );
     } else {
       data.status = ReservationStatuses.Completed;
+      await this.client.send<TaskDto>(
+        { type: 'delete-cron-job-parking' },
+        data.id + 2,
+      );
     }
     data.updatedAt = new Date().toISOString();
 
@@ -480,6 +488,10 @@ export class ReservationService {
     await this.client.send<TaskDto>(
       { type: 'delete-cron-job-parking' },
       reservation.id,
+    );
+    await this.client.send<TaskDto>(
+      { type: 'delete-cron-job-parking' },
+      reservation.id + 2,
     );
 
     await this.calendarRepository.save(parkingCalendar);
