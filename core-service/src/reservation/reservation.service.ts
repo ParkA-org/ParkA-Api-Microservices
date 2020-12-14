@@ -393,17 +393,11 @@ export class ReservationService {
 
     const data = await this.reservationRepository.findOne({ id: reservation });
 
-    console.log('Llegue aqui update reservation');
-    const date = new Date();
-    console.log(
-      date.toLocaleString('en-US', { timeZone: 'America/Santo_Domingo' }),
-    );
     if (type) {
       data.status = ReservationStatuses.InProgress;
-      this.taskService.deleteCron(data.id);
     } else {
       data.status = ReservationStatuses.Completed;
-      this.taskService.deleteCron(data.id + 2);
+      // this.taskService.deleteCron(data.id + 2);
     }
     data.updatedAt = new Date().toISOString();
 

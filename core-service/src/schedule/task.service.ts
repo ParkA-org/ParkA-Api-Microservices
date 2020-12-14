@@ -15,10 +15,7 @@ export class TasksService {
   private readonly logger = new Logger(TasksService.name);
   private client: ClientProxy;
 
-  constructor(
-    private schedulerRegistry: SchedulerRegistry,
-    private reservationService: ReservationService,
-  ) {
+  constructor(private schedulerRegistry: SchedulerRegistry) {
     this.client = ClientProxyFactory.create({
       transport: Transport.REDIS,
       options: { url: `${process.env.REDIS_URL}` },
@@ -51,13 +48,8 @@ export class TasksService {
           type: true,
         };
 
-        console.log('tu deberias ser el primero');
-        await this.client.send<TaskDto>(
-          { type: 'update-parking-from-cron-job' },
-          obj,
-        );
-        console.log('llegue aca');
-        this.reservationService.updateReservationFromCronJob(obj2);
+        await this.updateParking(obj);
+        await this.updateReservation(obj2);
       },
       'America/Santo_Domingo',
     );
@@ -79,27 +71,38 @@ export class TasksService {
           type: false,
         };
 
-        console.log('cuando tu te ejecutas');
-        await this.client.send<TaskDto>(
-          { type: 'update-parking-from-cron-job' },
-          obj,
-        );
-        await this.client.send<Reservation>(
-          { type: 'update-reservation-from-cron-job' },
-          obj2,
-        );
+        await this.updateParking(obj);
+        await this.updateReservation(obj2);
+
+        this.deleteCron(taskDto.reservation);
       },
       'America/Santo_Domingo',
     );
 
     this.schedulerRegistry.addCronJob(taskDto.reservation, job);
-    this.schedulerRegistry.addCronJob(taskDto.reservation + 2, job2);
+    this.schedulerRegistry.addCronJob(taskDto.reservation + '2', job2);
     await job.start();
     await job2.start();
 
     this.logger.warn(
-      `job ${taskDto.parking} added for each ${taskDto.startTime} minutes!`,
+      `job ${taskDto.parking} added for each ${taskDto.startTime} date!`,
     );
+  }
+
+  public async updateParking(obj: Object): Promise<Object> {
+    const response = await this.client.send<TaskDto>(
+      { type: 'update-parking-from-cron-job' },
+      obj,
+    );
+    return response.toPromise();
+  }
+
+  public async updateReservation(obj: Object): Promise<Object> {
+    const response = await this.client.send<TaskDto>(
+      { type: 'update-reservation-from-cron-job' },
+      obj,
+    );
+    return response.toPromise();
   }
 
   deleteCron(name: string) {
