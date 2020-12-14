@@ -10,5 +10,6 @@ import { TasksService } from 'src/schedule/task.service';
   imports: [TypeOrmModule.forFeature([Reservation, ParkingCalendar])],
   providers: [ReservationService, TasksService],
   controllers: [ReservationController],
+  exports: [ReservationService],
 })
 export class ReservationModule {}

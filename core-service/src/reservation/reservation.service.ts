@@ -23,6 +23,8 @@ import { ParkingCalendar } from 'src/calendar/entities/calendar.entity';
 import { Schedule } from 'src/calendar/entities/schedule.entity';
 import { UpdateReservationFromCronJobDto } from './dtos/update-reservation-from-cron-job.dto';
 import { TaskDto } from 'src/schedule/dtos/task.dto';
+import { TasksService } from 'src/schedule/task.service';
+import { runInThisContext } from 'vm';
 
 @Injectable()
 export class ReservationService {
@@ -34,12 +36,14 @@ export class ReservationService {
     private reservationRepository: Repository<Reservation>,
     @InjectRepository(ParkingCalendar)
     private calendarRepository: Repository<ParkingCalendar>,
+    private taskService: TasksService,
   ) {
     this.client = ClientProxyFactory.create({
       transport: Transport.REDIS,
       options: { url: `${process.env.REDIS_URL}` },
     });
   }
+  x;
 
   public async getReservationById(
     getReservationByIdDto: GetReservationByIdDto,
@@ -93,7 +97,6 @@ export class ReservationService {
     return [];
   }
 
-  //TODO: implement creation logic
   public async createReservation(
     createReservationDto: CreateReservationDto,
   ): Promise<Reservation> {
@@ -146,35 +149,9 @@ export class ReservationService {
     const task = new TaskDto();
     task.parking = reservation.parking;
     task.reservation = reservation.id;
-    const checkinHours = parseInt(
-      reservation.checkInDate.split('T')[1].split(':')[0],
-    );
-    const checkOutHours = parseInt(
-      reservation.checkOutDate.split('T')[1].split(':')[0],
-    );
-    const checkinMinutes = parseInt(
-      reservation.checkInDate.split('T')[1].split(':')[1],
-    );
-    const checkOutMinutes = parseInt(
-      reservation.checkOutDate.split('T')[1].split(':')[1],
-    );
-    const diference = checkOutHours - checkinHours;
-    const diferenceMinutes = checkOutMinutes - checkinMinutes;
-    const date = new Date();
-    date.toLocaleString('en-US', { timeZone: 'America/Santo_Domingo' });
-    const hours = date.getHours();
-    const minutes = date.getMinutes();
-    const diferencesTimeHours = checkinHours - hours;
-    const diferencesTimeMinutes = checkinMinutes - minutes;
-    const startTime = diferencesTimeHours * 60 + diferencesTimeMinutes;
-    const endTime = diference * 60 + diferenceMinutes + startTime;
-
-    task.startTime = startTime.toString();
-    task.endTime = endTime.toString();
-    if (startTime < 0) {
-      return;
-    }
-    await this.client.send<TaskDto>({ type: 'add-cron-job-parking' }, task);
+    task.startTime = reservation.checkInDate;
+    task.endTime = reservation.checkOutDate;
+    this.taskService.addCronJobParking(task);
   }
 
   private async createCalendarEntries(reservation: Reservation) {
@@ -416,18 +393,17 @@ export class ReservationService {
 
     const data = await this.reservationRepository.findOne({ id: reservation });
 
+    console.log('Llegue aqui update reservation');
+    const date = new Date();
+    console.log(
+      date.toLocaleString('en-US', { timeZone: 'America/Santo_Domingo' }),
+    );
     if (type) {
       data.status = ReservationStatuses.InProgress;
-      await this.client.send<TaskDto>(
-        { type: 'delete-cron-job-parking' },
-        data.id,
-      );
+      this.taskService.deleteCron(data.id);
     } else {
       data.status = ReservationStatuses.Completed;
-      await this.client.send<TaskDto>(
-        { type: 'delete-cron-job-parking' },
-        data.id + 2,
-      );
+      this.taskService.deleteCron(data.id + 2);
     }
     data.updatedAt = new Date().toISOString();
 
@@ -486,14 +462,9 @@ export class ReservationService {
 
     parkingCalendar.schedules = _schedules;
 
-    await this.client.send<TaskDto>(
-      { type: 'delete-cron-job-parking' },
-      reservation.id,
-    );
-    await this.client.send<TaskDto>(
-      { type: 'delete-cron-job-parking' },
-      reservation.id + 2,
-    );
+    await this.taskService.deleteCron(reservation.id);
+
+    await this.taskService.deleteCron(reservation.id + 2);
 
     await this.calendarRepository.save(parkingCalendar);
 
