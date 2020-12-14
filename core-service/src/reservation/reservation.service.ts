@@ -1,5 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { RpcException } from '@nestjs/microservices';
+import {
+  ClientProxy,
+  ClientProxyFactory,
+  RpcException,
+  Transport,
+} from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GetReservationByIdDto } from './dtos/get-reservation-by-id.dto';
@@ -22,12 +27,17 @@ import { TaskDto } from 'src/schedule/dtos/task.dto';
 @Injectable()
 export class ReservationService {
   private logger = new Logger('ReservationService');
+  private client: ClientProxy;
 
   constructor(
     @InjectRepository(Reservation)
     private reservationRepository: Repository<Reservation>,
     @InjectRepository(ParkingCalendar)
     private calendarRepository: Repository<ParkingCalendar>,
+    client = ClientProxyFactory.create({
+      transport: Transport.REDIS,
+      options: { url: `${process.env.REDIS_URL}` },
+    }),
   ) {}
 
   public async getReservationById(
@@ -139,21 +149,31 @@ export class ReservationService {
       reservation.checkInDate.split('T')[1].split(':')[0],
     );
     const checkOutHours = parseInt(
-      reservation.checkInDate.split('T')[1].split(':')[0],
+      reservation.checkOutDate.split('T')[1].split(':')[0],
     );
     const checkinMinutes = parseInt(
       reservation.checkInDate.split('T')[1].split(':')[1],
     );
     const checkOutMinutes = parseInt(
-      reservation.checkInDate.split('T')[1].split(':')[1],
+      reservation.checkOutDate.split('T')[1].split(':')[1],
     );
     const diference = checkOutHours - checkinHours;
-    const diferenceMinutes = checkOutMinutes - checkinHours;
+    const diferenceMinutes = checkOutMinutes - checkinMinutes;
     const date = new Date();
     date.toLocaleString('en-US', { timeZone: 'America/Santo_Domingo' });
     const hours = date.getHours();
     const minutes = date.getMinutes();
-    const totalMinutes = diference * 60 + diferenceMinutes;
+    const diferencesTimeHours = checkinHours - hours;
+    const diferencesTimeMinutes = checkinMinutes - minutes;
+    const startTime = diferencesTimeHours * 60 + diferencesTimeMinutes;
+    const endTime = diference * 60 + diferenceMinutes + startTime;
+
+    task.startTime = startTime.toString();
+    task.endTime = endTime.toString();
+    if (startTime < 0) {
+      return;
+    }
+    await this.client.send<TaskDto>({ type: 'add-cron-job-parking' }, task);
   }
 
   private async createCalendarEntries(reservation: Reservation) {
@@ -456,6 +476,11 @@ export class ReservationService {
     );
 
     parkingCalendar.schedules = _schedules;
+
+    await this.client.send<TaskDto>(
+      { type: 'delete-cron-job-parking' },
+      reservation.id,
+    );
 
     await this.calendarRepository.save(parkingCalendar);
 
