@@ -24,12 +24,9 @@ import { Schedule } from 'src/calendar/entities/schedule.entity';
 import { UpdateReservationFromCronJobDto } from './dtos/update-reservation-from-cron-job.dto';
 import { TaskDto } from 'src/schedule/dtos/task.dto';
 import { TasksService } from 'src/schedule/task.service';
-import { runInThisContext } from 'vm';
-
 @Injectable()
 export class ReservationService {
   private logger = new Logger('ReservationService');
-  private client: ClientProxy;
 
   constructor(
     @InjectRepository(Reservation)
@@ -37,12 +34,7 @@ export class ReservationService {
     @InjectRepository(ParkingCalendar)
     private calendarRepository: Repository<ParkingCalendar>,
     private taskService: TasksService,
-  ) {
-    this.client = ClientProxyFactory.create({
-      transport: Transport.REDIS,
-      options: { url: `${process.env.REDIS_URL}` },
-    });
-  }
+  ) {}
   x;
 
   public async getReservationById(

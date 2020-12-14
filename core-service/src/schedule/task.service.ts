@@ -6,8 +6,6 @@ import {
 } from '@nestjs/microservices';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import { CronJob } from 'cron';
-import { Reservation } from 'src/reservation/entities/reservation.entity';
-import { ReservationService } from 'src/reservation/reservation.service';
 import { TaskDto } from './dtos/task.dto';
 
 @Injectable()
