@@ -34,7 +34,7 @@ export class TasksService {
         `${minuteStart} ${hoursStart} ${dayStart} * *`,
         async () => {
           this.logger.warn(
-            `time (${taskDto.startTime}) for job ${taskDto.parking} to run!`,
+            `time (${taskDto.startTime}) for job ${taskDto.name} to run!`,
           );
 
           const obj = {
@@ -49,7 +49,7 @@ export class TasksService {
 
           await this.updateParking(obj);
           await this.updateReservation(obj2);
-          await this.deleteCron(taskDto.name);
+          await this.deleteCron(taskDto.name.split(':')[0]);
         },
         'America/Santo_Domingo',
         true,
@@ -65,7 +65,7 @@ export class TasksService {
         `${minuteEnd} ${hoursEnd} ${dayEnd} * *`,
         async () => {
           this.logger.warn(
-            `time (${taskDto.endTime}) for job ${taskDto.parking} to run!`,
+            `time (${taskDto.endTime}) for job ${taskDto.name} to run!`,
           );
 
           const obj = {
