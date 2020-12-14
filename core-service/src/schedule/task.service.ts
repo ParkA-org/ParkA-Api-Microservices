@@ -49,8 +49,10 @@ export class TasksService {
 
           await this.updateParking(obj);
           await this.updateReservation(obj2);
+          await this.deleteCron(taskDto.name);
         },
         'America/Santo_Domingo',
+        true,
       );
 
       this.schedulerRegistry.addTimeout(taskDto.name, job);
@@ -78,12 +80,10 @@ export class TasksService {
 
           await this.updateParking(obj);
           await this.updateReservation(obj2);
-
-          try {
-            this.deleteCron(taskDto.name.split(':')[0]);
-          } catch (err) {}
+          await this.deleteCron(taskDto.name);
         },
         'America/Santo_Domingo',
+        true,
       );
       this.schedulerRegistry.addTimeout(taskDto.name, job2);
       job2.start();
@@ -110,9 +110,7 @@ export class TasksService {
   }
 
   deleteCron(name: string) {
-    const job = this.schedulerRegistry.getCronJob(name);
-    job.stop();
-    this.schedulerRegistry.deleteCronJob(name);
+    this.schedulerRegistry.deleteTimeout(name);
     this.logger.warn(`job ${name} deleted!`);
   }
 }

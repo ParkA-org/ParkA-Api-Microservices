@@ -143,7 +143,7 @@ export class ReservationService {
     task.reservation = reservation.id;
     task.startTime = reservation.checkInDate;
     task.endTime = reservation.checkOutDate;
-    task.name = reservation.parking;
+    task.name = reservation.id;
     task.type = true;
     this.taskService.addCronJobParking(task);
     task.type = false;
