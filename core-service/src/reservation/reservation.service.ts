@@ -143,6 +143,11 @@ export class ReservationService {
     task.reservation = reservation.id;
     task.startTime = reservation.checkInDate;
     task.endTime = reservation.checkOutDate;
+    task.name = reservation.parking;
+    task.type = true;
+    this.taskService.addCronJobParking(task);
+    task.type = false;
+    task.name += ':deleted';
     this.taskService.addCronJobParking(task);
   }
 
@@ -450,7 +455,7 @@ export class ReservationService {
 
     await this.taskService.deleteCron(reservation.id);
 
-    await this.taskService.deleteCron(reservation.id + 2);
+    await this.taskService.deleteCron(reservation.id + ':deleted');
 
     await this.calendarRepository.save(parkingCalendar);
 

@@ -29,62 +29,68 @@ export class TasksService {
     const dayEnd = taskDto.endTime.split('T')[0].split('-')[2];
     const minuteEnd = taskDto.endTime.split('T')[1].split(':')[1];
 
-    const job = new CronJob(
-      `${minuteStart} ${hoursStart} ${dayStart} * *`,
-      async () => {
-        this.logger.warn(
-          `time (${taskDto.startTime}) for job ${taskDto.parking} to run!`,
-        );
+    if (taskDto.type) {
+      const job = new CronJob(
+        `${minuteStart} ${hoursStart} ${dayStart} * *`,
+        async () => {
+          this.logger.warn(
+            `time (${taskDto.startTime}) for job ${taskDto.parking} to run!`,
+          );
 
-        const obj = {
-          parking: taskDto.parking,
-          isAvailable: false,
-        };
+          const obj = {
+            parking: taskDto.parking,
+            isAvailable: false,
+          };
 
-        const obj2 = {
-          reservation: taskDto.reservation,
-          type: true,
-        };
+          const obj2 = {
+            reservation: taskDto.reservation,
+            type: true,
+          };
 
-        await this.updateParking(obj);
-        await this.updateReservation(obj2);
-      },
-      'America/Santo_Domingo',
-    );
+          await this.updateParking(obj);
+          await this.updateReservation(obj2);
+        },
+        'America/Santo_Domingo',
+      );
 
-    const job2 = new CronJob(
-      `${minuteEnd} ${hoursEnd} ${dayEnd} * *`,
-      async () => {
-        this.logger.warn(
-          `time (${taskDto.endTime}) for job ${taskDto.parking} to run!`,
-        );
+      this.schedulerRegistry.addTimeout(taskDto.name, job);
+      job.start();
+      this.logger.warn(
+        `job ${taskDto.name} added for each ${taskDto.startTime} date!`,
+      );
+    } else {
+      const job2 = new CronJob(
+        `${minuteEnd} ${hoursEnd} ${dayEnd} * *`,
+        async () => {
+          this.logger.warn(
+            `time (${taskDto.endTime}) for job ${taskDto.parking} to run!`,
+          );
 
-        const obj = {
-          parking: taskDto.parking,
-          isAvailable: true,
-        };
+          const obj = {
+            parking: taskDto.parking,
+            isAvailable: true,
+          };
 
-        const obj2 = {
-          reservation: taskDto.reservation,
-          type: false,
-        };
+          const obj2 = {
+            reservation: taskDto.reservation,
+            type: false,
+          };
 
-        await this.updateParking(obj);
-        await this.updateReservation(obj2);
+          await this.updateParking(obj);
+          await this.updateReservation(obj2);
 
-        this.deleteCron(taskDto.reservation);
-      },
-      'America/Santo_Domingo',
-    );
-
-    this.schedulerRegistry.addCronJob(taskDto.reservation, job);
-    this.schedulerRegistry.addCronJob(taskDto.reservation + '2', job2);
-    await job.start();
-    await job2.start();
-
-    this.logger.warn(
-      `job ${taskDto.parking} added for each ${taskDto.startTime} date!`,
-    );
+          try {
+            this.deleteCron(taskDto.name.split(':')[0]);
+          } catch (err) {}
+        },
+        'America/Santo_Domingo',
+      );
+      this.schedulerRegistry.addTimeout(taskDto.name, job2);
+      job2.start();
+      this.logger.warn(
+        `job ${taskDto.name} added for each ${taskDto.endTime} date!`,
+      );
+    }
   }
 
   public async updateParking(obj: Object): Promise<Object> {
@@ -104,6 +110,8 @@ export class TasksService {
   }
 
   deleteCron(name: string) {
+    const job = this.schedulerRegistry.getCronJob(name);
+    job.stop();
     this.schedulerRegistry.deleteCronJob(name);
     this.logger.warn(`job ${name} deleted!`);
   }

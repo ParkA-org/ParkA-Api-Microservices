@@ -5,4 +5,6 @@ export class TaskDto implements ITaskDto {
   parking: string;
   startTime: string;
   endTime: string;
+  type: boolean;
+  name: string;
 }
