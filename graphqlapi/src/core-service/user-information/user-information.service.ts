@@ -27,7 +27,7 @@ export class UserInformationService {
     getUserInformationByIdInput: GetUserInformationByIdInput,
   ): Promise<UserInformationType> {
     this.logger.debug(
-      `Received get user information by id with payload ${JSON.stringify(
+      `Received get user information by id with payload in Graphql gate way ${JSON.stringify(
         getUserInformationByIdInput,
       )}`,
     );

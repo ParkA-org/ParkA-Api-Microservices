@@ -14,16 +14,15 @@ export class TasksService {
   private readonly logger = new Logger(TasksService.name);
   private client: ClientProxy;
 
-  constructor(
-    private schedulerRegistry: SchedulerRegistry,
-    client = ClientProxyFactory.create({
+  constructor(private schedulerRegistry: SchedulerRegistry) {
+    this.client = ClientProxyFactory.create({
       transport: Transport.REDIS,
       options: { url: `${process.env.REDIS_URL}` },
-    }),
-  ) {}
+    });
+  }
 
   @MessagePattern({ type: 'add-cron-job-parking' })
-  async addCronJobParking(taskDto: TaskDto) {
+  addCronJobParking(taskDto: TaskDto) {
     const job = new CronJob(`* ${taskDto.startTime} * * * *`, async () => {
       this.logger.warn(
         `time (${taskDto.startTime}) for job ${taskDto.parking} to run!`,
@@ -50,7 +49,7 @@ export class TasksService {
       );
     });
 
-    const job2 = new CronJob(`* ${taskDto.endTime} * * * *`, () => {
+    const job2 = new CronJob(`* ${taskDto.endTime} * * * *`, async () => {
       this.logger.warn(
         `time (${taskDto.endTime}) for job ${taskDto.parking} to run!`,
       );
@@ -65,15 +64,18 @@ export class TasksService {
         type: false,
       };
 
-      this.client.send<TaskDto>({ type: 'update-parking-from-cron-job' }, obj);
-      this.client.send<TaskDto>(
+      await this.client.send<TaskDto>(
+        { type: 'update-parking-from-cron-job' },
+        obj,
+      );
+      await this.client.send<TaskDto>(
         { type: 'update-reservation-from-cron-job' },
         obj2,
       );
     });
 
-    await this.schedulerRegistry.addCronJob(taskDto.reservation, job);
-    await this.schedulerRegistry.addCronJob(taskDto.reservation + 2, job2);
+    this.schedulerRegistry.addCronJob(taskDto.reservation, job);
+    this.schedulerRegistry.addCronJob(taskDto.reservation + 2, job2);
     job.start();
     job2.start();
 

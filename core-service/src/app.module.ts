@@ -11,6 +11,7 @@ import { Country } from './country/entities/country.entity';
 import { ConfigModule } from '@nestjs/config';
 import { CalendarModule } from './calendar/calendar.module';
 import { ParkingCalendar } from './calendar/entities/calendar.entity';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { ParkingCalendar } from './calendar/entities/calendar.entity';
     NationalityModule,
     CountryModule,
     CalendarModule,
+    ScheduleModule.forRoot(),
   ],
   controllers: [],
   providers: [],

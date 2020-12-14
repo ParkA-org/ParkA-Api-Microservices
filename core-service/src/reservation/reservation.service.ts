@@ -34,11 +34,12 @@ export class ReservationService {
     private reservationRepository: Repository<Reservation>,
     @InjectRepository(ParkingCalendar)
     private calendarRepository: Repository<ParkingCalendar>,
-    client = ClientProxyFactory.create({
+  ) {
+    this.client = ClientProxyFactory.create({
       transport: Transport.REDIS,
       options: { url: `${process.env.REDIS_URL}` },
-    }),
-  ) {}
+    });
+  }
 
   public async getReservationById(
     getReservationByIdDto: GetReservationByIdDto,
