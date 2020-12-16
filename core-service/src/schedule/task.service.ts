@@ -110,7 +110,9 @@ export class TasksService {
   }
 
   deleteCron(name: string) {
-    this.schedulerRegistry.deleteTimeout(name);
-    this.logger.warn(`job ${name} deleted!`);
+    try {
+      this.schedulerRegistry.deleteTimeout(name);
+      this.logger.warn(`job ${name} deleted!`);
+    } catch {}
   }
 }
