@@ -315,12 +315,21 @@ export class ReservationService {
     } = data;
 
     if (
-      (checkInDateToUpdate !== undefined &&
-        checkOutDateToUpdate === undefined) ||
-      (checkInDateToUpdate === undefined && checkOutDateToUpdate !== undefined)
+      checkInDateToUpdate === undefined ||
+      checkOutDateToUpdate === undefined
     ) {
       throw new Error(
         'When Updating check in date, checkout date cannot be undefined and viceversa',
+      );
+    }
+
+    const today = new Date().toLocaleString('en-US', {
+      timeZone: 'America/Santo_Domingo',
+    });
+
+    if (this.validateDate(today, checkInDateToUpdate)) {
+      throw new RpcException(
+        'This date cannot be set because it is a date in the past',
       );
     }
 
@@ -375,12 +384,51 @@ export class ReservationService {
         return 0;
       });
 
+      await this.taskService.deleteCron(reservation.id);
+      await this.taskService.deleteCron(reservation.id + ':deleted');
+      await this.createNewJobs(reservation);
+      parkingCalendar.updatedAt = new Date().toISOString();
       reservation.updatedAt = new Date().toISOString();
-
+      this.calendarRepository.save(parkingCalendar);
       return this.reservationRepository.save(reservation);
     } else {
       throw new RpcException('Cannot update reservation with this schedule');
     }
+  }
+
+  private async validateDate(today: string, tomorrow: string) {
+    const todayDate = today.split(', ')[0].split('/');
+    const todayTime = today.split(', ')[0].split(':');
+    const newDate = tomorrow.split('T')[0].split('-');
+    const newTime = tomorrow.split('T')[1].split(':');
+    if (parseInt(newDate[0]) == parseInt(todayDate[2])) {
+      if (parseInt(newDate[1]) == parseInt(todayDate[0])) {
+        if (parseInt(newDate[2]) == parseInt(todayDate[1])) {
+          let hoursTime = parseInt(todayTime[0]);
+          if (todayTime[2].split(' ')[1] == 'PM') {
+            hoursTime += 12;
+          }
+          if (parseInt(newTime[0]) == hoursTime) {
+            if (parseInt(newTime[1]) > parseInt(todayTime[1])) {
+              return false;
+            }
+          }
+          if (parseInt(newTime[0]) > hoursTime) {
+            return false;
+          }
+        }
+        if (parseInt(newDate[2]) > parseInt(todayDate[1])) {
+          return false;
+        }
+      }
+      if (parseInt(newDate[1]) > parseInt(todayDate[0])) {
+        return false;
+      }
+    }
+    if (parseInt(newDate[0]) > parseInt(todayDate[2])) {
+      return false;
+    }
+    return true;
   }
 
   public async updateReservationFromCronJob(
@@ -394,7 +442,6 @@ export class ReservationService {
       data.status = ReservationStatuses.InProgress;
     } else {
       data.status = ReservationStatuses.Completed;
-      // this.taskService.deleteCron(data.id + 2);
     }
     data.updatedAt = new Date().toISOString();
 
