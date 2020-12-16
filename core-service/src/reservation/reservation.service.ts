@@ -440,7 +440,14 @@ export class ReservationService {
 
     const reservationDate = new Date(year, month - 1, day).toISOString();
 
-    reservation.status = ReservationStatuses.Cancelled;
+    if (
+      reservation.status != ReservationStatuses.Completed &&
+      reservation.status != ReservationStatuses.InProgress
+    ) {
+      reservation.status = ReservationStatuses.Cancelled;
+    } else {
+      throw new RpcException(`This reservation is ${reservation.status}`);
+    }
 
     const parkingCalendar = await this.calendarRepository.findOne({
       parking,
