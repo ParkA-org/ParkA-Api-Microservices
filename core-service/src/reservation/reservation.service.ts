@@ -309,6 +309,13 @@ export class ReservationService {
 
     const fieldsToUpdate = Object.keys(data);
 
+    if (
+      reservation.status == ReservationStatuses.Completed ||
+      reservation.status == ReservationStatuses.InProgress
+    ) {
+      throw new RpcException(`This reservation is ${reservation.status}`);
+    }
+
     const {
       checkInDate: checkInDateToUpdate,
       checkOutDate: checkOutDateToUpdate,
@@ -327,7 +334,7 @@ export class ReservationService {
       timeZone: 'America/Santo_Domingo',
     });
 
-    if (this.validateDate(today, checkInDateToUpdate)) {
+    if (await this.validateDate(today, checkInDateToUpdate)) {
       throw new RpcException(
         'This date cannot be set because it is a date in the past',
       );
@@ -396,9 +403,12 @@ export class ReservationService {
     }
   }
 
-  private async validateDate(today: string, tomorrow: string) {
+  private async validateDate(
+    today: string,
+    tomorrow: string,
+  ): Promise<boolean> {
     const todayDate = today.split(', ')[0].split('/');
-    const todayTime = today.split(', ')[0].split(':');
+    const todayTime = today.split(', ')[1].split(':');
     const newDate = tomorrow.split('T')[0].split('-');
     const newTime = tomorrow.split('T')[1].split(':');
     if (parseInt(newDate[0]) == parseInt(todayDate[2])) {
@@ -410,6 +420,8 @@ export class ReservationService {
           }
           if (parseInt(newTime[0]) == hoursTime) {
             if (parseInt(newTime[1]) > parseInt(todayTime[1])) {
+              console.log(parseInt(newTime[1]));
+              console.log(parseInt(todayTime[1]));
               return false;
             }
           }
