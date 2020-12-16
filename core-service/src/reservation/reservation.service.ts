@@ -7,13 +7,19 @@ import { Reservation } from './entities/reservation.entity';
 import { CreateReservationDto } from './dtos/create-reservation.dto';
 import { UpdateReservationDto } from './dtos/update-reservation.dto';
 import { v4 as uuid } from 'uuid';
-import { CancelReservationDto } from './dtos/cancel-reservation.dto';
+import {
+  CancelReservationDto,
+  ValidaUserDto,
+} from './dtos/cancel-reservation.dto';
 import { ReservationStatuses } from './utils/statuses';
 import { GetAllUserReservations } from './dtos/get-all-user-reservations.dto';
 import { UserRoles } from './utils/user-roles';
 import { ParkingCalendar } from 'src/calendar/entities/calendar.entity';
 import { Schedule } from 'src/calendar/entities/schedule.entity';
-
+import { UpdateReservationFromCronJobDto } from './dtos/update-reservation-from-cron-job.dto';
+import { TaskDto } from 'src/schedule/dtos/task.dto';
+import { TasksService } from 'src/schedule/task.service';
+import { SCHED_NONE } from 'cluster';
 @Injectable()
 export class ReservationService {
   private logger = new Logger('ReservationService');
@@ -23,7 +29,9 @@ export class ReservationService {
     private reservationRepository: Repository<Reservation>,
     @InjectRepository(ParkingCalendar)
     private calendarRepository: Repository<ParkingCalendar>,
+    private taskService: TasksService,
   ) {}
+  x;
 
   public async getReservationById(
     getReservationByIdDto: GetReservationByIdDto,
@@ -77,7 +85,6 @@ export class ReservationService {
     return [];
   }
 
-  //TODO: implement creation logic
   public async createReservation(
     createReservationDto: CreateReservationDto,
   ): Promise<Reservation> {
@@ -120,12 +127,29 @@ export class ReservationService {
       updatedAt: new Date().toISOString(),
     });
 
+    await this.createNewJobs(reservation);
     await this.createCalendarEntries(reservation);
 
     return this.reservationRepository.save(reservation);
   }
 
-  private async createCalendarEntries(reservation: Reservation) {
+  private async createNewJobs(reservation: Reservation) {
+    const task = new TaskDto();
+    task.parking = reservation.parking;
+    task.reservation = reservation.id;
+    task.startTime = reservation.checkInDate;
+    task.endTime = reservation.checkOutDate;
+    task.name = reservation.id;
+    task.type = true;
+    this.taskService.addCronJobParking(task);
+    task.type = false;
+    task.name += ':deleted';
+    this.taskService.addCronJobParking(task);
+  }
+
+  private async createCalendarEntries(
+    reservation: Reservation,
+  ): Promise<ParkingCalendar> {
     const { checkInDate, checkOutDate, id, parking } = reservation;
 
     const extractedCheckInDate = this.extractDateTime(checkInDate);
@@ -137,8 +161,6 @@ export class ReservationService {
     const { day, month, year } = extractedCheckInDate.date;
 
     const reservationDate = new Date(year, month - 1, day).toISOString();
-
-    console.log(reservationDate);
 
     const parkingCalendar = await this.calendarRepository.findOne({
       parking,
@@ -185,7 +207,49 @@ export class ReservationService {
 
       return this.calendarRepository.save(calendar);
     } else {
-      throw new RpcException('Cannot create reservation in this schedule');
+      throw new RpcException(
+        'Cannot create or update reservation in this schedule',
+      );
+    }
+  }
+
+  private async deleteOldSchedule(
+    reservation: Reservation,
+    oldDate: string,
+  ): Promise<ParkingCalendar> {
+    try {
+      const { id, parking } = reservation;
+
+      const parkingCalendar = await this.calendarRepository.findOne({
+        parking,
+        date: oldDate,
+      });
+
+      const originalSchedule = parkingCalendar.schedules;
+      let schedule = new Schedule();
+      for (const el of originalSchedule) {
+        if (id == el.reservation) {
+          schedule = el;
+          break;
+        }
+      }
+      if (schedule.reservation == undefined) {
+        throw new RpcException(
+          'Cannot create or update reservation in this schedule',
+        );
+      }
+
+      let indice = originalSchedule.indexOf(schedule);
+      if (indice > -1) {
+        originalSchedule.splice(indice, 1);
+      }
+      parkingCalendar.schedules = originalSchedule;
+
+      return this.calendarRepository.save(parkingCalendar);
+    } catch {
+      throw new RpcException(
+        'Cannot create or update reservation in this schedule',
+      );
     }
   }
 
@@ -283,20 +347,43 @@ export class ReservationService {
 
     const fieldsToUpdate = Object.keys(data);
 
+    if (
+      reservation.status == ReservationStatuses.Completed ||
+      reservation.status == ReservationStatuses.InProgress ||
+      reservation.status == ReservationStatuses.Cancelled
+    ) {
+      throw new RpcException(`This reservation is ${reservation.status}`);
+    }
+
     const {
       checkInDate: checkInDateToUpdate,
       checkOutDate: checkOutDateToUpdate,
     } = data;
 
     if (
-      (checkInDateToUpdate !== undefined &&
-        checkOutDateToUpdate === undefined) ||
-      (checkInDateToUpdate === undefined && checkOutDateToUpdate !== undefined)
+      checkInDateToUpdate === undefined ||
+      checkOutDateToUpdate === undefined
     ) {
       throw new Error(
         'When Updating check in date, checkout date cannot be undefined and viceversa',
       );
     }
+
+    if (await this.validateDate(checkInDateToUpdate)) {
+      throw new RpcException(
+        'This date cannot be set because it is a date in the past',
+      );
+    }
+
+    const oldDate = reservation.checkInDate;
+
+    const extractOldDateTime = this.extractDateTime(oldDate);
+
+    const reservatioOldDate = new Date(
+      extractOldDateTime.date.year,
+      extractOldDateTime.date.month - 1,
+      extractOldDateTime.date.day,
+    ).toISOString();
 
     for (const field of fieldsToUpdate) {
       reservation[field] = data[field];
@@ -309,10 +396,15 @@ export class ReservationService {
 
     const reservationDate = new Date(year, month - 1, day).toISOString();
 
-    const parkingCalendar = await this.calendarRepository.findOne({
+    let parkingCalendar = await this.calendarRepository.findOne({
       parking,
       date: reservationDate,
     });
+
+    if (parkingCalendar == undefined) {
+      parkingCalendar = await this.createCalendarEntries(reservation);
+      await this.deleteOldSchedule(reservation, reservatioOldDate);
+    }
 
     const extractedCheckInDate = this.extractDateTime(checkInDate);
     const extractedCheckOutDate = this.extractDateTime(checkOutDate);
@@ -349,18 +441,107 @@ export class ReservationService {
         return 0;
       });
 
+      await this.taskService.deleteCron(reservation.id);
+      await this.taskService.deleteCron(reservation.id + ':deleted');
+      await this.createNewJobs(reservation);
+      parkingCalendar.updatedAt = new Date().toISOString();
       reservation.updatedAt = new Date().toISOString();
-
+      this.calendarRepository.save(parkingCalendar);
       return this.reservationRepository.save(reservation);
     } else {
       throw new RpcException('Cannot update reservation with this schedule');
     }
   }
 
+  private async validateDate(tomorrow: string): Promise<boolean> {
+    const today = new Date().toLocaleString('en-US', {
+      timeZone: 'America/Santo_Domingo',
+    });
+
+    const todayDate = today.split(', ')[0].split('/');
+    const todayTime = today.split(', ')[1].split(':');
+    const newDate = tomorrow.split('T')[0].split('-');
+    const newTime = tomorrow.split('T')[1].split(':');
+    if (parseInt(newDate[0]) == parseInt(todayDate[2])) {
+      if (parseInt(newDate[1]) == parseInt(todayDate[0])) {
+        if (parseInt(newDate[2]) == parseInt(todayDate[1])) {
+          let hoursTime = parseInt(todayTime[0]);
+          if (todayTime[2].split(' ')[1] == 'PM') {
+            hoursTime += 12;
+          }
+          if (parseInt(newTime[0]) == hoursTime) {
+            if (parseInt(newTime[1]) > parseInt(todayTime[1])) {
+              console.log(parseInt(newTime[1]));
+              console.log(parseInt(todayTime[1]));
+              return false;
+            }
+          }
+          if (parseInt(newTime[0]) > hoursTime) {
+            return false;
+          }
+        }
+        if (parseInt(newDate[2]) > parseInt(todayDate[1])) {
+          return false;
+        }
+      }
+      if (parseInt(newDate[1]) > parseInt(todayDate[0])) {
+        return false;
+      }
+    }
+    if (parseInt(newDate[0]) > parseInt(todayDate[2])) {
+      return false;
+    }
+    return true;
+  }
+
+  public async updateReservationFromCronJob(
+    updateReservationFromCronJobDto: UpdateReservationFromCronJobDto,
+  ): Promise<Reservation> {
+    const { reservation, type } = updateReservationFromCronJobDto;
+
+    const data = await this.reservationRepository.findOne({ id: reservation });
+
+    if (type) {
+      data.status = ReservationStatuses.InProgress;
+    } else {
+      data.status = ReservationStatuses.Completed;
+    }
+    data.updatedAt = new Date().toISOString();
+
+    return this.reservationRepository.save(data);
+  }
+
+  public async updateReservationReviewed(
+    updateReservationDto: UpdateReservationDto,
+  ): Promise<Reservation> {
+    try {
+      const { data, where } = updateReservationDto;
+
+      const reservation = await this.getReservationById(where);
+
+      const fieldsToUpdate = Object.keys(data);
+
+      for (const field of fieldsToUpdate) {
+        reservation[field] = data[field];
+      }
+
+      reservation.updatedAt = new Date().toISOString();
+
+      return this.reservationRepository.save(reservation);
+    } catch {
+      throw new RpcException('Invalid operation');
+    }
+  }
+
   public async cancelReservation(
     cancelReservationDto: CancelReservationDto,
+    user: ValidaUserDto,
   ): Promise<Reservation> {
     const reservation = await this.getReservationById(cancelReservationDto);
+
+    if (reservation.client != user.id && reservation.owner != user.id) {
+      throw new RpcException('Entry not found');
+    }
 
     const { id, checkInDate, parking } = reservation;
 
@@ -369,7 +550,14 @@ export class ReservationService {
 
     const reservationDate = new Date(year, month - 1, day).toISOString();
 
-    reservation.status = ReservationStatuses.Cancelled;
+    if (
+      reservation.status != ReservationStatuses.Completed &&
+      reservation.status != ReservationStatuses.InProgress
+    ) {
+      reservation.status = ReservationStatuses.Cancelled;
+    } else {
+      throw new RpcException(`This reservation is ${reservation.status}`);
+    }
 
     const parkingCalendar = await this.calendarRepository.findOne({
       parking,
@@ -381,6 +569,10 @@ export class ReservationService {
     );
 
     parkingCalendar.schedules = _schedules;
+
+    await this.taskService.deleteCron(reservation.id);
+
+    await this.taskService.deleteCron(reservation.id + ':deleted');
 
     await this.calendarRepository.save(parkingCalendar);
 

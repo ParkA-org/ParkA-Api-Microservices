@@ -10,6 +10,7 @@ import { CreateReservationInput } from './inputs/create-reservation.input';
 import { GetAllUserReservationsInput } from './inputs/get-all-user-reservations-as-client.input';
 import { GetReservationByIdInput } from './inputs/get-reservation-by-id.input';
 import { UpdateReservationInput } from './inputs/update-reservation.input';
+import { ValidateUser } from './inputs/validate-user';
 import { ReservationType } from './types/reservation.type';
 
 @Injectable()
@@ -103,6 +104,7 @@ export class ReservationService {
 
   public async cancelReservation(
     cancelReservationInput: CancelReservationInput,
+    user: ValidateUser,
   ): Promise<ReservationType> {
     this.logger.debug(
       `Received cancel reservation with payload ${JSON.stringify(
@@ -112,7 +114,27 @@ export class ReservationService {
 
     const response = await this.client.send<ReservationType>(
       { type: 'cancel-reservation' },
-      cancelReservationInput,
+      { cancelReservationInput, user },
+    );
+
+    return response.toPromise();
+  }
+
+  public async updateReservationReviewed(
+    reservation: string,
+  ): Promise<ReservationType> {
+    const obj = {
+      where: {
+        id: reservation,
+      },
+      data: {
+        reviewed: true,
+      },
+    };
+
+    const response = await this.client.send<ReservationType>(
+      { type: 'update-reservation-reviewed' },
+      obj,
     );
 
     return response.toPromise();

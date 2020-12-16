@@ -41,6 +41,6 @@ export class ReservationType implements IReservationType {
   @Field(type => ReservationStatuses)
   status: ReservationStatuses;
 
-  @Field()
+  @Field({ nullable: true })
   reviewed: boolean;
 }

@@ -140,4 +140,15 @@ export class ParkingService {
     );
     return response.toPromise();
   }
+
+  public async reviewParking(
+    parking: string,
+    calification: number,
+  ): Promise<ParkingType> {
+    const response = this.client.send<ParkingType>(
+      { type: 'review-parking' },
+      { id: parking, calification },
+    );
+    return response.toPromise();
+  }
 }
