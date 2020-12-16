@@ -1,10 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import {
-  ClientProxy,
-  ClientProxyFactory,
-  RpcException,
-  Transport,
-} from '@nestjs/microservices';
+import { RpcException } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { GetReservationByIdDto } from './dtos/get-reservation-by-id.dto';
@@ -24,6 +19,7 @@ import { Schedule } from 'src/calendar/entities/schedule.entity';
 import { UpdateReservationFromCronJobDto } from './dtos/update-reservation-from-cron-job.dto';
 import { TaskDto } from 'src/schedule/dtos/task.dto';
 import { TasksService } from 'src/schedule/task.service';
+import { SCHED_NONE } from 'cluster';
 @Injectable()
 export class ReservationService {
   private logger = new Logger('ReservationService');
@@ -151,7 +147,9 @@ export class ReservationService {
     this.taskService.addCronJobParking(task);
   }
 
-  private async createCalendarEntries(reservation: Reservation) {
+  private async createCalendarEntries(
+    reservation: Reservation,
+  ): Promise<ParkingCalendar> {
     const { checkInDate, checkOutDate, id, parking } = reservation;
 
     const extractedCheckInDate = this.extractDateTime(checkInDate);
@@ -163,8 +161,6 @@ export class ReservationService {
     const { day, month, year } = extractedCheckInDate.date;
 
     const reservationDate = new Date(year, month - 1, day).toISOString();
-
-    console.log(reservationDate);
 
     const parkingCalendar = await this.calendarRepository.findOne({
       parking,
@@ -211,7 +207,49 @@ export class ReservationService {
 
       return this.calendarRepository.save(calendar);
     } else {
-      throw new RpcException('Cannot create reservation in this schedule');
+      throw new RpcException(
+        'Cannot create or update reservation in this schedule',
+      );
+    }
+  }
+
+  private async deleteOldSchedule(
+    reservation: Reservation,
+    oldDate: string,
+  ): Promise<ParkingCalendar> {
+    try {
+      const { id, parking } = reservation;
+
+      const parkingCalendar = await this.calendarRepository.findOne({
+        parking,
+        date: oldDate,
+      });
+
+      const originalSchedule = parkingCalendar.schedules;
+      let schedule = new Schedule();
+      for (const el of originalSchedule) {
+        if (id == el.reservation) {
+          schedule = el;
+          break;
+        }
+      }
+      if (schedule.reservation == undefined) {
+        throw new RpcException(
+          'Cannot create or update reservation in this schedule',
+        );
+      }
+
+      let indice = originalSchedule.indexOf(schedule);
+      if (indice > -1) {
+        originalSchedule.splice(indice, 1);
+      }
+      parkingCalendar.schedules = originalSchedule;
+
+      return this.calendarRepository.save(parkingCalendar);
+    } catch {
+      throw new RpcException(
+        'Cannot create or update reservation in this schedule',
+      );
     }
   }
 
@@ -331,15 +369,21 @@ export class ReservationService {
       );
     }
 
-    const today = new Date().toLocaleString('en-US', {
-      timeZone: 'America/Santo_Domingo',
-    });
-
-    if (await this.validateDate(today, checkInDateToUpdate)) {
+    if (await this.validateDate(checkInDateToUpdate)) {
       throw new RpcException(
         'This date cannot be set because it is a date in the past',
       );
     }
+
+    const oldDate = reservation.checkInDate;
+
+    const extractOldDateTime = this.extractDateTime(oldDate);
+
+    const reservatioOldDate = new Date(
+      extractOldDateTime.date.year,
+      extractOldDateTime.date.month - 1,
+      extractOldDateTime.date.day,
+    ).toISOString();
 
     for (const field of fieldsToUpdate) {
       reservation[field] = data[field];
@@ -352,10 +396,15 @@ export class ReservationService {
 
     const reservationDate = new Date(year, month - 1, day).toISOString();
 
-    const parkingCalendar = await this.calendarRepository.findOne({
+    let parkingCalendar = await this.calendarRepository.findOne({
       parking,
       date: reservationDate,
     });
+
+    if (parkingCalendar == undefined) {
+      parkingCalendar = await this.createCalendarEntries(reservation);
+      await this.deleteOldSchedule(reservation, reservatioOldDate);
+    }
 
     const extractedCheckInDate = this.extractDateTime(checkInDate);
     const extractedCheckOutDate = this.extractDateTime(checkOutDate);
@@ -404,10 +453,11 @@ export class ReservationService {
     }
   }
 
-  private async validateDate(
-    today: string,
-    tomorrow: string,
-  ): Promise<boolean> {
+  private async validateDate(tomorrow: string): Promise<boolean> {
+    const today = new Date().toLocaleString('en-US', {
+      timeZone: 'America/Santo_Domingo',
+    });
+
     const todayDate = today.split(', ')[0].split('/');
     const todayTime = today.split(', ')[1].split(':');
     const newDate = tomorrow.split('T')[0].split('-');
