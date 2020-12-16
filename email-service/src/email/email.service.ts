@@ -199,7 +199,9 @@ export class EmailService {
 
       return confirmEmail;
     } catch (error) {
-      throw new RpcException('Invalid Process');
+      throw new RpcException(
+        'Invalid Process this email maybe dont exist in ParkA Services',
+      );
     }
   }
 
