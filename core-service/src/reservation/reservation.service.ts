@@ -311,7 +311,8 @@ export class ReservationService {
 
     if (
       reservation.status == ReservationStatuses.Completed ||
-      reservation.status == ReservationStatuses.InProgress
+      reservation.status == ReservationStatuses.InProgress ||
+      reservation.status == ReservationStatuses.Cancelled
     ) {
       throw new RpcException(`This reservation is ${reservation.status}`);
     }
