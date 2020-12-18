@@ -11,6 +11,7 @@ import { Calendar } from 'src/calendar/entities/calendar.entity';
 import { FilterDto } from './dtos/filter.dto';
 import { graphqlToMongoQueryUtil } from 'src/utils/graphql-to-mongo-query.util';
 import { VoteParkingDto } from './dtos/vote-parking.dto';
+import { UpdateParkingFromCronJobDto } from './dtos/update-parking-from-cron-job.dto';
 
 @Injectable()
 export class ParkingService {
@@ -83,7 +84,7 @@ export class ParkingService {
       const createdParking: Parking = new Parking();
 
       createdParking.id = parkingId;
-      createdParking.isAvailable = false;
+      createdParking.isAvailable = true;
       createdParking.calendar = calendarId;
       createdParking.countParking = countParking;
       createdParking.features = features;
@@ -199,6 +200,31 @@ export class ParkingService {
     }
   }
 
+  public async updateParkingFromCronJob(
+    updateParkingFromCronJobDto: UpdateParkingFromCronJobDto,
+  ): Promise<Parking> {
+    this.logger.debug(
+      `Received update parking with payload ${JSON.stringify(
+        updateParkingFromCronJobDto,
+      )}`,
+    );
+
+    const { parking, isAvailable } = updateParkingFromCronJobDto;
+
+    const parkingEntity = await this.parkingRepository.findOne({
+      id: parking,
+    });
+
+    try {
+      parkingEntity.isAvailable = isAvailable;
+      parkingEntity.updatedAt = new Date().toISOString();
+      await this.parkingRepository.save(parkingEntity);
+      return parkingEntity;
+    } catch {
+      throw new RpcException('An undefined error occured');
+    }
+  }
+
   public async getParkingById(id: string): Promise<Parking> {
     this.logger.debug(`Received get parking by ID`);
     const parking = await this.parkingRepository.findOne({ id: id });
@@ -261,7 +287,10 @@ export class ParkingService {
     parkingToVote.totalReviews += 1;
 
     const newRating =
-      (parkingToVote.rating + calification) / parkingToVote.totalReviews;
+      (parkingToVote.rating * (parkingToVote.totalReviews - 1) + calification) /
+      parkingToVote.totalReviews;
+
+    parkingToVote.updatedAt = new Date().toISOString();
 
     parkingToVote.rating = newRating;
 

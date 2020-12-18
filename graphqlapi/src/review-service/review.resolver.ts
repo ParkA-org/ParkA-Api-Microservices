@@ -18,6 +18,7 @@ import { ReservationService } from 'src/core-service/reservation/reservation.ser
 import { ReservationType } from 'src/core-service/reservation/types/reservation.type';
 import { ParkingService } from 'src/parking-service/parking/parking.service';
 import { ParkingType } from 'src/parking-service/parking/types/parking.type';
+import { CreateInternReviewInputFunction } from './inputs/create-intern-review.input';
 import { CreateReviewInput } from './inputs/create-review.input';
 import { GetAllParkingReviewInput } from './inputs/get-all-parking-review.input';
 import { GetAllUserReviewInput } from './inputs/get-all-user-review.input';
@@ -76,9 +77,22 @@ export class ReviewResolver {
       `Received create review data ${JSON.stringify(createReviewInput)}`,
     );
 
-    createReviewInput.user = user.id;
+    const createInternReviewInputFunction = new CreateInternReviewInputFunction();
+    const createInternReviewInput = await createInternReviewInputFunction.createReview(
+      createReviewInput,
+      user.id,
+    );
+    const review = await this.reviewService.createReview(
+      createInternReviewInput,
+    );
 
-    const review = await this.reviewService.createReview(createReviewInput);
+    await this.parkingService.reviewParking(
+      review.parking,
+      review.calification,
+    );
+
+    await this.reservationService.updateReservationReviewed(review.reservation);
+
     if (!review) {
       throw new BadRequestException('This review already exists');
     }

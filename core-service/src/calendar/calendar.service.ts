@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindManyOptions, Repository } from 'typeorm';
 import { GetParkingCalendarDto } from './dtos/get-parking-calendar.dto';
 import { ParkingCalendar } from './entities/calendar.entity';
 import { Schedule } from './entities/schedule.entity';
@@ -20,10 +20,11 @@ export class CalendarService {
     const extractedDate = this.extractDateTime(date);
     const { day, month, year } = extractedDate.date;
 
-    const reservationDate = new Date(year, month, day).toISOString();
+    const reservationDate = new Date(year, month - 1, day).toISOString();
 
-    const filterObject = {
+    const filterObject: FindManyOptions<ParkingCalendar> = {
       take: 7,
+      order: { date: 'ASC' },
       where: {
         parking,
         date: { $gte: reservationDate },

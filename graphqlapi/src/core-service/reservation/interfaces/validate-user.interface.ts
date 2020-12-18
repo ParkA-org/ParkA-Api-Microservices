@@ -1,0 +1,3 @@
+interface IValidateUser {
+  id: string;
+}
