@@ -1,5 +1,6 @@
 export interface ICreateReviewDto {
   user: string;
+  reviewedUser: string;
   parking: string;
   reservation: string;
   title: string;

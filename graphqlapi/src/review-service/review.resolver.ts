@@ -22,6 +22,7 @@ import { CreateInternReviewInputFunction } from './inputs/create-intern-review.i
 import { CreateReviewInput } from './inputs/create-review.input';
 import { GetAllParkingReviewInput } from './inputs/get-all-parking-review.input';
 import { GetAllUserReviewInput } from './inputs/get-all-user-review.input';
+import { GetAllOtherUserReviewInput } from './inputs/get-other-user-reviews.inputs';
 import { GetReviewByIdInput } from './inputs/get-review-by-id.input';
 import { UpdateReviewInput } from './inputs/update-review.input';
 import { ReviewService } from './review.service';
@@ -55,6 +56,17 @@ export class ReviewResolver {
     const getAllUserReviewInput = new GetAllUserReviewInput();
     getAllUserReviewInput.user = user.id;
     return this.reviewService.getAllUserReviews(getAllUserReviewInput);
+  }
+
+  @Query(returns => [ReviewType])
+  @UseGuards(AuthGuard)
+  public async getAllOtherUserReviews(
+    @Args('getAllOtherUserReviewInput')
+    getAllOtherUserReviewInput: GetAllOtherUserReviewInput,
+  ) {
+    this.logger.debug(`Received get all payments`);
+
+    return this.reviewService.getAllOtherUserReview(getAllOtherUserReviewInput);
   }
 
   @Query(returns => [ReviewType])

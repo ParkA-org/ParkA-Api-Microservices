@@ -6,6 +6,9 @@ export class CreateReviewDto implements ICreateReviewDto {
   user: string;
 
   @IsUUID('all')
+  reviewedUser: string;
+
+  @IsUUID('all')
   parking: string;
 
   @IsUUID('all')
