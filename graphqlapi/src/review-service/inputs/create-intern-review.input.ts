@@ -17,6 +17,8 @@ export class CreateInternReviewInput implements ICreateInternReviewInput {
   calification: number;
 
   type: boolean;
+
+  reviewedUser: string;
 }
 
 export class CreateInternReviewInputFunction {
@@ -33,6 +35,7 @@ export class CreateInternReviewInputFunction {
     createInternReviewInput.user = id;
     createInternReviewInput.title = createReviewInput.title;
     createInternReviewInput.type = createReviewInput.type;
+    createInternReviewInput.reviewedUser = createReviewInput.reviewedUser;
 
     return createInternReviewInput;
   }

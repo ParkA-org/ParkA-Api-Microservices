@@ -25,12 +25,16 @@ import { JWTpayload } from './types/jwt.type';
 import { UserInformationType } from 'src/core-service/user-information/types/user-information.type';
 import { UserInformationService } from 'src/core-service/user-information/user-information.service';
 import { GetUserInformationByIdInput } from 'src/core-service/user-information/inputs/get-user-information-by-id.input';
+import { ReviewType } from 'src/review-service/types/review.type';
+import { ReviewService } from 'src/review-service/review.service';
+import { GetAllOtherUserReviewInput } from 'src/review-service/inputs/get-other-user-reviews.inputs';
 
 @Resolver(of => UserType)
 export class AuthResolver {
   constructor(
     private authService: AuthService,
     private userInformationService: UserInformationService,
+    private reviewService: ReviewService,
   ) {}
 
   @Query(returns => UserType)
@@ -114,5 +118,14 @@ export class AuthResolver {
     const data = new GetUserInformationByIdInput();
     data.id = userInformation;
     return this.userInformationService.getUserInformationById(data);
+  }
+
+  @ResolveField(returns => ReviewType)
+  public async reviews(@Parent() user: UserType): Promise<ReviewType[]> {
+    const data: GetAllOtherUserReviewInput = {
+      reviewedUser: user.id,
+    };
+
+    return this.reviewService.getAllOtherUserReview(data);
   }
 }

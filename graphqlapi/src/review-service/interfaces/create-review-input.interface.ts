@@ -5,4 +5,5 @@ export interface ICreateReviewInput {
   review: string;
   calification: number;
   type: boolean;
+  reviewedUser: string;
 }

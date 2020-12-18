@@ -25,4 +25,8 @@ export class CreateReviewInput implements ICreateReviewInput {
 
   @Field()
   type: boolean;
+
+  @Field()
+  @IsUUID('all')
+  reviewedUser: string;
 }

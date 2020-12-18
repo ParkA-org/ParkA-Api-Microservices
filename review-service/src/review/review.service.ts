@@ -9,6 +9,7 @@ import { CreateReviewDto } from './dtos/create-review.dto';
 import { GetAllUserReviewDto } from './dtos/get-all-user-review.dto';
 import { GetAllParkingReviewDto } from './dtos/get-all-parking-review.dto';
 import { GetReviewByIdDto } from './dtos/get-review-by-id.dto';
+import { GetAllOtherUserReviewDto } from './dtos/get-all-other-user-reviews.dto';
 
 @Injectable()
 export class ReviewService {
@@ -56,6 +57,7 @@ export class ReviewService {
       title,
       type,
       user,
+      reviewedUser,
     } = createReviewDto;
 
     try {
@@ -67,6 +69,7 @@ export class ReviewService {
         title,
         type,
         user,
+        reviewedUser,
         parking,
         calification,
         reservation,
@@ -87,6 +90,18 @@ export class ReviewService {
     try {
       const { user } = getAllUserReviewDto;
       const reviews = this.reviewRepository.find({ user: user });
+      return await reviews;
+    } catch (error) {
+      new RpcException('User Reviews not found');
+    }
+  }
+
+  public async getAllOtherUserReview(
+    getAllOtherUserReviewDto: GetAllOtherUserReviewDto,
+  ): Promise<Review[]> {
+    try {
+      const { reviewedUser } = getAllOtherUserReviewDto;
+      const reviews = this.reviewRepository.find({ reviewedUser });
       return await reviews;
     } catch (error) {
       new RpcException('User Reviews not found');
