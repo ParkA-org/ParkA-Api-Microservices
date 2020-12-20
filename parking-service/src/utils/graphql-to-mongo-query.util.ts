@@ -84,6 +84,7 @@ function getMongoOperationObject(
         graphqlOperation == GraphQlOperationsEnum.contains
           ? regexContainsOperationFormatter(value)
           : regexNotContainsOperationFormatter(value);
+      operationObject['$options'] = 'i';
       break;
 
     default:
