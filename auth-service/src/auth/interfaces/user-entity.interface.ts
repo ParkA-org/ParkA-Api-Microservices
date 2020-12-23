@@ -15,8 +15,6 @@ interface IUser {
 
   credential: string;
 
-  password: string;
-
   confirmed: boolean;
 
   origin: string;
