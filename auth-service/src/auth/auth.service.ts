@@ -16,6 +16,7 @@ import { ConfigService } from '@nestjs/config';
 import { UpdateUserPasswordDto } from './dtos/update-user-password.dto';
 import { SocialLoginDto } from './dtos/social-login.dto';
 import { SocialLogin } from './classes/social-login.class';
+import { AddUserInformation } from './dtos/add-userInformation.dto';
 @Injectable()
 export class AuthService {
   private logger = new Logger('AuthService');
@@ -56,7 +57,9 @@ export class AuthService {
     }
   }
 
-  // public async addUserInformation(): Promise<SocialLogin> {}
+  public async addUserInformation(
+    addUserInformation: AddUserInformation,
+  ): Promise<SocialLogin> {}
 
   public async socialLogin(
     socialLoginDto: SocialLoginDto,

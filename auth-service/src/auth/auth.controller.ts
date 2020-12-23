@@ -9,6 +9,7 @@ import { UpdateUserDto } from './dtos/update-user.dto';
 import { UpdateUserPasswordDto } from './dtos/update-user-password.dto';
 import { SocialLoginDto } from './dtos/social-login.dto';
 import { SocialLogin } from './classes/social-login.class';
+import { AddUserInformation } from './dtos/add-userInformation.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -70,14 +71,14 @@ export class AuthController {
 
   @MessagePattern({ type: 'add-userInformation-social-login' })
   public async addUserInformation(
-    socialLoginDto: SocialLoginDto,
+    addUserInformation: AddUserInformation,
   ): Promise<SocialLogin> {
     this.logger.debug(
-      `Received social login user message with data ${JSON.stringify(
-        socialLoginDto,
+      `Received add user information id message with data ${JSON.stringify(
+        addUserInformation,
       )}`,
     );
-    return await this.authService.addUserInformation(socialLoginDto);
+    return await this.authService.addUserInformation(addUserInformation);
   }
 
   @MessagePattern({ type: 'update-user-password' })
