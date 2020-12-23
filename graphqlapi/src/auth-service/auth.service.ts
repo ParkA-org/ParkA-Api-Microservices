@@ -101,7 +101,7 @@ export class AuthService {
     internUpdateUser.name = updateUserInput.name;
 
     const response = this.client.send<UserType>(
-      { type: 'update-user' },
+      { type: 'social-login' },
       internUpdateUser,
     );
     return response.toPromise();

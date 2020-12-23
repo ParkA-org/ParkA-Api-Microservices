@@ -54,6 +54,35 @@ export class AuthService {
     }
   }
 
+  public async socialLogin(updateUserDto: UpdateUserDto): Promise<User> {
+    this.logger.debug(
+      `Received social login user payload ${JSON.stringify(updateUserDto)}`,
+    );
+
+    try {
+      const { id, name, lastName, profilePicture, origin } = updateUserDto;
+      const user = await this.getUser(id);
+
+      profilePicture !== undefined
+        ? (user.profilePicture = profilePicture)
+        : null;
+
+      lastName !== undefined ? (user.lastName = lastName) : null;
+
+      name !== undefined ? (user.name = name) : null;
+
+      user.updatedAt = new Date().toISOString();
+
+      user.origin = origin;
+
+      await this.authRepository.save(user);
+
+      return user;
+    } catch (error) {
+      throw new RpcException('User not Found');
+    }
+  }
+
   public async updateUserPassword(
     updateUserPasswordDto: UpdateUserPasswordDto,
   ): Promise<User> {
@@ -105,7 +134,7 @@ export class AuthService {
     }
     return false;
   }
-  // Is Inprogress
+
   public async createUser(createUserDto: CreateUserDto): Promise<User> {
     let {
       name,

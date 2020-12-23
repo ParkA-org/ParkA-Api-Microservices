@@ -54,6 +54,16 @@ export class AuthController {
     return await this.authService.updateUser(updateUserDto);
   }
 
+  @MessagePattern({ type: 'social-login' })
+  public async socialLogin(updateUserDto: UpdateUserDto): Promise<User> {
+    this.logger.debug(
+      `Received social login user message with data ${JSON.stringify(
+        updateUserDto,
+      )}`,
+    );
+    return await this.authService.updateUser(updateUserDto);
+  }
+
   @MessagePattern({ type: 'update-user-password' })
   public async updateUserPassword(
     updateUserPasswordDto: UpdateUserPasswordDto,
