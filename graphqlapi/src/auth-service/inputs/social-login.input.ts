@@ -5,10 +5,11 @@ export class SocialLoginInput implements ISocialLoginInput {
   @Field()
   displayName: string;
 
-  @Field()
+  @Field({ nullable: true })
   photoUrl: string;
 
   @Field()
+  @IsEmail()
   email: string;
 
   @Field()
