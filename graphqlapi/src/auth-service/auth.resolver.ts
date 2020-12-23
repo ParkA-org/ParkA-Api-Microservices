@@ -28,6 +28,7 @@ import { GetUserInformationByIdInput } from 'src/core-service/user-information/i
 import { ReviewType } from 'src/review-service/types/review.type';
 import { ReviewService } from 'src/review-service/review.service';
 import { GetAllOtherUserReviewInput } from 'src/review-service/inputs/get-other-user-reviews.inputs';
+import { SocialLoginInput } from './inputs/social-login.input';
 
 @Resolver(of => UserType)
 export class AuthResolver {
@@ -104,13 +105,11 @@ export class AuthResolver {
     return await this.authService.updateUser(updateUserInput, user);
   }
 
-  @Mutation(returns => UserType)
-  @UseGuards(AuthGuard)
+  @Mutation(returns => LoginType)
   async socialLogin(
-    @Args('socialLoginInput') updateUserInput: UpdateUserInput,
-    @Context('user') user: JWTpayload,
-  ): Promise<UserType> {
-    return await this.authService.socialLogin(updateUserInput, user);
+    @Args('socialLoginInput') socialLoginInput: SocialLoginInput,
+  ): Promise<LoginType> {
+    return await this.authService.socialLogin(socialLoginInput);
   }
 
   @Query(returns => UserType)

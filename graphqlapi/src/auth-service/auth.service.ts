@@ -15,6 +15,7 @@ import { ConfirmEmailType } from 'src/email-service/types/confirm-email.type';
 import { JWTpayload } from './types/jwt.type';
 import { InternUpdateUser } from './inputs/intern-update-user';
 import { InternUpdatePassword } from './inputs/intern-update-password';
+import { SocialLoginInput } from './inputs/social-login.input';
 
 @Injectable()
 export class AuthService {
@@ -86,23 +87,15 @@ export class AuthService {
   }
 
   public async socialLogin(
-    updateUserInput: UpdateUserInput,
-    user: JWTpayload,
-  ): Promise<UserType> {
+    socialLoginInput: SocialLoginInput,
+  ): Promise<LoginType> {
     this.logger.log(
-      `Got updateUserInput data ${JSON.stringify(updateUserInput)}`,
+      `Got Social Login Input data ${JSON.stringify(socialLoginInput)}`,
     );
 
-    const internUpdateUser = new InternUpdateUser();
-    internUpdateUser.id = user.id;
-    internUpdateUser.lastName = updateUserInput.lastName;
-    internUpdateUser.origin = updateUserInput.origin;
-    internUpdateUser.profilePicture = updateUserInput.profilePicture;
-    internUpdateUser.name = updateUserInput.name;
-
-    const response = this.client.send<UserType>(
+    const response = this.client.send<LoginType>(
       { type: 'social-login' },
-      internUpdateUser,
+      socialLoginInput,
     );
     return response.toPromise();
   }
