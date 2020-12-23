@@ -56,6 +56,8 @@ export class AuthService {
     }
   }
 
+  // public async addUserInformation(): Promise<SocialLogin> {}
+
   public async socialLogin(
     socialLoginDto: SocialLoginDto,
   ): Promise<SocialLogin> {
@@ -81,7 +83,6 @@ export class AuthService {
         userNew.origin = origin;
         userNew.email = email;
         userNew.id = uuid();
-
         await this.authRepository.save(userNew);
         socialLogin.user = userNew;
         socialLogin.register = false;
@@ -89,7 +90,7 @@ export class AuthService {
         socialLogin.user = user;
         socialLogin.register = true;
       }
-      socialLogin.JWT = this.createToken(socialLogin.user);
+      socialLogin.JWT = await this.createToken(socialLogin.user);
       return socialLogin;
     } catch (error) {
       throw new RpcException('User already exist in parka services');
