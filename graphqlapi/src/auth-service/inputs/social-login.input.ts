@@ -1,6 +1,7 @@
-import { Field } from '@nestjs/graphql';
+import { Field, InputType } from '@nestjs/graphql';
 import { IsEmail } from 'class-validator';
 
+@InputType('SocialLoginInput')
 export class SocialLoginInput implements ISocialLoginInput {
   @Field()
   displayName: string;

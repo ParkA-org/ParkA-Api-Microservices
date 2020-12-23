@@ -92,17 +92,17 @@ export class AuthService {
       const { displayName, email, origin, photoUrl } = socialLoginDto;
       const user = await this.getUserByEmail(email);
       const socialLogin = new SocialLogin();
-      if (user == undefined) {
+      if (user === undefined) {
         const userNew = new User();
         userNew.createdAt = new Date().toISOString();
-        user.name = displayName.split(' ')[0];
-        user.updatedAt = new Date().toISOString();
-        if (displayName.split(' ').length != 1) {
+        userNew.name = displayName.split(' ')[0];
+        userNew.updatedAt = new Date().toISOString();
+        if (displayName.split(' ').length !== 1) {
           userNew.lastName = displayName.split(' ')[1];
         } else {
           userNew.lastName = ' ';
         }
-        photoUrl !== undefined ? (user.profilePicture = photoUrl) : null;
+        photoUrl !== undefined ? (userNew.profilePicture = photoUrl) : null;
         userNew.origin = origin;
         userNew.email = email;
         userNew.id = uuid();

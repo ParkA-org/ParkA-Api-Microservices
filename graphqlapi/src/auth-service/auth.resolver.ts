@@ -116,7 +116,8 @@ export class AuthResolver {
   @Mutation(returns => LoginType)
   @UseGuards(AuthGuard)
   async addUserInformation(
-    @Args('socialLoginInput') addUserInformationInput: AddUserInformationInput,
+    @Args('addUserInformationInput')
+    addUserInformationInput: AddUserInformationInput,
     @Context('user') user: JWTpayload,
   ): Promise<LoginType> {
     return await this.authService.addUserInformation(
