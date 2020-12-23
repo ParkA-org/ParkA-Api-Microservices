@@ -14,6 +14,8 @@ import { exception } from 'console';
 import * as jwt from 'jsonwebtoken';
 import { ConfigService } from '@nestjs/config';
 import { UpdateUserPasswordDto } from './dtos/update-user-password.dto';
+import { SocialLoginDto } from './dtos/social-login.dto';
+import { SocialLogin } from './classes/social-login.class';
 @Injectable()
 export class AuthService {
   private logger = new Logger('AuthService');
@@ -54,27 +56,31 @@ export class AuthService {
     }
   }
 
-  public async socialLogin(updateUserDto: UpdateUserDto): Promise<User> {
+  public async socialLogin(
+    socialLoginDto: SocialLoginDto,
+  ): Promise<SocialLogin> {
     this.logger.debug(
-      `Received social login user payload ${JSON.stringify(updateUserDto)}`,
+      `Received social login user payload ${JSON.stringify(socialLoginDto)}`,
     );
 
     try {
-      const { id, name, lastName, profilePicture, origin } = updateUserDto;
-      const user = await this.getUser(id);
-
-      profilePicture !== undefined
-        ? (user.profilePicture = profilePicture)
-        : null;
-
-      lastName !== undefined ? (user.lastName = lastName) : null;
-
-      name !== undefined ? (user.name = name) : null;
-
-      user.updatedAt = new Date().toISOString();
-
-      user.origin = origin;
-
+      const { displayName, email, origin, photoUrl } = socialLoginDto;
+      const user = await this.getUserByEmail(email);
+      if (user == undefined) {
+        const userNew = new User();
+        userNew.createdAt = new Date().toISOString();
+        user.name = displayName.split(' ')[0];
+        user.updatedAt = new Date().toISOString();
+        if (displayName.split(' ').length != 1) {
+          userNew.lastName = displayName.split(' ')[1];
+        } else {
+          userNew.lastName = ' ';
+        }
+        photoUrl !== undefined ? (user.profilePicture = photoUrl) : null;
+        userNew.origin = origin;
+        userNew.email = email;
+      } else {
+      }
       await this.authRepository.save(user);
 
       return user;
@@ -154,7 +160,7 @@ export class AuthService {
       const password_tmp = await this.hashPassword(password, salt);
       const id = uuid();
 
-      const result = this.credentialRepository.save({
+      this.credentialRepository.save({
         id,
         email,
         password: password_tmp,
@@ -213,6 +219,15 @@ export class AuthService {
   public async getUser(id: string): Promise<User> {
     try {
       const user = this.authRepository.findOne({ id });
+      return await user;
+    } catch (error) {
+      throw new exception('User not Found');
+    }
+  }
+
+  public async getUserByEmail(email: string): Promise<User> {
+    try {
+      const user = this.authRepository.findOne({ email: email });
       return await user;
     } catch (error) {
       throw new exception('User not Found');
