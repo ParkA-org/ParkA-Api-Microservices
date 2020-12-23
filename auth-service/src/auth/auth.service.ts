@@ -66,6 +66,7 @@ export class AuthService {
     try {
       const { displayName, email, origin, photoUrl } = socialLoginDto;
       const user = await this.getUserByEmail(email);
+      const socialLogin = new SocialLogin();
       if (user == undefined) {
         const userNew = new User();
         userNew.createdAt = new Date().toISOString();
@@ -80,12 +81,12 @@ export class AuthService {
         userNew.origin = origin;
         userNew.email = email;
       } else {
+        socialLogin.user = user;
+        socialLogin.register = true;
       }
-      await this.authRepository.save(user);
-
-      return user;
+      return socialLogin;
     } catch (error) {
-      throw new RpcException('User not Found');
+      throw new RpcException('User already exist in parka services');
     }
   }
 

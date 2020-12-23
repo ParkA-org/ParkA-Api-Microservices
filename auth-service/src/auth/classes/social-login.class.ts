@@ -3,6 +3,6 @@ import { ISocialLogin } from '../interfaces/social-login-response.interface';
 
 export class SocialLogin implements ISocialLogin {
   JWT: string;
-  register: string;
+  register: boolean;
   user: User;
 }
