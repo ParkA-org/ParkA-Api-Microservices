@@ -85,6 +85,28 @@ export class AuthService {
     return response.toPromise();
   }
 
+  public async socialLogin(
+    updateUserInput: UpdateUserInput,
+    user: JWTpayload,
+  ): Promise<UserType> {
+    this.logger.log(
+      `Got updateUserInput data ${JSON.stringify(updateUserInput)}`,
+    );
+
+    const internUpdateUser = new InternUpdateUser();
+    internUpdateUser.id = user.id;
+    internUpdateUser.lastName = updateUserInput.lastName;
+    internUpdateUser.origin = updateUserInput.origin;
+    internUpdateUser.profilePicture = updateUserInput.profilePicture;
+    internUpdateUser.name = updateUserInput.name;
+
+    const response = this.client.send<UserType>(
+      { type: 'update-user' },
+      internUpdateUser,
+    );
+    return response.toPromise();
+  }
+
   public async updateUserPassword(
     updateUserPasswordInput: UpdateUserPasswordInput,
     user: JWTpayload,
