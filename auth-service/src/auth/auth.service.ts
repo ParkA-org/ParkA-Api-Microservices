@@ -59,7 +59,27 @@ export class AuthService {
 
   public async addUserInformation(
     addUserInformation: AddUserInformation,
-  ): Promise<SocialLogin> {}
+  ): Promise<SocialLogin> {
+    this.logger.debug(
+      `Received add user information id payload ${JSON.stringify(
+        addUserInformation,
+      )}`,
+    );
+
+    try {
+      const { id, userInformation } = addUserInformation;
+      const user = await this.getUser(id);
+      const socialLogin = new SocialLogin();
+      user.userInformation = userInformation;
+      await this.authRepository.save(user);
+      socialLogin.user = user;
+      socialLogin.register = true;
+      socialLogin.JWT = await this.createToken(socialLogin.user);
+      return socialLogin;
+    } catch (error) {
+      throw new RpcException('User not found in parka auth services');
+    }
+  }
 
   public async socialLogin(
     socialLoginDto: SocialLoginDto,
