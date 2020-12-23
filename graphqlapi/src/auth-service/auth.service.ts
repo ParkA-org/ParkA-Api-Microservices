@@ -16,6 +16,7 @@ import { JWTpayload } from './types/jwt.type';
 import { InternUpdateUser } from './inputs/intern-update-user';
 import { InternUpdatePassword } from './inputs/intern-update-password';
 import { SocialLoginInput } from './inputs/social-login.input';
+import { AddUserInformationInput } from './inputs/add-userInformation.input';
 
 @Injectable()
 export class AuthService {
@@ -96,6 +97,25 @@ export class AuthService {
     const response = this.client.send<LoginType>(
       { type: 'social-login' },
       socialLoginInput,
+    );
+    return response.toPromise();
+  }
+
+  public async addUserInformation(
+    addUserInformationInput: AddUserInformationInput,
+    user: JWTpayload,
+  ): Promise<LoginType> {
+    this.logger.log(
+      `Got to add user information with this input data ${JSON.stringify(
+        addUserInformationInput,
+      )}`,
+    );
+
+    addUserInformationInput.id = user.id;
+
+    const response = this.client.send<LoginType>(
+      { type: 'add-userInformation-social-login' },
+      addUserInformationInput,
     );
     return response.toPromise();
   }
