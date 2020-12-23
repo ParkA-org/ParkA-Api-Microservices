@@ -8,6 +8,7 @@ import { LoginType } from './login-class/login';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { UpdateUserPasswordDto } from './dtos/update-user-password.dto';
 import { SocialLoginDto } from './dtos/social-login.dto';
+import { SocialLogin } from './classes/social-login.class';
 
 @Controller('auth')
 export class AuthController {
@@ -56,7 +57,9 @@ export class AuthController {
   }
 
   @MessagePattern({ type: 'social-login' })
-  public async socialLogin(socialLoginDto: SocialLoginDto): Promise<User> {
+  public async socialLogin(
+    socialLoginDto: SocialLoginDto,
+  ): Promise<SocialLogin> {
     this.logger.debug(
       `Received social login user message with data ${JSON.stringify(
         socialLoginDto,

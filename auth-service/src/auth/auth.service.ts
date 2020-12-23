@@ -80,10 +80,16 @@ export class AuthService {
         photoUrl !== undefined ? (user.profilePicture = photoUrl) : null;
         userNew.origin = origin;
         userNew.email = email;
+        userNew.id = uuid();
+
+        await this.authRepository.save(userNew);
+        socialLogin.user = userNew;
+        socialLogin.register = false;
       } else {
         socialLogin.user = user;
         socialLogin.register = true;
       }
+      socialLogin.JWT = this.createToken(socialLogin.user);
       return socialLogin;
     } catch (error) {
       throw new RpcException('User already exist in parka services');
@@ -207,7 +213,8 @@ export class AuthService {
     }
   }
 
-  private createToken(id: string, email: string, userInformation: string) {
+  private createToken(user: User) {
+    const { id, email, userInformation } = user;
     return jwt.sign(
       { id: id, email: email, userInformation: userInformation },
       this.configService.get('JWT_SECRET'),
@@ -261,11 +268,7 @@ export class AuthService {
         const hash = await this.hashPassword(password, credential.salt);
 
         if (hash === credential.password) {
-          const JWT = await this.createToken(
-            user.id,
-            user.email,
-            user.userInformation,
-          );
+          const JWT = await this.createToken(user);
 
           const result = {
             user,
