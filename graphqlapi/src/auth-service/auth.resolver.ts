@@ -104,6 +104,15 @@ export class AuthResolver {
     return await this.authService.updateUser(updateUserInput, user);
   }
 
+  @Mutation(returns => UserType)
+  @UseGuards(AuthGuard)
+  async socialLogin(
+    @Args('socialLoginInput') updateUserInput: UpdateUserInput,
+    @Context('user') user: JWTpayload,
+  ): Promise<UserType> {
+    return await this.authService.socialLogin(updateUserInput, user);
+  }
+
   @Query(returns => UserType)
   @UseGuards(AuthGuard)
   async getLoggedUser(@Context('user') user: JWTpayload): Promise<UserType> {
