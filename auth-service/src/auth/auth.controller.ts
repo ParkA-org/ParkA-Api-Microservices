@@ -7,6 +7,9 @@ import { User } from './entities/user.entity';
 import { LoginType } from './login-class/login';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { UpdateUserPasswordDto } from './dtos/update-user-password.dto';
+import { SocialLoginDto } from './dtos/social-login.dto';
+import { SocialLogin } from './classes/social-login.class';
+import { AddUserInformation } from './dtos/add-userInformation.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -52,6 +55,22 @@ export class AuthController {
       `Received Update User message with data ${JSON.stringify(updateUserDto)}`,
     );
     return await this.authService.updateUser(updateUserDto);
+  }
+
+  @MessagePattern({ type: 'social-login' })
+  public async socialLogin(
+    socialLoginDto: SocialLoginDto,
+  ): Promise<SocialLogin> {
+    this.logger.debug(`Received social login user message with data`);
+    return await this.authService.socialLogin(socialLoginDto);
+  }
+
+  @MessagePattern({ type: 'add-userInformation-social-login' })
+  public async addUserInformation(
+    addUserInformation: AddUserInformation,
+  ): Promise<SocialLogin> {
+    this.logger.debug(`Received add user information id message with data`);
+    return await this.authService.addUserInformation(addUserInformation);
   }
 
   @MessagePattern({ type: 'update-user-password' })

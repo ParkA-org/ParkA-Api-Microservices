@@ -34,9 +34,6 @@ export class User implements IUser, IBaseEntity {
   credential: string;
 
   @Column()
-  password: string;
-
-  @Column()
   confirmed: boolean;
 
   @Column()

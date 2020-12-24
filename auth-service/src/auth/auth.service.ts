@@ -14,6 +14,9 @@ import { exception } from 'console';
 import * as jwt from 'jsonwebtoken';
 import { ConfigService } from '@nestjs/config';
 import { UpdateUserPasswordDto } from './dtos/update-user-password.dto';
+import { SocialLoginDto } from './dtos/social-login.dto';
+import { SocialLogin } from './classes/social-login.class';
+import { AddUserInformation } from './dtos/add-userInformation.dto';
 @Injectable()
 export class AuthService {
   private logger = new Logger('AuthService');
@@ -51,6 +54,63 @@ export class AuthService {
       return user;
     } catch (error) {
       throw new RpcException('User not Found');
+    }
+  }
+
+  public async addUserInformation(
+    addUserInformation: AddUserInformation,
+  ): Promise<SocialLogin> {
+    this.logger.debug(`Received add user information id payload`);
+
+    try {
+      const { id, userInformation } = addUserInformation;
+      const user = await this.getUser(id);
+      const socialLogin = new SocialLogin();
+      user.userInformation = userInformation;
+      await this.authRepository.save(user);
+      socialLogin.user = user;
+      socialLogin.register = true;
+      socialLogin.JWT = await this.createToken(socialLogin.user);
+      return socialLogin;
+    } catch (error) {
+      throw new RpcException('User not found in parka auth services');
+    }
+  }
+
+  public async socialLogin(
+    socialLoginDto: SocialLoginDto,
+  ): Promise<SocialLogin> {
+    this.logger.debug(`Received social login user payload}`);
+
+    try {
+      const { displayName, email, origin, photoUrl } = socialLoginDto;
+      const user = await this.getUserByEmail(email);
+      const socialLogin = new SocialLogin();
+      if (user === undefined) {
+        const userNew = new User();
+        userNew.createdAt = new Date().toISOString();
+        userNew.name = displayName.split(' ')[0];
+        userNew.updatedAt = new Date().toISOString();
+        if (displayName.split(' ').length !== 1) {
+          userNew.lastName = displayName.split(' ')[1];
+        } else {
+          userNew.lastName = ' ';
+        }
+        photoUrl !== undefined ? (userNew.profilePicture = photoUrl) : null;
+        userNew.origin = origin;
+        userNew.email = email;
+        userNew.id = uuid();
+        await this.authRepository.save(userNew);
+        socialLogin.user = userNew;
+        socialLogin.register = false;
+      } else {
+        socialLogin.user = user;
+        socialLogin.register = true;
+      }
+      socialLogin.JWT = await this.createToken(socialLogin.user);
+      return socialLogin;
+    } catch (error) {
+      throw new RpcException('User already exist in parka services');
     }
   }
 
@@ -105,7 +165,7 @@ export class AuthService {
     }
     return false;
   }
-  // Is Inprogress
+
   public async createUser(createUserDto: CreateUserDto): Promise<User> {
     let {
       name,
@@ -125,7 +185,7 @@ export class AuthService {
       const password_tmp = await this.hashPassword(password, salt);
       const id = uuid();
 
-      const result = this.credentialRepository.save({
+      this.credentialRepository.save({
         id,
         email,
         password: password_tmp,
@@ -171,7 +231,8 @@ export class AuthService {
     }
   }
 
-  private createToken(id: string, email: string, userInformation: string) {
+  private createToken(user: User) {
+    const { id, email, userInformation } = user;
     return jwt.sign(
       { id: id, email: email, userInformation: userInformation },
       this.configService.get('JWT_SECRET'),
@@ -184,6 +245,15 @@ export class AuthService {
   public async getUser(id: string): Promise<User> {
     try {
       const user = this.authRepository.findOne({ id });
+      return await user;
+    } catch (error) {
+      throw new exception('User not Found');
+    }
+  }
+
+  public async getUserByEmail(email: string): Promise<User> {
+    try {
+      const user = this.authRepository.findOne({ email: email });
       return await user;
     } catch (error) {
       throw new exception('User not Found');
@@ -216,11 +286,7 @@ export class AuthService {
         const hash = await this.hashPassword(password, credential.salt);
 
         if (hash === credential.password) {
-          const JWT = await this.createToken(
-            user.id,
-            user.email,
-            user.userInformation,
-          );
+          const JWT = await this.createToken(user);
 
           const result = {
             user,
