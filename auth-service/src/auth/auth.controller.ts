@@ -61,11 +61,7 @@ export class AuthController {
   public async socialLogin(
     socialLoginDto: SocialLoginDto,
   ): Promise<SocialLogin> {
-    this.logger.debug(
-      `Received social login user message with data ${JSON.stringify(
-        socialLoginDto,
-      )}`,
-    );
+    this.logger.debug(`Received social login user message with data`);
     return await this.authService.socialLogin(socialLoginDto);
   }
 
@@ -73,11 +69,7 @@ export class AuthController {
   public async addUserInformation(
     addUserInformation: AddUserInformation,
   ): Promise<SocialLogin> {
-    this.logger.debug(
-      `Received add user information id message with data ${JSON.stringify(
-        addUserInformation,
-      )}`,
-    );
+    this.logger.debug(`Received add user information id message with data`);
     return await this.authService.addUserInformation(addUserInformation);
   }
 

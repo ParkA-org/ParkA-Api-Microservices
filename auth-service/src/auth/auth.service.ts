@@ -60,11 +60,7 @@ export class AuthService {
   public async addUserInformation(
     addUserInformation: AddUserInformation,
   ): Promise<SocialLogin> {
-    this.logger.debug(
-      `Received add user information id payload ${JSON.stringify(
-        addUserInformation,
-      )}`,
-    );
+    this.logger.debug(`Received add user information id payload`);
 
     try {
       const { id, userInformation } = addUserInformation;
@@ -84,9 +80,7 @@ export class AuthService {
   public async socialLogin(
     socialLoginDto: SocialLoginDto,
   ): Promise<SocialLogin> {
-    this.logger.debug(
-      `Received social login user payload ${JSON.stringify(socialLoginDto)}`,
-    );
+    this.logger.debug(`Received social login user payload}`);
 
     try {
       const { displayName, email, origin, photoUrl } = socialLoginDto;

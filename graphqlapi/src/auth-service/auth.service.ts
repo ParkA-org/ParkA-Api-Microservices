@@ -90,9 +90,7 @@ export class AuthService {
   public async socialLogin(
     socialLoginInput: SocialLoginInput,
   ): Promise<LoginType> {
-    this.logger.log(
-      `Got Social Login Input data ${JSON.stringify(socialLoginInput)}`,
-    );
+    this.logger.log(`Got Social Login Input data`);
 
     const response = this.client.send<LoginType>(
       { type: 'social-login' },
@@ -105,11 +103,7 @@ export class AuthService {
     addUserInformationInput: AddUserInformationInput,
     user: JWTpayload,
   ): Promise<LoginType> {
-    this.logger.log(
-      `Got to add user information with this input data ${JSON.stringify(
-        addUserInformationInput,
-      )}`,
-    );
+    this.logger.log(`Got to add user information with this input data`);
 
     addUserInformationInput.id = user.id;
 
