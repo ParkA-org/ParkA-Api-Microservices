@@ -148,6 +148,7 @@ export class VehicleService {
     const deleteInput = {
       id,
       userInformation: ownerId,
+      deleted: false,
     };
 
     const toDelete = await this.vehicleRepository.findOne(deleteInput);

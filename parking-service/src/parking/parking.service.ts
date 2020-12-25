@@ -12,6 +12,7 @@ import { FilterDto } from './dtos/filter.dto';
 import { graphqlToMongoQueryUtil } from 'src/utils/graphql-to-mongo-query.util';
 import { VoteParkingDto } from './dtos/vote-parking.dto';
 import { UpdateParkingFromCronJobDto } from './dtos/update-parking-from-cron-job.dto';
+import { DeleteParkingDto } from './dtos/delete-parking.dto';
 
 @Injectable()
 export class ParkingService {
@@ -23,6 +24,60 @@ export class ParkingService {
     private calendarRepository: Repository<Calendar>,
     @InjectConnection() private readonly connection: Connection,
   ) {}
+
+  public async getParkingById(id: string): Promise<Parking> {
+    this.logger.debug(`Received get parking by ID`);
+    const parking = await this.parkingRepository.findOne({
+      id: id,
+      deleted: false,
+    });
+    if (!parking) {
+      throw new RpcException('Entry not found');
+    }
+    return parking;
+  }
+
+  public async getAllParkings(filterDto: FilterDto): Promise<Parking[]> {
+    this.logger.debug(
+      `Received get all parkings with ${JSON.stringify(filterDto)}`,
+    );
+
+    let queryBuilder = {};
+
+    const { limit, start, where } = filterDto;
+
+    if (limit) {
+      queryBuilder = { ...queryBuilder, take: limit };
+    }
+
+    if (start) {
+      queryBuilder = { ...queryBuilder, skip: start };
+    }
+
+    if (where) {
+      const convertedWhereFilter = graphqlToMongoQueryUtil(where);
+      queryBuilder = { ...queryBuilder, where: convertedWhereFilter };
+    }
+
+    // console.log(queryBuilder);
+
+    const result = await this.parkingRepository.find(queryBuilder);
+
+    return result;
+  }
+
+  public async getAllMyParkings(
+    getAllMyParkingsDto: GetAllMyParkingsDto,
+  ): Promise<Parking[]> {
+    const { userInformationId } = getAllMyParkingsDto;
+
+    this.logger.debug(`Received get all my parkings`);
+
+    return await this.parkingRepository.find({
+      userInformation: userInformationId,
+      deleted: false,
+    });
+  }
 
   public async createParking(
     createParkingDto: CreateParkingDto,
@@ -98,6 +153,7 @@ export class ParkingService {
       createdParking.priceHours = priceHours;
       createdParking.rating = 5;
       createdParking.totalReviews = 1;
+      createdParking.deleted = false;
       createdParking.position = {
         coordinates: [parseFloat(longitude), parseFloat(latitude)],
         type: 'Point',
@@ -142,6 +198,7 @@ export class ParkingService {
     const parking = await this.parkingRepository.findOne({
       userInformation: userInformation,
       id: id,
+      deleted: false,
     });
 
     if (!parking) {
@@ -225,56 +282,6 @@ export class ParkingService {
     }
   }
 
-  public async getParkingById(id: string): Promise<Parking> {
-    this.logger.debug(`Received get parking by ID`);
-    const parking = await this.parkingRepository.findOne({ id: id });
-    if (!parking) {
-      throw new RpcException('Entry not found');
-    }
-    return parking;
-  }
-
-  public async getAllParkings(filterDto: FilterDto): Promise<Parking[]> {
-    this.logger.debug(
-      `Received get all parkings with ${JSON.stringify(filterDto)}`,
-    );
-
-    let queryBuilder = {};
-
-    const { limit, start, where } = filterDto;
-
-    if (limit) {
-      queryBuilder = { ...queryBuilder, take: limit };
-    }
-
-    if (start) {
-      queryBuilder = { ...queryBuilder, skip: start };
-    }
-
-    if (where) {
-      const convertedWhereFilter = graphqlToMongoQueryUtil(where);
-      queryBuilder = { ...queryBuilder, where: convertedWhereFilter };
-    }
-
-    // console.log(queryBuilder);
-
-    const result = await this.parkingRepository.find(queryBuilder);
-
-    return result;
-  }
-
-  public async getAllMyParkings(
-    getAllMyParkingsDto: GetAllMyParkingsDto,
-  ): Promise<Parking[]> {
-    const { userInformationId } = getAllMyParkingsDto;
-
-    this.logger.debug(`Received get all my parkings`);
-
-    return await this.parkingRepository.find({
-      userInformation: userInformationId,
-    });
-  }
-
   public async reviewParking(rateParking: VoteParkingDto) {
     const { calification, id } = rateParking;
 
@@ -295,5 +302,31 @@ export class ParkingService {
     parkingToVote.rating = newRating;
 
     return this.parkingRepository.save(parkingToVote);
+  }
+
+  public async deleteParking(
+    deleteParkingDto: DeleteParkingDto,
+  ): Promise<Boolean> {
+    const { id, ownerId } = deleteParkingDto;
+
+    const deleteInput = {
+      id,
+      userInformation: ownerId,
+      deleted: false,
+    };
+
+    const toDelete = await this.parkingRepository.findOne(deleteInput);
+
+    console.log(toDelete);
+
+    if (!toDelete) {
+      throw new RpcException('Entry not found');
+    }
+
+    toDelete.deleted = true;
+
+    this.parkingRepository.save(toDelete);
+
+    return true;
   }
 }

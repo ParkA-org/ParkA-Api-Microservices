@@ -74,4 +74,7 @@ export class Parking implements IParking, IBaseEntity {
 
   @Column()
   totalReviews: number;
+
+  @Column()
+  deleted: boolean;
 }

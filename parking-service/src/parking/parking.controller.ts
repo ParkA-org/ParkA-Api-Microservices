@@ -1,6 +1,7 @@
 import { Controller, Logger } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
 import { CreateParkingDto } from './dtos/create-parking.dto';
+import { DeleteParkingDto } from './dtos/delete-parking.dto';
 import { FilterDto } from './dtos/filter.dto';
 import { GetAllMyParkingsDto } from './dtos/get-all-my-parkings.dto';
 import { UpdateParkingFromCronJobDto } from './dtos/update-parking-from-cron-job.dto';
@@ -73,5 +74,17 @@ export class ParkingController {
       `Received rate parking message with data ${JSON.stringify(rateParking)}`,
     );
     return await this.parkingService.reviewParking(rateParking);
+  }
+
+  @MessagePattern({ type: 'delete-parking' })
+  public async deleteParking(
+    deleteParkingDto: DeleteParkingDto,
+  ): Promise<Boolean> {
+    this.logger.debug(
+      `Received rate parking message with data ${JSON.stringify(
+        deleteParkingDto,
+      )}`,
+    );
+    return this.parkingService.deleteParking(deleteParkingDto);
   }
 }

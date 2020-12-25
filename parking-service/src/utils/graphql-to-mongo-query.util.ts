@@ -9,7 +9,9 @@ import {
 } from './graphql-to-mongo.util';
 
 export function graphqlToMongoQueryUtil(filterObject: Record<string, any>) {
-  const convertedFilterObject: Record<string, any> = {};
+  const convertedFilterObject: Record<string, any> = {
+    deleted: false,
+  };
 
   const fields = Object.keys(filterObject);
 
