@@ -6,6 +6,7 @@ import { GetVehicleByIdDto } from './dto/get-vehicle-by-id.dto';
 import { VehicleService } from './vehicle.service';
 import { UpdateVehicleDto } from './dto/update-vehicle.dto';
 import { GetAllUserVehiclesDto } from './dto/get-all-user-vehicle.dto';
+import { DeleteVehicleDto } from './dto/delete-vehicle.dto';
 
 @Controller('vehicle')
 export class VehicleController {
@@ -37,5 +38,12 @@ export class VehicleController {
     updateVehicleDto: UpdateVehicleDto,
   ): Promise<Vehicle> {
     return await this.vehicleService.updateVehicle(updateVehicleDto);
+  }
+
+  @MessagePattern({ type: 'delete-vehicle' })
+  public async deleteVehicle(
+    deleteVehicleDto: DeleteVehicleDto,
+  ): Promise<Boolean> {
+    return await this.vehicleService.deleteVehicle(deleteVehicleDto);
   }
 }

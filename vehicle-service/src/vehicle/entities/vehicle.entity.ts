@@ -1,4 +1,5 @@
 import { Column, Entity, ObjectIdColumn, PrimaryColumn } from 'typeorm';
+import { IBaseEntity } from '../interfaces/base-entity.interface';
 
 @Entity()
 export class Vehicle implements IVehicle, IBaseEntity {
@@ -46,4 +47,7 @@ export class Vehicle implements IVehicle, IBaseEntity {
 
   @Column()
   updatedAt: string;
+
+  @Column()
+  deleted: boolean;
 }
