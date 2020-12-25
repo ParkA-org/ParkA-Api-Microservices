@@ -324,6 +324,7 @@ export class ParkingService {
     }
 
     toDelete.deleted = true;
+    toDelete.updatedAt = new Date().toISOString();
 
     this.parkingRepository.save(toDelete);
 

@@ -28,7 +28,12 @@ export class PaymentService {
       )}`,
     );
 
-    const result = await this.paymentRepository.findOne(getPaymentByIdDto);
+    const queryInput = {
+      ...getPaymentByIdDto,
+      deleted: false,
+    };
+
+    const result = await this.paymentRepository.findOne(queryInput);
 
     if (!result) {
       throw new RpcException('Entry not found');
@@ -63,6 +68,7 @@ export class PaymentService {
     const payment = await this.paymentRepository.findOne({
       userInformation: userInformation,
       id: id,
+      deleted: false,
     });
 
     if (!payment) {
@@ -144,26 +150,33 @@ export class PaymentService {
 
   public async deletePayment(
     deletePaymentDto: DeletePaymentDto,
-  ): Promise<Payment> {
+  ): Promise<Boolean> {
     this.logger.debug(
       `Received delete payment with payload ${JSON.stringify(
         deletePaymentDto,
       )}`,
     );
 
-    try {
-      const { id } = deletePaymentDto;
+    const { id, ownerId } = deletePaymentDto;
 
-      const payment = await this.getPaymentById({ id });
+    const deleteInput = {
+      id,
+      userInformation: ownerId,
+      deleted: false,
+    };
 
-      payment.deleted = true;
+    const toDelete = await this.paymentRepository.findOne(deleteInput);
 
-      payment.updatedAt = new Date().toISOString();
-
-      return await this.paymentRepository.save(payment);
-    } catch (error) {
-      new RpcException('An undefined error occured');
+    if (!toDelete) {
+      throw new RpcException('Entry not found');
     }
+
+    toDelete.deleted = true;
+    toDelete.updatedAt = new Date().toISOString();
+
+    this.paymentRepository.save(toDelete);
+
+    return true;
   }
 
   private async hashCVV(cvv: string, salt: string): Promise<string> {

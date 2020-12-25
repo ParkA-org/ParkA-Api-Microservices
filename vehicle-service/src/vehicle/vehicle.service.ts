@@ -160,6 +160,7 @@ export class VehicleService {
     }
 
     toDelete.deleted = true;
+    toDelete.updatedAt = new Date().toISOString();
 
     this.vehicleRepository.save(toDelete);
 

@@ -5,6 +5,7 @@ import {
   Transport,
 } from '@nestjs/microservices';
 import { JWTpayload } from 'src/auth-service/types/jwt.type';
+import { DeleteEntityInput } from 'src/common/inputs/delete-entity.input';
 import { CreatePaymentInternalInput } from './inputs/create-payment-internal.input';
 import { DeletePaymentInput } from './inputs/delete-payment.input';
 import { GetAllUserPaymentInternalInput } from './inputs/get-all-user-payments-internal.input';
@@ -46,11 +47,11 @@ export class PaymentService {
   }
 
   public async deletePayment(
-    deletePaymentInput: DeletePaymentInput,
-  ): Promise<PaymentType> {
-    const response = await this.client.send<PaymentType>(
+    deleteEntityInput: DeleteEntityInput,
+  ): Promise<Boolean> {
+    const response = await this.client.send<Boolean>(
       { type: 'delete-payment' },
-      deletePaymentInput,
+      deleteEntityInput,
     );
     return response.toPromise();
   }
