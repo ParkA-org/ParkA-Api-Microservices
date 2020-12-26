@@ -9,4 +9,7 @@ export class LoginType implements ILoginType {
 
   @Field(type => UserType, { nullable: true })
   user: UserType;
+
+  @Field({ nullable: true })
+  register: boolean;
 }

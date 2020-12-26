@@ -29,7 +29,7 @@ export class PaymentController {
   @MessagePattern({ type: 'delete-payment' })
   public async deletePayment(
     deletePaymentDto: DeletePaymentDto,
-  ): Promise<Payment> {
+  ): Promise<Boolean> {
     return await this.paymentService.deletePayment(deletePaymentDto);
   }
 

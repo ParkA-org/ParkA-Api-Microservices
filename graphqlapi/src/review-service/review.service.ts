@@ -10,6 +10,7 @@ import { CreateInternReviewInput } from './inputs/create-intern-review.input';
 import { CreateReviewInput } from './inputs/create-review.input';
 import { GetAllParkingReviewInput } from './inputs/get-all-parking-review.input';
 import { GetAllUserReviewInput } from './inputs/get-all-user-review.input';
+import { GetAllOtherUserReviewInput } from './inputs/get-other-user-reviews.inputs';
 import { GetReviewByIdInput } from './inputs/get-review-by-id.input';
 import { UpdateReviewInput } from './inputs/update-review.input';
 import { ReviewType } from './types/review.type';
@@ -64,6 +65,16 @@ export class ReviewService {
     const response = await this.client.send<ReviewType[]>(
       { type: 'get-all-user-review' },
       getAllUserReviewInput,
+    );
+    return response.toPromise();
+  }
+
+  public async getAllOtherUserReview(
+    getAllOtherUserReviewInput: GetAllOtherUserReviewInput,
+  ): Promise<ReviewType[]> {
+    const response = await this.client.send<ReviewType[]>(
+      { type: 'get-all-other-user-review' },
+      getAllOtherUserReviewInput,
     );
     return response.toPromise();
   }

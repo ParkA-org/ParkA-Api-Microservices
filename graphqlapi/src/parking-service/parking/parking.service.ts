@@ -6,6 +6,7 @@ import {
 } from '@nestjs/microservices';
 import { JWTpayload } from 'src/auth-service/types/jwt.type';
 import { UserType } from 'src/auth-service/types/user.type';
+import { DeleteEntityInput } from 'src/common/inputs/delete-entity.input';
 import { UserInformationType } from 'src/core-service/user-information/types/user-information.type';
 import { CreateParkingInput } from './inputs/create-parking.input';
 import { FilterInput } from './inputs/filter.input';
@@ -148,6 +149,16 @@ export class ParkingService {
     const response = this.client.send<ParkingType>(
       { type: 'review-parking' },
       { id: parking, calification },
+    );
+    return response.toPromise();
+  }
+
+  public async deleteParking(
+    deleteEntityInput: DeleteEntityInput,
+  ): Promise<Boolean> {
+    const response = this.client.send<Boolean>(
+      { type: 'delete-parking' },
+      deleteEntityInput,
     );
     return response.toPromise();
   }

@@ -25,12 +25,18 @@ import { JWTpayload } from './types/jwt.type';
 import { UserInformationType } from 'src/core-service/user-information/types/user-information.type';
 import { UserInformationService } from 'src/core-service/user-information/user-information.service';
 import { GetUserInformationByIdInput } from 'src/core-service/user-information/inputs/get-user-information-by-id.input';
+import { ReviewType } from 'src/review-service/types/review.type';
+import { ReviewService } from 'src/review-service/review.service';
+import { GetAllOtherUserReviewInput } from 'src/review-service/inputs/get-other-user-reviews.inputs';
+import { SocialLoginInput } from './inputs/social-login.input';
+import { AddUserInformationInput } from './inputs/add-userInformation.input';
 
 @Resolver(of => UserType)
 export class AuthResolver {
   constructor(
     private authService: AuthService,
     private userInformationService: UserInformationService,
+    private reviewService: ReviewService,
   ) {}
 
   @Query(returns => UserType)
@@ -100,6 +106,26 @@ export class AuthResolver {
     return await this.authService.updateUser(updateUserInput, user);
   }
 
+  @Mutation(returns => LoginType)
+  async socialLogin(
+    @Args('socialLoginInput') socialLoginInput: SocialLoginInput,
+  ): Promise<LoginType> {
+    return await this.authService.socialLogin(socialLoginInput);
+  }
+
+  @Mutation(returns => LoginType)
+  @UseGuards(AuthGuard)
+  async addUserInformation(
+    @Args('addUserInformationInput')
+    addUserInformationInput: AddUserInformationInput,
+    @Context('user') user: JWTpayload,
+  ): Promise<LoginType> {
+    return await this.authService.addUserInformation(
+      addUserInformationInput,
+      user,
+    );
+  }
+
   @Query(returns => UserType)
   @UseGuards(AuthGuard)
   async getLoggedUser(@Context('user') user: JWTpayload): Promise<UserType> {
@@ -114,5 +140,14 @@ export class AuthResolver {
     const data = new GetUserInformationByIdInput();
     data.id = userInformation;
     return this.userInformationService.getUserInformationById(data);
+  }
+
+  @ResolveField(returns => ReviewType)
+  public async reviews(@Parent() user: UserType): Promise<ReviewType[]> {
+    const data: GetAllOtherUserReviewInput = {
+      reviewedUser: user.id,
+    };
+
+    return this.reviewService.getAllOtherUserReview(data);
   }
 }

@@ -9,7 +9,9 @@ import {
 } from './graphql-to-mongo.util';
 
 export function graphqlToMongoQueryUtil(filterObject: Record<string, any>) {
-  const convertedFilterObject: Record<string, any> = {};
+  const convertedFilterObject: Record<string, any> = {
+    deleted: false,
+  };
 
   const fields = Object.keys(filterObject);
 
@@ -84,6 +86,7 @@ function getMongoOperationObject(
         graphqlOperation == GraphQlOperationsEnum.contains
           ? regexContainsOperationFormatter(value)
           : regexNotContainsOperationFormatter(value);
+      operationObject['$options'] = 'i';
       break;
 
     default:

@@ -10,6 +10,7 @@ import {
 } from '@nestjs/graphql';
 import { AuthGuard } from 'src/auth-service/strategy/auth.guard';
 import { JWTpayload } from 'src/auth-service/types/jwt.type';
+import { DeleteEntityInput } from 'src/common/inputs/delete-entity.input';
 import { CardService } from '../card/card.service';
 import { GetCardByIdInput } from '../card/inputs/get-card-by-id.input';
 import { CardType } from '../card/types/card.type';
@@ -101,15 +102,20 @@ export class PaymentResolver {
     return payment;
   }
 
-  @Query(returns => PaymentType)
+  @Mutation(returns => Boolean)
   @UseGuards(AuthGuard)
   public async deletePayment(
-    @Args('deletePaymentInput') deletePaymentInput: DeletePaymentInput,
-  ) {
-    this.logger.debug(
-      `Received delete payment id data ${JSON.stringify(deletePaymentInput)}`,
-    );
-    return this.paymentService.deletePayment(deletePaymentInput);
+    @Args('id') id: string,
+    @Context('user') user: JWTpayload,
+  ): Promise<Boolean> {
+    this.logger.debug(`Received delete payment id data ${JSON.stringify(id)}`);
+
+    const deleteEntityInput: DeleteEntityInput = {
+      id: id,
+      ownerId: user.userInformation,
+    };
+
+    return this.paymentService.deletePayment(deleteEntityInput);
   }
 
   //Field Resolvers

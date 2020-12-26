@@ -11,12 +11,6 @@ export class Review implements IReview, IBaseEntity {
   _id: string;
 
   @Column()
-  createdAt: string;
-
-  @Column()
-  updatedAt: string;
-
-  @Column()
   title: string;
 
   @Column()
@@ -29,6 +23,9 @@ export class Review implements IReview, IBaseEntity {
   user: string;
 
   @Column()
+  reviewedUser: string;
+
+  @Column()
   reservation: string;
 
   @Column()
@@ -36,4 +33,10 @@ export class Review implements IReview, IBaseEntity {
 
   @Column()
   type: boolean;
+
+  @Column()
+  createdAt: string;
+
+  @Column()
+  updatedAt: string;
 }

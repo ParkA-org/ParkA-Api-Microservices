@@ -1,6 +1,7 @@
 import { Controller, Logger } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
 import { CreateReviewDto } from './dtos/create-review.dto';
+import { GetAllOtherUserReviewDto } from './dtos/get-all-other-user-reviews.dto';
 import { GetAllParkingReviewDto } from './dtos/get-all-parking-review.dto';
 import { GetAllUserReviewDto } from './dtos/get-all-user-review.dto';
 import { GetReviewByIdDto } from './dtos/get-review-by-id.dto';
@@ -35,6 +36,20 @@ export class ReviewController {
       )}`,
     );
     return await this.reviewService.getAllUserReview(getAllUserReviewDto);
+  }
+
+  @MessagePattern({ type: 'get-all-other-user-review' })
+  public async getAllOtherUserReview(
+    getAllOtherUserReviewDto: GetAllOtherUserReviewDto,
+  ): Promise<Review[]> {
+    this.logger.debug(
+      `Received id user message with data ${JSON.stringify(
+        getAllOtherUserReviewDto,
+      )}`,
+    );
+    return await this.reviewService.getAllOtherUserReview(
+      getAllOtherUserReviewDto,
+    );
   }
 
   @MessagePattern({ type: 'get-all-parking-review' })
