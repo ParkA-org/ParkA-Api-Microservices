@@ -1,9 +1,6 @@
 import { Controller, Logger } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
-import {
-  CancelReservationDto,
-  ValidaUserDto,
-} from './dtos/cancel-reservation.dto';
+import { CancelReservationDto } from './dtos/cancel-reservation.dto';
 import { CreateReservationDto } from './dtos/create-reservation.dto';
 import { GetAllUserReservations } from './dtos/get-all-user-reservations.dto';
 import { GetReservationByIdDto } from './dtos/get-reservation-by-id.dto';
@@ -108,18 +105,14 @@ export class ReservationController {
   @MessagePattern({ type: 'cancel-reservation' })
   public async cancelReservation(
     cancelReservationDto: CancelReservationDto,
-    user: ValidaUserDto,
   ): Promise<Reservation> {
     this.logger.debug(
       `Received cancel reservation with payload ${JSON.stringify(
         cancelReservationDto,
-      )} User id ${JSON.stringify(user)}`,
+      )}`,
     );
 
-    return this.reservationService.cancelReservation(
-      cancelReservationDto,
-      user,
-    );
+    return this.reservationService.cancelReservation(cancelReservationDto);
   }
 
   @MessagePattern({ type: 'confirm-reservation' })

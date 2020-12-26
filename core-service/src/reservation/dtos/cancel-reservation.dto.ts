@@ -1,7 +1,4 @@
-export class CancelReservationDto implements IBaseId {
-  id: string;
-}
-
-export class ValidaUserDto implements IBaseId {
-  id: string;
+export class CancelReservationDto {
+  cancelReservationInput: { id: string };
+  user: { id: string };
 }
