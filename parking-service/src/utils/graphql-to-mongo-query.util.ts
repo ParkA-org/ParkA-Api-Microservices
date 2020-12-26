@@ -42,8 +42,6 @@ export function graphqlToMongoQueryUtil(filterObject: Record<string, any>) {
       ...operationObject,
     };
   }
-
-  //   console.log(JSON.stringify(convertedFilterObject));
   return convertedFilterObject;
 }
 
