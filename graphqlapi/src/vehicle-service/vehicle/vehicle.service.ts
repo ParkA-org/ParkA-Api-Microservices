@@ -9,6 +9,7 @@ import { GetVehicleByIdInput } from './inputs/get-vehicle-by-id.input';
 import { CreateVehicleInternalInput } from './inputs/create-vehicle-internal.input';
 import { GetAllUserVehiclesInternalInput } from './inputs/get-all-user-vehicles.input';
 import { UpdateVehicleInternalInput } from './inputs/update-vehicle-internal.input';
+import { DeleteEntityInput } from 'src/common/inputs/delete-entity.input';
 
 @Injectable()
 export class VehicleService {
@@ -83,6 +84,21 @@ export class VehicleService {
     const response = await this.client.send<VehicleType>(
       { type: 'update-vehicle' },
       updateVehicleInternalInput,
+    );
+
+    return response.toPromise();
+  }
+
+  public async deleteVehicle(
+    deleteEntityInput: DeleteEntityInput,
+  ): Promise<Boolean> {
+    this.logger.debug(
+      `Received delete vehicle with data ${JSON.stringify(deleteEntityInput)}`,
+    );
+
+    const response = await this.client.send<boolean>(
+      { type: 'delete-vehicle' },
+      deleteEntityInput,
     );
 
     return response.toPromise();

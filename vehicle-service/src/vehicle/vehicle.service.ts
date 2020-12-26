@@ -8,6 +8,7 @@ import { GetVehicleByIdDto } from './dto/get-vehicle-by-id.dto';
 import { UpdateVehicleDto } from './dto/update-vehicle.dto';
 import { RpcException } from '@nestjs/microservices';
 import { GetAllUserVehiclesDto } from './dto/get-all-user-vehicle.dto';
+import { DeleteVehicleDto } from './dto/delete-vehicle.dto';
 
 @Injectable()
 export class VehicleService {
@@ -26,7 +27,12 @@ export class VehicleService {
       )}`,
     );
 
-    const result = await this.vehicleRepository.findOne(getVehicleByIdDto);
+    const queryInput = {
+      ...getVehicleByIdDto,
+      deleted: false,
+    };
+
+    const result = await this.vehicleRepository.findOne(queryInput);
 
     if (!result) {
       throw new RpcException('Entry not found');
@@ -42,7 +48,10 @@ export class VehicleService {
 
     const { userInformationId } = getAllUserVehiclesDto;
 
-    return this.vehicleRepository.find({ userInformation: userInformationId });
+    return this.vehicleRepository.find({
+      userInformation: userInformationId,
+      deleted: false,
+    });
   }
 
   public async createVehicle(
@@ -85,6 +94,7 @@ export class VehicleService {
       year,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
+      deleted: false,
     });
 
     return await this.vehicleRepository.save(vehicle);
@@ -112,6 +122,7 @@ export class VehicleService {
     const vehicle = await this.vehicleRepository.findOne({
       userInformation: userInformationId,
       id: id,
+      deleted: false,
     });
 
     if (!vehicle) {
@@ -127,5 +138,32 @@ export class VehicleService {
     vehicle.updatedAt = new Date().toISOString();
 
     return await this.vehicleRepository.save(vehicle);
+  }
+
+  public async deleteVehicle(
+    deleteVehicleDto: DeleteVehicleDto,
+  ): Promise<Boolean> {
+    const { id, ownerId } = deleteVehicleDto;
+
+    const deleteInput = {
+      id,
+      userInformation: ownerId,
+      deleted: false,
+    };
+
+    const toDelete = await this.vehicleRepository.findOne(deleteInput);
+
+    console.log(toDelete);
+
+    if (!toDelete) {
+      throw new RpcException('Entry not found');
+    }
+
+    toDelete.deleted = true;
+    toDelete.updatedAt = new Date().toISOString();
+
+    this.vehicleRepository.save(toDelete);
+
+    return true;
   }
 }

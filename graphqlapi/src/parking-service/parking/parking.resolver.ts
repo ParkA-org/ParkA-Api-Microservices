@@ -12,6 +12,7 @@ import { AuthService } from 'src/auth-service/auth.service';
 import { AuthGuard } from 'src/auth-service/strategy/auth.guard';
 import { JWTpayload } from 'src/auth-service/types/jwt.type';
 import { UserType } from 'src/auth-service/types/user.type';
+import { DeleteEntityInput } from 'src/common/inputs/delete-entity.input';
 import { UserInformationType } from 'src/core-service/user-information/types/user-information.type';
 import { UserInformationService } from 'src/core-service/user-information/user-information.service';
 import { CalendarService } from '../calendar/calendar.service';
@@ -84,6 +85,20 @@ export class ParkingResolver {
       user,
     );
     return createParking;
+  }
+
+  @UseGuards(AuthGuard)
+  @Mutation(returns => Boolean)
+  public async deleteParking(
+    @Args('id') id: string,
+    @Context('user') user: JWTpayload,
+  ): Promise<Boolean> {
+    const deleteEntityInput: DeleteEntityInput = {
+      id: id,
+      ownerId: user.userInformation,
+    };
+
+    return this.parkingService.deleteParking(deleteEntityInput);
   }
 
   //Resolvers

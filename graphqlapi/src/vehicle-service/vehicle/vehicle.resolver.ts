@@ -28,6 +28,7 @@ import { UserInformationIdPayload } from './inputs/user-information-id.payload';
 import { CreateVehicleInternalInput } from './inputs/create-vehicle-internal.input';
 import { GetAllUserVehiclesInternalInput } from './inputs/get-all-user-vehicles.input';
 import { UpdateVehicleInternalInput } from './inputs/update-vehicle-internal.input';
+import { DeleteEntityInput } from 'src/common/inputs/delete-entity.input';
 
 @Resolver(of => VehicleType)
 export class VehicleResolver {
@@ -114,6 +115,27 @@ export class VehicleResolver {
     };
 
     return this.vehicleService.updateVehicle(updateVehicleInternalInput);
+  }
+
+  @UseGuards(AuthGuard)
+  @Mutation(returns => Boolean)
+  public async deleteVehicle(
+    @Args('deleteVehicle')
+    getVehicleByIdInput: GetVehicleByIdInput,
+    @Context('user') user: JWTpayload,
+  ): Promise<Boolean> {
+    this.logger.debug(
+      `Received delete vehicle with data ${JSON.stringify(
+        getVehicleByIdInput,
+      )}`,
+    );
+
+    const deleteEntityInput: DeleteEntityInput = {
+      id: getVehicleByIdInput.id,
+      ownerId: user.userInformation,
+    };
+
+    return this.vehicleService.deleteVehicle(deleteEntityInput);
   }
 
   //Field Resolvers

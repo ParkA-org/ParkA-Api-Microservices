@@ -86,27 +86,33 @@ export class AuthService {
       const { displayName, email, origin, photoUrl } = socialLoginDto;
       const user = await this.getUserByEmail(email);
       const socialLogin = new SocialLogin();
+
       if (user === undefined) {
         const userNew = new User();
         userNew.createdAt = new Date().toISOString();
         userNew.name = displayName.split(' ')[0];
         userNew.updatedAt = new Date().toISOString();
+
         if (displayName.split(' ').length !== 1) {
           userNew.lastName = displayName.split(' ')[1];
         } else {
           userNew.lastName = ' ';
         }
+
         photoUrl !== undefined ? (userNew.profilePicture = photoUrl) : null;
         userNew.origin = origin;
         userNew.email = email;
         userNew.id = uuid();
+
         await this.authRepository.save(userNew);
+
         socialLogin.user = userNew;
         socialLogin.register = false;
       } else {
         socialLogin.user = user;
-        socialLogin.register = true;
+        socialLogin.register = user.userInformation ? true : false;
       }
+
       socialLogin.JWT = await this.createToken(socialLogin.user);
       return socialLogin;
     } catch (error) {
