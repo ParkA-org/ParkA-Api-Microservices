@@ -16,7 +16,6 @@ import { Schedule } from 'src/calendar/entities/schedule.entity';
 import { UpdateReservationFromCronJobDto } from './dtos/update-reservation-from-cron-job.dto';
 import { TaskDto } from 'src/schedule/dtos/task.dto';
 import { TasksService } from 'src/schedule/task.service';
-import { SCHED_NONE } from 'cluster';
 @Injectable()
 export class ReservationService {
   private logger = new Logger('ReservationService');
@@ -535,12 +534,15 @@ export class ReservationService {
   ): Promise<Reservation> {
     try {
       const { cancelReservationInput, user } = cancelReservationDto;
-      const reservation = await this.reservationRepository.findOne(
-        cancelReservationInput.id,
-      );
+
+      const reservation = await this.reservationRepository.findOne({
+        id: cancelReservationInput.id,
+      });
+
       if (reservation.client != user.id && reservation.owner != user.id) {
         throw new RpcException('Entry not found');
       }
+
       const { id, checkInDate, parking } = reservation;
 
       const extractDateTime = this.extractDateTime(checkInDate);
@@ -557,22 +559,24 @@ export class ReservationService {
         throw new RpcException(`This reservation is ${reservation.status}`);
       }
 
-      const parkingCalendar = await this.calendarRepository.findOne({
-        parking,
-        date: reservationDate,
-      });
+      try {
+        const parkingCalendar = await this.calendarRepository.findOne({
+          parking,
+          date: reservationDate,
+        });
 
-      const _schedules = parkingCalendar.schedules.filter(
-        el => el.reservation != id,
-      );
+        const _schedules = parkingCalendar.schedules.filter(
+          el => el.reservation != id,
+        );
 
-      parkingCalendar.schedules = _schedules;
+        parkingCalendar.schedules = _schedules;
+
+        await this.calendarRepository.save(parkingCalendar);
+      } catch {}
 
       await this.taskService.deleteCron(reservation.id);
 
       await this.taskService.deleteCron(reservation.id + ':deleted');
-
-      await this.calendarRepository.save(parkingCalendar);
 
       return this.reservationRepository.save(reservation);
     } catch {
