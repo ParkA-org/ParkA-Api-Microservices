@@ -7,10 +7,7 @@ import { Reservation } from './entities/reservation.entity';
 import { CreateReservationDto } from './dtos/create-reservation.dto';
 import { UpdateReservationDto } from './dtos/update-reservation.dto';
 import { v4 as uuid } from 'uuid';
-import {
-  CancelReservationDto,
-  ValidaUserDto,
-} from './dtos/cancel-reservation.dto';
+import { CancelReservationDto } from './dtos/cancel-reservation.dto';
 import { ReservationStatuses } from './utils/statuses';
 import { GetAllUserReservations } from './dtos/get-all-user-reservations.dto';
 import { UserRoles } from './utils/user-roles';
@@ -19,7 +16,6 @@ import { Schedule } from 'src/calendar/entities/schedule.entity';
 import { UpdateReservationFromCronJobDto } from './dtos/update-reservation-from-cron-job.dto';
 import { TaskDto } from 'src/schedule/dtos/task.dto';
 import { TasksService } from 'src/schedule/task.service';
-import { SCHED_NONE } from 'cluster';
 @Injectable()
 export class ReservationService {
   private logger = new Logger('ReservationService');
@@ -42,9 +38,9 @@ export class ReservationService {
       )}`,
     );
 
-    const result = await this.reservationRepository.findOne(
-      getReservationByIdDto,
-    );
+    const result = await this.reservationRepository.findOne({
+      id: getReservationByIdDto.id,
+    });
 
     if (!result) {
       throw new RpcException('Entry not found');
@@ -535,47 +531,56 @@ export class ReservationService {
 
   public async cancelReservation(
     cancelReservationDto: CancelReservationDto,
-    user: ValidaUserDto,
   ): Promise<Reservation> {
-    const reservation = await this.getReservationById(cancelReservationDto);
+    try {
+      const { cancelReservationInput, user } = cancelReservationDto;
 
-    if (reservation.client != user.id && reservation.owner != user.id) {
-      throw new RpcException('Entry not found');
+      const reservation = await this.reservationRepository.findOne({
+        id: cancelReservationInput.id,
+      });
+
+      if (reservation.client != user.id && reservation.owner != user.id) {
+        throw new RpcException('Entry not found');
+      }
+
+      const { id, checkInDate, parking } = reservation;
+
+      const extractDateTime = this.extractDateTime(checkInDate);
+      const { day, month, year } = extractDateTime.date;
+
+      const reservationDate = new Date(year, month - 1, day).toISOString();
+
+      if (
+        reservation.status != ReservationStatuses.Completed &&
+        reservation.status != ReservationStatuses.InProgress
+      ) {
+        reservation.status = ReservationStatuses.Cancelled;
+      } else {
+        throw new RpcException(`This reservation is ${reservation.status}`);
+      }
+
+      try {
+        const parkingCalendar = await this.calendarRepository.findOne({
+          parking,
+          date: reservationDate,
+        });
+
+        const _schedules = parkingCalendar.schedules.filter(
+          el => el.reservation != id,
+        );
+
+        parkingCalendar.schedules = _schedules;
+
+        await this.calendarRepository.save(parkingCalendar);
+      } catch {}
+
+      await this.taskService.deleteCron(reservation.id);
+
+      await this.taskService.deleteCron(reservation.id + ':deleted');
+
+      return this.reservationRepository.save(reservation);
+    } catch {
+      throw new RpcException('Invalid operation');
     }
-
-    const { id, checkInDate, parking } = reservation;
-
-    const extractDateTime = this.extractDateTime(checkInDate);
-    const { day, month, year } = extractDateTime.date;
-
-    const reservationDate = new Date(year, month - 1, day).toISOString();
-
-    if (
-      reservation.status != ReservationStatuses.Completed &&
-      reservation.status != ReservationStatuses.InProgress
-    ) {
-      reservation.status = ReservationStatuses.Cancelled;
-    } else {
-      throw new RpcException(`This reservation is ${reservation.status}`);
-    }
-
-    const parkingCalendar = await this.calendarRepository.findOne({
-      parking,
-      date: reservationDate,
-    });
-
-    const _schedules = parkingCalendar.schedules.filter(
-      el => el.reservation != id,
-    );
-
-    parkingCalendar.schedules = _schedules;
-
-    await this.taskService.deleteCron(reservation.id);
-
-    await this.taskService.deleteCron(reservation.id + ':deleted');
-
-    await this.calendarRepository.save(parkingCalendar);
-
-    return this.reservationRepository.save(reservation);
   }
 }
