@@ -26,10 +26,10 @@ export class ReservationType implements IReservationType {
   @Field(type => ParkingType)
   parking: string;
 
-  @Field(type => UserType)
+  @Field(type => UserType, { nullable: true })
   client: string;
 
-  @Field(type => UserType)
+  @Field(type => UserType, { nullable: true })
   owner: string;
 
   @Field()
