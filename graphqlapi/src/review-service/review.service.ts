@@ -59,6 +59,16 @@ export class ReviewService {
     return response.toPromise();
   }
 
+  public async getReviewByReservation(
+    getReviewByIdInput: GetReviewByIdInput,
+  ): Promise<ReviewType> {
+    const response = await this.client.send<ReviewType>(
+      { type: 'get-review-by-reservation' },
+      getReviewByIdInput,
+    );
+    return response.toPromise();
+  }
+
   public async getAllUserReviews(
     getAllUserReviewInput: GetAllUserReviewInput,
   ): Promise<ReviewType[]> {
