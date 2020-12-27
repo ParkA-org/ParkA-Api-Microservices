@@ -26,6 +26,18 @@ export class ReviewController {
     return await this.reviewService.getReviewById(getReviewByIdDto);
   }
 
+  @MessagePattern({ type: 'get-review-by-reservation' })
+  public async getReviewByReservation(
+    getReviewByIdDto: GetReviewByIdDto,
+  ): Promise<Review> {
+    this.logger.debug(
+      `Received id reservation message with data ${JSON.stringify(
+        getReviewByIdDto,
+      )}`,
+    );
+    return await this.reviewService.getReviewByReservation(getReviewByIdDto);
+  }
+
   @MessagePattern({ type: 'get-all-user-review' })
   public async getAllUserReview(
     getAllUserReviewDto: GetAllUserReviewDto,
