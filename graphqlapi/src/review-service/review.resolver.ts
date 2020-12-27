@@ -49,6 +49,16 @@ export class ReviewResolver {
     return this.reviewService.getReviewById(getReviewByIdInput);
   }
 
+  @Query(returns => ReviewType)
+  public async getReviewByReservation(
+    @Args('getPaymentByIdInput') getReviewByIdInput: GetReviewByIdInput,
+  ) {
+    this.logger.debug(
+      `Received get review id data ${JSON.stringify(getReviewByIdInput)}`,
+    );
+    return this.reviewService.getReviewByReservation(getReviewByIdInput);
+  }
+
   @Query(returns => [ReviewType])
   @UseGuards(AuthGuard)
   public async getAllUserReviews(@Context('user') user: JWTpayload) {
