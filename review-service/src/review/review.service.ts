@@ -129,4 +129,16 @@ export class ReviewService {
       throw new RpcException('Review not Found');
     }
   }
+
+  public async getReviewByReservation(
+    getReviewById: GetReviewByIdDto,
+  ): Promise<Review> {
+    try {
+      const { id } = getReviewById;
+      const review = this.reviewRepository.findOne({ reservation: id });
+      return await review;
+    } catch (error) {
+      throw new RpcException('Review not Found');
+    }
+  }
 }
