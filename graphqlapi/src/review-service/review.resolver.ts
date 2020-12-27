@@ -41,7 +41,7 @@ export class ReviewResolver {
 
   @Query(returns => ReviewType)
   public async getReviewById(
-    @Args('getPaymentByIdInput') getReviewByIdInput: GetReviewByIdInput,
+    @Args('getReviewByIdInput') getReviewByIdInput: GetReviewByIdInput,
   ) {
     this.logger.debug(
       `Received get review id data ${JSON.stringify(getReviewByIdInput)}`,
@@ -51,10 +51,11 @@ export class ReviewResolver {
 
   @Query(returns => ReviewType)
   public async getReviewByReservation(
-    @Args('getPaymentByIdInput') getReviewByIdInput: GetReviewByIdInput,
+    @Args('getReservationByReservationInput')
+    getReviewByIdInput: GetReviewByIdInput,
   ) {
     this.logger.debug(
-      `Received get review id data ${JSON.stringify(getReviewByIdInput)}`,
+      `Received get reservation id data ${JSON.stringify(getReviewByIdInput)}`,
     );
     return this.reviewService.getReviewByReservation(getReviewByIdInput);
   }
@@ -62,7 +63,7 @@ export class ReviewResolver {
   @Query(returns => [ReviewType])
   @UseGuards(AuthGuard)
   public async getAllUserReviews(@Context('user') user: JWTpayload) {
-    this.logger.debug(`Received get all payments`);
+    this.logger.debug(`Received get all reservations`);
     const getAllUserReviewInput = new GetAllUserReviewInput();
     getAllUserReviewInput.user = user.id;
     return this.reviewService.getAllUserReviews(getAllUserReviewInput);
@@ -74,7 +75,7 @@ export class ReviewResolver {
     @Args('getAllOtherUserReviewInput')
     getAllOtherUserReviewInput: GetAllOtherUserReviewInput,
   ) {
-    this.logger.debug(`Received get all payments`);
+    this.logger.debug(`Received get all reservations`);
 
     return this.reviewService.getAllOtherUserReview(getAllOtherUserReviewInput);
   }
