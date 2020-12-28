@@ -51,7 +51,7 @@ export class ReviewResolver {
 
   @Query(returns => ReviewType)
   public async getReviewByReservation(
-    @Args('getReservationByReservationInput')
+    @Args('getReviewByReservationInput')
     getReviewByIdInput: GetReviewByIdInput,
   ) {
     this.logger.debug(
