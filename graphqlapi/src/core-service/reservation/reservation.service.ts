@@ -68,6 +68,19 @@ export class ReservationService {
     return response.toPromise();
   }
 
+  public async getUserReservationsInsights(getReservationInsightsInputs: {
+    id: string;
+  }): Promise<ReservationType[]> {
+    this.logger.debug(`Received get all user reservations as client`);
+
+    const response = await this.client.send<ReservationType[]>(
+      { type: 'get-user-reservations-insigths-by-year' },
+      getReservationInsightsInputs,
+    );
+
+    return response.toPromise();
+  }
+
   public async createReservation(
     createReservationInternalInput: CreateReservationInternalInput,
   ): Promise<ReservationType> {

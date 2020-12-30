@@ -81,6 +81,140 @@ export class ReservationService {
     return [];
   }
 
+  public async getUserReservationInsights(getReservationInsightsInputs: {
+    id: string;
+  }) {
+    const millisecondsToHours = 60 * 60 * 1000;
+    const weekDays: string[] = [
+      'sunday',
+      'monday',
+      'tuesday',
+      'wednesday',
+      'thursday',
+      'friday',
+      'saturday',
+    ];
+
+    const months: string[] = [
+      'january',
+      'february',
+      'march',
+      'april',
+      'may',
+      'june',
+      'july',
+      'august',
+      'september',
+      'october',
+      'november',
+      'december',
+    ];
+
+    const { id } = getReservationInsightsInputs;
+
+    const date = new Date(2020, 0, 1).toISOString();
+
+    console.log(date);
+
+    const userReservations = await this.reservationRepository.find({
+      where: {
+        owner: id,
+        rentDate: { $gte: date },
+        status: ReservationStatuses.Completed,
+      },
+    });
+
+    let total: number = 0;
+    let totalTime: number = 0;
+
+    const perDayReservations = {
+      monday: 0,
+      tuesday: 0,
+      wednesday: 0,
+      thursday: 0,
+      friday: 0,
+      saturday: 0,
+      sunday: 0,
+    };
+
+    const perMonthReservations = {
+      january: 0,
+      february: 0,
+      march: 0,
+      april: 0,
+      may: 0,
+      june: 0,
+      july: 0,
+      august: 0,
+      september: 0,
+      october: 0,
+      november: 0,
+      december: 0,
+    };
+
+    const perMonthEarning = {
+      january: 0,
+      february: 0,
+      march: 0,
+      april: 0,
+      may: 0,
+      june: 0,
+      july: 0,
+      august: 0,
+      september: 0,
+      october: 0,
+      november: 0,
+      december: 0,
+    };
+
+    const totalReservations = userReservations.length;
+
+    //
+    userReservations.forEach((res: Reservation) => {
+      total += res.total;
+    });
+
+    userReservations.forEach((res: Reservation) => {
+      const startDate = new Date(res.checkInDate);
+      const endDate = new Date(res.checkOutDate);
+
+      const weekDayIdx = startDate.getUTCDay();
+      const weekDay = weekDays[weekDayIdx];
+      const monthIdx = startDate.getUTCMonth();
+      const month = months[monthIdx];
+
+      console.log('DATES');
+      console.log(res.checkInDate);
+      console.log(res.checkOutDate);
+      console.log(weekDays[weekDayIdx]);
+      perDayReservations[weekDay]++;
+      perMonthReservations[month]++;
+      perMonthEarning[month] += res.total;
+
+      const totalReservationTime = endDate.getTime() - startDate.getTime();
+
+      console.log(totalReservationTime);
+
+      totalTime += totalReservationTime / millisecondsToHours;
+    });
+
+    const reservationTimeAverige = (totalReservations != 0
+      ? totalTime / totalReservations
+      : 0
+    ).toPrecision(2);
+
+    console.log('Results');
+    console.log(total);
+    console.log(reservationTimeAverige);
+    console.log(perDayReservations);
+    console.log(perMonthReservations);
+    console.log(perMonthEarning);
+
+    return {
+      total,
+    };
+  }
+
   public async createReservation(
     createReservationDto: CreateReservationDto,
   ): Promise<Reservation> {

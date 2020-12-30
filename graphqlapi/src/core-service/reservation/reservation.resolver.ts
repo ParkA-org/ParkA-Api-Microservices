@@ -103,6 +103,24 @@ export class ReservationResolver {
   }
 
   @UseGuards(AuthGuard)
+  @Query(of => Boolean)
+  public async getReservationsInsigths(
+    @Context('user') user: JWTpayload,
+  ): Promise<Boolean> {
+    this.logger.debug(`Received get all user reservations as owner`);
+
+    const getReservationInsightsInputs = {
+      id: user.id,
+    };
+
+    await this.reservationService.getUserReservationsInsights(
+      getReservationInsightsInputs,
+    );
+
+    return true;
+  }
+
+  @UseGuards(AuthGuard)
   @Mutation(of => ReservationType)
   public async createReservation(
     @Args('createReservationInput')

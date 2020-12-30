@@ -46,6 +46,17 @@ export class ReservationController {
     );
   }
 
+  @MessagePattern({ type: 'get-user-reservations-insigths-by-year' })
+  public async getUserReservationsInsights(getReservationInsightsInputs: {
+    id: string;
+  }): Promise<any> {
+    this.logger.debug(`Received get all user reservations`);
+
+    return this.reservationService.getUserReservationInsights(
+      getReservationInsightsInputs,
+    );
+  }
+
   @MessagePattern({ type: 'create-reservation' })
   public async createReservation(
     createReservationDto: CreateReservationDto,
