@@ -16,6 +16,8 @@ import { Schedule } from 'src/calendar/entities/schedule.entity';
 import { UpdateReservationFromCronJobDto } from './dtos/update-reservation-from-cron-job.dto';
 import { TaskDto } from 'src/schedule/dtos/task.dto';
 import { TasksService } from 'src/schedule/task.service';
+import { ReservationInsights } from './entities/reservations-insights.type';
+import { GetReservationsInsightsInput } from './dtos/get-reservations-insights.dto';
 @Injectable()
 export class ReservationService {
   private logger = new Logger('ReservationService');
@@ -79,6 +81,136 @@ export class ReservationService {
     }
 
     return [];
+  }
+
+  public async getUserReservationInsights(
+    getReservationInsightsInputs: GetReservationsInsightsInput,
+  ): Promise<ReservationInsights> {
+    const millisecondsToHours = 60 * 60 * 1000;
+    const weekDays: string[] = [
+      'sunday',
+      'monday',
+      'tuesday',
+      'wednesday',
+      'thursday',
+      'friday',
+      'saturday',
+    ];
+
+    const months: string[] = [
+      'january',
+      'february',
+      'march',
+      'april',
+      'may',
+      'june',
+      'july',
+      'august',
+      'september',
+      'october',
+      'november',
+      'december',
+    ];
+
+    const { owner, year } = getReservationInsightsInputs;
+
+    const startDate = new Date(year, 0, 1).toISOString();
+    const endDate = new Date(year + 1, 0, 1).toISOString();
+
+    const userReservations = await this.reservationRepository.find({
+      where: {
+        owner,
+        rentDate: { $gte: startDate, $lte: endDate },
+        status: ReservationStatuses.Completed,
+      },
+    });
+
+    let total: number = 0;
+    let totalTime: number = 0;
+
+    const perDayReservations = {
+      monday: 0,
+      tuesday: 0,
+      wednesday: 0,
+      thursday: 0,
+      friday: 0,
+      saturday: 0,
+      sunday: 0,
+    };
+
+    const perMonthReservations = {
+      january: 0,
+      february: 0,
+      march: 0,
+      april: 0,
+      may: 0,
+      june: 0,
+      july: 0,
+      august: 0,
+      september: 0,
+      october: 0,
+      november: 0,
+      december: 0,
+    };
+
+    const perMonthEarning = {
+      january: 0,
+      february: 0,
+      march: 0,
+      april: 0,
+      may: 0,
+      june: 0,
+      july: 0,
+      august: 0,
+      september: 0,
+      october: 0,
+      november: 0,
+      december: 0,
+    };
+
+    const totalReservations = userReservations.length;
+
+    userReservations.forEach((res: Reservation) => {
+      const startDate = new Date(res.checkInDate);
+      const endDate = new Date(res.checkOutDate);
+
+      const weekDayIdx = startDate.getUTCDay();
+      const weekDay = weekDays[weekDayIdx];
+      const monthIdx = startDate.getUTCMonth();
+      const month = months[monthIdx];
+
+      //build total in year
+      total += res.total;
+
+      //add reservation to weekDay
+      perDayReservations[weekDay]++;
+
+      //add reservation to month
+      perMonthReservations[month]++;
+
+      //add earning to month
+      perMonthEarning[month] += res.total;
+
+      const totalReservationTime = endDate.getTime() - startDate.getTime();
+
+      totalTime += totalReservationTime / millisecondsToHours;
+    });
+
+    const reservationTimeAverige: number = Number.parseFloat(
+      (totalReservations != 0 ? totalTime / totalReservations : 0).toPrecision(
+        2,
+      ),
+    );
+
+    const result: ReservationInsights = {
+      totalEarnings: total,
+      reservationTimeAverige: reservationTimeAverige,
+      perDayReservations,
+      perMonthEarning,
+      perMonthReservations,
+    };
+
+    return result;
   }
 
   public async createReservation(

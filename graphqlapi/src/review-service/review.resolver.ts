@@ -8,7 +8,6 @@ import {
   ResolveField,
   Context,
 } from '@nestjs/graphql';
-import { argsToArgsConfig } from 'graphql/type/definition';
 import { AuthService } from 'src/auth-service/auth.service';
 import { AuthGuard } from 'src/auth-service/strategy/auth.guard';
 import { JWTpayload } from 'src/auth-service/types/jwt.type';
@@ -51,7 +50,7 @@ export class ReviewResolver {
 
   @Query(returns => ReviewType)
   public async getReviewByReservation(
-    @Args('getReservationByReservationInput')
+    @Args('getReviewByReservationInput')
     getReviewByIdInput: GetReviewByIdInput,
   ) {
     this.logger.debug(

@@ -4,9 +4,11 @@ import { CancelReservationDto } from './dtos/cancel-reservation.dto';
 import { CreateReservationDto } from './dtos/create-reservation.dto';
 import { GetAllUserReservations } from './dtos/get-all-user-reservations.dto';
 import { GetReservationByIdDto } from './dtos/get-reservation-by-id.dto';
+import { GetReservationsInsightsInput } from './dtos/get-reservations-insights.dto';
 import { UpdateReservationFromCronJobDto } from './dtos/update-reservation-from-cron-job.dto';
 import { UpdateReservationDto } from './dtos/update-reservation.dto';
 import { Reservation } from './entities/reservation.entity';
+import { ReservationInsights } from './entities/reservations-insights.type';
 import { ReservationService } from './reservation.service';
 
 @Controller('reservation')
@@ -43,6 +45,17 @@ export class ReservationController {
 
     return this.reservationService.getAllUserReservationsAsClient(
       getAllUserReservations,
+    );
+  }
+
+  @MessagePattern({ type: 'get-user-reservations-insigths-by-year' })
+  public async getUserReservationsInsights(
+    getReservationInsightsInputs: GetReservationsInsightsInput,
+  ): Promise<ReservationInsights> {
+    this.logger.debug(`Received get all user reservations`);
+
+    return this.reservationService.getUserReservationInsights(
+      getReservationInsightsInputs,
     );
   }
 
