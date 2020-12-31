@@ -170,9 +170,6 @@ export class ReservationService {
 
     const totalReservations = userReservations.length;
 
-    //
-    userReservations.forEach((res: Reservation) => {});
-
     userReservations.forEach((res: Reservation) => {
       const startDate = new Date(res.checkInDate);
       const endDate = new Date(res.checkOutDate);
