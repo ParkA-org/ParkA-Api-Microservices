@@ -109,7 +109,7 @@ export class ReservationResolver {
   public async getReservationsInsigths(
     @Context('user') user: JWTpayload,
     @Args('year', { nullable: true, defaultValue: new Date().getFullYear() })
-    year: string,
+    year: number,
   ): Promise<ReservationInsights> {
     this.logger.debug(
       `Received get reservations insights with payload ${JSON.stringify(year)}`,
@@ -117,7 +117,7 @@ export class ReservationResolver {
 
     const getReservationInsightsInputs: GetReservationsInsightsInput = {
       owner: user.id,
-      year: Number.parseInt(year),
+      year,
     };
 
     const result = await this.reservationService.getUserReservationsInsights(

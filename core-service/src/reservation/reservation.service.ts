@@ -112,16 +112,15 @@ export class ReservationService {
       'december',
     ];
 
-    const { owner } = getReservationInsightsInputs;
+    const { owner, year } = getReservationInsightsInputs;
 
-    const date = new Date(2020, 0, 1).toISOString();
-
-    console.log(date);
+    const startDate = new Date(year, 0, 1).toISOString();
+    const endDate = new Date(year + 1, 0, 1).toISOString();
 
     const userReservations = await this.reservationRepository.find({
       where: {
         owner,
-        rentDate: { $gte: date },
+        rentDate: { $gte: startDate, $lte: endDate },
         status: ReservationStatuses.Completed,
       },
     });
@@ -172,9 +171,7 @@ export class ReservationService {
     const totalReservations = userReservations.length;
 
     //
-    userReservations.forEach((res: Reservation) => {
-      total += res.total;
-    });
+    userReservations.forEach((res: Reservation) => {});
 
     userReservations.forEach((res: Reservation) => {
       const startDate = new Date(res.checkInDate);
@@ -185,8 +182,16 @@ export class ReservationService {
       const monthIdx = startDate.getUTCMonth();
       const month = months[monthIdx];
 
+      //build total in year
+      total += res.total;
+
+      //add reservation to weekDay
       perDayReservations[weekDay]++;
+
+      //add reservation to month
       perMonthReservations[month]++;
+
+      //add earning to month
       perMonthEarning[month] += res.total;
 
       const totalReservationTime = endDate.getTime() - startDate.getTime();
@@ -207,8 +212,6 @@ export class ReservationService {
       perMonthEarning,
       perMonthReservations,
     };
-
-    console.log(result);
 
     return result;
   }
