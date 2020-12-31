@@ -27,10 +27,12 @@ import { CreateReservationInternalInput } from './inputs/create-reservation-inte
 import { CreateReservationInput } from './inputs/create-reservation.input';
 import { GetAllUserReservationsInput } from './inputs/get-all-user-reservations-as-client.input';
 import { GetReservationByIdInput } from './inputs/get-reservation-by-id.input';
+import { GetReservationsInsightsInput } from './inputs/get-reservations-insights.input';
 import { UpdateReservationInput } from './inputs/update-reservation.input';
 import { ValidateUser } from './inputs/validate-user';
 import { ReservationService } from './reservation.service';
 import { ReservationType } from './types/reservation.type';
+import { ReservationInsights } from './types/reservations-insights.type';
 import { UserRoles } from './utils/user-roles';
 
 @Resolver(of => ReservationType)
@@ -103,21 +105,26 @@ export class ReservationResolver {
   }
 
   @UseGuards(AuthGuard)
-  @Query(of => Boolean)
+  @Query(of => ReservationInsights)
   public async getReservationsInsigths(
     @Context('user') user: JWTpayload,
-  ): Promise<Boolean> {
-    this.logger.debug(`Received get all user reservations as owner`);
+    @Args('year', { nullable: true, defaultValue: new Date().getFullYear() })
+    year: string,
+  ): Promise<ReservationInsights> {
+    this.logger.debug(
+      `Received get reservations insights with payload ${JSON.stringify(year)}`,
+    );
 
-    const getReservationInsightsInputs = {
-      id: user.id,
+    const getReservationInsightsInputs: GetReservationsInsightsInput = {
+      owner: user.id,
+      year: Number.parseInt(year),
     };
 
-    await this.reservationService.getUserReservationsInsights(
+    const result = await this.reservationService.getUserReservationsInsights(
       getReservationInsightsInputs,
     );
 
-    return true;
+    return result;
   }
 
   @UseGuards(AuthGuard)

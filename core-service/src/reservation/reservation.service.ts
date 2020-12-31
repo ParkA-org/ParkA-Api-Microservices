@@ -16,6 +16,8 @@ import { Schedule } from 'src/calendar/entities/schedule.entity';
 import { UpdateReservationFromCronJobDto } from './dtos/update-reservation-from-cron-job.dto';
 import { TaskDto } from 'src/schedule/dtos/task.dto';
 import { TasksService } from 'src/schedule/task.service';
+import { ReservationInsights } from './entities/reservations-insights.type';
+import { GetReservationsInsightsInput } from './dtos/get-reservations-insights.dto';
 @Injectable()
 export class ReservationService {
   private logger = new Logger('ReservationService');
@@ -81,9 +83,9 @@ export class ReservationService {
     return [];
   }
 
-  public async getUserReservationInsights(getReservationInsightsInputs: {
-    id: string;
-  }) {
+  public async getUserReservationInsights(
+    getReservationInsightsInputs: GetReservationsInsightsInput,
+  ): Promise<ReservationInsights> {
     const millisecondsToHours = 60 * 60 * 1000;
     const weekDays: string[] = [
       'sunday',
@@ -110,7 +112,7 @@ export class ReservationService {
       'december',
     ];
 
-    const { id } = getReservationInsightsInputs;
+    const { owner } = getReservationInsightsInputs;
 
     const date = new Date(2020, 0, 1).toISOString();
 
@@ -118,7 +120,7 @@ export class ReservationService {
 
     const userReservations = await this.reservationRepository.find({
       where: {
-        owner: id,
+        owner,
         rentDate: { $gte: date },
         status: ReservationStatuses.Completed,
       },
@@ -183,36 +185,32 @@ export class ReservationService {
       const monthIdx = startDate.getUTCMonth();
       const month = months[monthIdx];
 
-      console.log('DATES');
-      console.log(res.checkInDate);
-      console.log(res.checkOutDate);
-      console.log(weekDays[weekDayIdx]);
       perDayReservations[weekDay]++;
       perMonthReservations[month]++;
       perMonthEarning[month] += res.total;
 
       const totalReservationTime = endDate.getTime() - startDate.getTime();
 
-      console.log(totalReservationTime);
-
       totalTime += totalReservationTime / millisecondsToHours;
     });
 
-    const reservationTimeAverige = (totalReservations != 0
-      ? totalTime / totalReservations
-      : 0
-    ).toPrecision(2);
+    const reservationTimeAverige: number = Number.parseFloat(
+      (totalReservations != 0 ? totalTime / totalReservations : 0).toPrecision(
+        2,
+      ),
+    );
 
-    console.log('Results');
-    console.log(total);
-    console.log(reservationTimeAverige);
-    console.log(perDayReservations);
-    console.log(perMonthReservations);
-    console.log(perMonthEarning);
-
-    return {
-      total,
+    const result: ReservationInsights = {
+      totalEarnings: total,
+      reservationTimeAverige: reservationTimeAverige,
+      perDayReservations,
+      perMonthEarning,
+      perMonthReservations,
     };
+
+    console.log(result);
+
+    return result;
   }
 
   public async createReservation(
